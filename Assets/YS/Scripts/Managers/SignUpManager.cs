@@ -9,6 +9,11 @@ public class SignUpManager : MonoBehaviour
 {
     public InputField emailInputField, pwInputField, nameInputField;
 
+    void Start()
+    {
+        PlayFabSettings.TitleId = "7FD3E";
+    }
+
     public void LoginBtn()
     {
         var request = new LoginWithEmailAddressRequest { Email = emailInputField.text, Password = pwInputField.text };
