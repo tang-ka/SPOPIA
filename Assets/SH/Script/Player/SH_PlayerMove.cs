@@ -42,7 +42,6 @@ public class SH_PlayerMove : MonoBehaviour
         dir = player.forward * v + player.right * h;
         dir.Normalize();
 
-        
         anim.SetBool("Walk", dir.magnitude > 0.1f);
         anim.SetBool("Idle", dir.magnitude < 0.1f);
 
@@ -73,7 +72,6 @@ public class SH_PlayerMove : MonoBehaviour
         //    transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
         //}
     }
-
 
     //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     //{
