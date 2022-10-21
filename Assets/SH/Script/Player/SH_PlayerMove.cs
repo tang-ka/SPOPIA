@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class SH_PlayerMove : MonoBehaviour
@@ -7,6 +8,7 @@ public class SH_PlayerMove : MonoBehaviour
     public Transform player;
     public Transform camPivot;
     CharacterController cc;
+    Animator anim;
 
     float speed;
     public float walkSpeed = 10;
@@ -24,6 +26,7 @@ public class SH_PlayerMove : MonoBehaviour
     void Start()
     {
         cc = GetComponent<CharacterController>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -38,6 +41,10 @@ public class SH_PlayerMove : MonoBehaviour
 
         dir = player.forward * v + player.right * h;
         dir.Normalize();
+
+        
+        anim.SetBool("Walk", dir.magnitude > 0.1f);
+        anim.SetBool("Idle", dir.magnitude < 0.1f);
 
         yVelocity += gravity * Time.deltaTime;
 
