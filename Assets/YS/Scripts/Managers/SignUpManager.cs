@@ -7,23 +7,18 @@ using PlayFab.ClientModels;
 
 public class SignUpManager : MonoBehaviour
 {
-    public InputField emailInputField, pwInputField, nameInputField;
-
-    void Start()
-    {
-        PlayFabSettings.TitleId = "7FD3E";
-    }
+    public InputField emailSignUp, pwSignUp, nameSignUp, idInputField, pwInputField;
 
     public void LoginBtn()
     {
-        var request = new LoginWithEmailAddressRequest { Email = emailInputField.text, Password = pwInputField.text };
+        var request = new LoginWithEmailAddressRequest { Email = idInputField.text, Password = pwInputField.text };
         PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnLoginFailure);
     }
 
 
     public void RegisterBtn()
     {
-        var request = new RegisterPlayFabUserRequest { Email = emailInputField.text, Password = pwInputField.text, Username = nameInputField.text };
+        var request = new RegisterPlayFabUserRequest { Email = emailSignUp.text, Password = pwSignUp.text, Username = nameSignUp.text };
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegisterFailure);
     }
 

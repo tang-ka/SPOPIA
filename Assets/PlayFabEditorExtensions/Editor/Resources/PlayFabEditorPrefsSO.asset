@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: PlayFabEditorPrefsSO
   m_EditorClassIdentifier: 
   DevAccountEmail: mvp0340@gmail.com
-  DevAccountToken: z8ymzkrfsycqcy1rknx8kzryho1iro8j7yjiyfgrjh4wa8agtgczor1ceckyyd7tr83kttx3wd8ucpqqa1nzxzqbj3u3xd8puaraxronpzdtxdhpupu15f8nmx338iwk7f3tj5x5pd94pe9oz49t3ofuxnj9564zf493nhafpafm95mffjc9mhtmsyhj6ff55kzc7wpc
-  SelectedStudio: My Game Studio
+  DevAccountToken: rkgfteeaqa547iu8g8oosesxonexd69j8oh3t146rapeifm4fyortt9wm3qetih484pbws14cn5mq6exz1tydgqem7rcr6n8psq3sh6ppq1pdx1yaq6baqt9izocji7tm9mad96j595eap4euaeea49pgk7i55nehf4quyt35tedwh9c1wfepb3fs9tneixz36j6bi9o
+  SelectedStudio: 
   SdkPath: Assets/PlayFabSDK
   EdExPath: 
   LocalCloudScriptPath: 
