@@ -329,9 +329,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cc40e637fe3c2f4194d6e02ccfda8f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emailInputField: {fileID: 1487591327}
-  pwInputField: {fileID: 2107469267}
-  nameInputField: {fileID: 1367023872}
+  emailSignUp: {fileID: 1487591327}
+  pwSignUp: {fileID: 2107469267}
+  nameSignUp: {fileID: 1367023872}
+  idInputField: {fileID: 1574090550}
+  pwInputField: {fileID: 1053704130}
 --- !u!1 &376038001
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,7 +347,7 @@ GameObject:
   - component: {fileID: 376038003}
   - component: {fileID: 376038002}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: DBtestCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -761,7 +763,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1951310082}
         m_TargetAssemblyTypeName: PlayfabManager, Assembly-CSharp
-        m_MethodName: SetData
+        m_MethodName: SaveJson
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3080,7 +3082,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c916968e765f1144ebc9ff499265ad71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dbID: 61E6F948BD8BBD4B
+  dbID: A45FE526BA86DD94
 --- !u!4 &1951310083
 Transform:
   m_ObjectHideFlags: 0
