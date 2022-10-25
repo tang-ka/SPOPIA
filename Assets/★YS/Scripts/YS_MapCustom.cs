@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class YS_MapCustom : MonoBehaviour
 {
+    // 마우스와 오브젝트 사이의 거리
+    Vector3 dis;
+    // 마우스가 눌렸는지
+    bool isClick = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +22,11 @@ public class YS_MapCustom : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
     }
 
-    Vector3 temp;
+    void OnMouseUp()
+    {
+        isClick = false;
+    }
+
     void OnMouseDrag()
     {
         RaycastHit hit;
@@ -28,15 +37,19 @@ public class YS_MapCustom : MonoBehaviour
         if(Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
             float y = transform.position.y;
-            Vector3 dis = hit.point - temp;
 
             if (Input.mouseScrollDelta.y != 0)
             {
                 y += Input.mouseScrollDelta.y * 0.1f;
             }
 
-            transform.position = new Vector3(transform.position.x, y, transform.position.z);
-            temp = hit.point;
+            if(isClick == false)
+            {
+                dis = transform.position - hit.point;
+                isClick = true; // 누르고 있을 땐, 다시 계산 안되게끔 true로 바꿔주기
+            }
+
+            transform.position = new Vector3(hit.point.x + dis.x, y, hit.point.z + dis.z);
         }
     }
 }
