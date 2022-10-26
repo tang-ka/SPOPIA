@@ -20,14 +20,28 @@ public class YS_MapCustom : MonoBehaviour
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
+
+        if(Input.GetMouseButton(0))
+        {
+            ObjMove();
+        }
+        else if(Input.GetMouseButton(1))
+        {
+            
+        }
+        
+        if(Input.GetMouseButtonUp(0))
+        {
+            ClickUp();
+        }
     }
 
-    void OnMouseUp()
+    void ClickUp()
     {
         isClick = false;
     }
 
-    void OnMouseDrag()
+    void ObjMove()
     {
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -50,6 +64,19 @@ public class YS_MapCustom : MonoBehaviour
             }
 
             transform.position = new Vector3(hit.point.x + dis.x, y, hit.point.z + dis.z);
+        }
+    }
+
+    void ObjRotate()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        Debug.DrawRay(ray.origin, ray.direction * 10000, Color.cyan);
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        {
+            transform.eulerAngles = new Vector3();
         }
     }
 }
