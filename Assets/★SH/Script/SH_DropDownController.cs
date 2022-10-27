@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
+using System.ComponentModel;
+
 public class SH_DropDownController : MonoBehaviour
 {
     TMP_Dropdown options;
 
     List<string> optionList = new List<string>();
+
+    [SerializeField] TeamData teamData = new TeamData();
 
     void Start()
     {
@@ -21,6 +26,31 @@ public class SH_DropDownController : MonoBehaviour
         optionList.Add("FC Cre");
 
         options.AddOptions(optionList);
+
+        options.onValueChanged.AddListener(OnValueChanged);
+        OnValueChanged(0);
+    }
+
+    private void OnValueChanged(int arg)
+    {
+        print(optionList[arg]);
+
+        // 가짜 데이터
+        teamData.teamName = optionList[arg];
+    }
+
+    public void SetMatchData(int ourScore, int oppScore)
+    {
+        teamData.goal += ourScore;
+        teamData.lossGoal += oppScore;
+        teamData.matchCount++;
+
+        if (ourScore > oppScore)
+            teamData.win++;
+        else if (ourScore < oppScore)
+            teamData.lose++;
+        else
+            teamData.draw++;
     }
 
     void Update()

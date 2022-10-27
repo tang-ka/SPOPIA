@@ -19,7 +19,7 @@ public class SH_InputMatchResult : MonoBehaviour
     public List<SH_ShowBar> listScorer = new List<SH_ShowBar>();
     public List<SH_ShowBar> listAssist = new List<SH_ShowBar>();
 
-    public TeamData teamData = new TeamData();
+    //public TeamData teamData = new TeamData();
 
     bool isInputScore = false;
     int goal;
@@ -42,6 +42,7 @@ public class SH_InputMatchResult : MonoBehaviour
     public void OnScoreValueChanged(string inputText)
     {
         if (inputText.Length == 0) return;
+
         goal = int.Parse(inputText);
     }
 
@@ -49,12 +50,14 @@ public class SH_InputMatchResult : MonoBehaviour
     {
         isInputScore = true;
         goal = int.Parse(inputText);
-        teamData.goal += goal;
+        //teamData.goal += goal;
         print(goal);
     }
 
     public void EnterInputScorer(string inputText)
     {
+        if (inputText.Length == 0) return;
+
         inputScorer.text = "";
         inputScorer.ActivateInputField();
 
@@ -78,6 +81,8 @@ public class SH_InputMatchResult : MonoBehaviour
 
     public void EnterInputAssist(string inputText)
     {
+        if (inputText.Length == 0) return;
+
         inputAssist.text = "";
         inputAssist.ActivateInputField();
 
@@ -99,13 +104,25 @@ public class SH_InputMatchResult : MonoBehaviour
         listAssist.Add(sb);
     }
 
+    public void DeleteListScorer(SH_ShowBar sb)
+    {
+        listScorer.Remove(sb);
+    }
+    public void DeleteListAssist(SH_ShowBar sb)
+    {
+        if (listAssist.Contains(sb))
+        {
+            listAssist.Remove(sb);
+        }
+    }
+
     public void OnClickOkay()
     {
-        if (isInputScore == false)
-        {
-            teamData.goal += goal;
-            print(goal);
-        }
+        //if (isInputScore == false)
+        //{
+        //    //teamData.goal += goal;
+        //    print(goal);
+        //}
 
         for (int i = 0; i < listScorer.Count; i++)
         {
@@ -117,21 +134,37 @@ public class SH_InputMatchResult : MonoBehaviour
             listAssist[i].AddAssist();
         }
 
-        if (goal > opponent.goal)
-            teamData.win++;
-        else if (goal < opponent.goal)
-            teamData.lose++;
-        else
-            teamData.draw++;
+        //if (goal > opponent.goal)
+        //    teamData.win++;
+        //else if (goal < opponent.goal)
+        //    teamData.lose++;
+        //else
+        //    teamData.draw++;
 
-        AllClear();
+        this.GetComponent<SH_DropDownController>().SetMatchData(goal, opponent.goal);
+
+        AllClear(listScorer.Count, listAssist.Count);
     }
 
-    public void AllClear()
+    public void AllClear(int scorer, int assist)
     {
         inputScorer.text = "";
         inputScore.text = "";
         inputAssist.text = "";
+
+        for (int i = 0; i < scorer; i++)
+        {
+            Destroy(gameObject);
+
+            //listScorer[0].OnCLickDelete();
+        }
+
+        for (int i = 0; i < assist; i++)
+        {
+            Destroy(gameObject);
+
+            //listAssist[0].OnCLickDelete();
+        }
 
         isInputScore = false;
     }
