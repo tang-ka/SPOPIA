@@ -5,41 +5,40 @@ using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.UI;
 
-public class UserData
-{
-    // private Data
-    public string nickName;
-    public int age;
-    public int playerLevel; // 0: normal, 1 : middle, 2: high, 3: university 4: K2, 5: K1
-    public string position;
-    public string teamName;
-    public int height;
-    public int weight;
-    //public string profileImage;
+//public class UserData
+//{
+//    // private Data
+//    public string nickName;
+//    public int age;
+//    public int playerLevel; // 0: normal, 1 : middle, 2: high, 3: university 4: K2, 5: K1
+//    public string position;
+//    public string teamName;
+//    public int height;
+//    public int weight;
+//    //public string profileImage;
 
-    // public Data (record)
-    public int goal;
-    public int assist;
-    public int matchCount;
-}
+//    // public Data (record)
+//    public int goal;
+//    public int assist;
+//    public int matchCount;
+//}
 
-public class TeamData
-{
-    // private Data
-    public int memberNum;
-    public string region;
-    public int[] levelerCount = new int[5] { 0, 0, 9, 4, 0 };
-    public string formation;
+//public class TeamData
+//{
+//    // private Data
+//    public int memberNum;
+//    public string region;
+//    public int[] levelerCount = new int[4] { 0, 0, 9, 4 };
+//    public string formation;
 
-    // public Data (record)
-    public int goal;
-    public int lossGoal;
-    public int matchCount;
-    public int win;
-    public int lose;
-    public int draw;
-}
-
+//    // public Data (record)
+//    public int goal;
+//    public int lossGoal;
+//    public int matchCount;
+//    public int win;
+//    public int lose;
+//    public int draw;
+//}
 
 public class PlayfabManager : MonoBehaviour
 {

@@ -29,8 +29,8 @@ public class SH_PlayerRot : MonoBehaviour
     {
         camPivot.gameObject.SetActive(true);
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
 
         cam = Camera.main.transform;
     }

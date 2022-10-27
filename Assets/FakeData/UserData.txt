@@ -1,0 +1,75 @@
+{
+
+	"0": {
+		"nickName": "tangka",
+		"age": 27,
+		"playerLevel": 2,
+		"position": "CM",
+		"teamName": "FC XR",
+		"height": 175,
+		"weight": 80,
+		"goal": 5,
+		"assist": 4,
+		"matchCount": 10
+	},
+	"1": {
+		"nickName": "SeoYS",
+		"age": 26,
+		"playerLevel": 4,
+		"position": "LCW",
+		"teamName": "FC XR",
+		"height": 175,
+		"weight": 70,
+		"goal": 2,
+		"assist": 12,
+		"matchCount": 10
+	},
+	"2": {
+		"nickName": "Michael",
+		"age": 27,
+		"playerLevel": 3,
+		"position": "RCW",
+		"teamName": "FC XR",
+		"height": 174,
+		"weight": 76,
+		"goal": 3,
+		"assist": 4,
+		"matchCount": 10
+	},
+	"3": {
+		"nickName": "Mixabo",
+		"age": 21,
+		"playerLevel": 1,
+		"position": "RWB",
+		"teamName": "FC AI",
+		"height": 174,
+		"weight": 65,
+		"goal": 0,
+		"assist": 0,
+		"matchCount": 0
+	},
+	"4": {
+		"nickName": "Sketchpam",
+		"age": 22,
+		"playerLevel": 1,
+		"position": "RCB",
+		"teamName": "FC AI",
+		"height": 183,
+		"weight": 78,
+		"goal": 0,
+		"assist": 0,
+		"matchCount": 0
+	},
+	"5": {
+		"nickName": "Urity",
+		"age": 23,
+		"playerLevel": 1,
+		"position": "LCB",
+		"teamName": "FC AI",
+		"height": 185,
+		"weight": 83,
+		"goal": 0,
+		"assist": 0,
+		"matchCount": 0
+	},
+}

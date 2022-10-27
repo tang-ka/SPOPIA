@@ -1,0 +1,56 @@
+{
+	"data" : [
+		{
+			"teamName": "FC XRmtvs",
+			"memberNum": 3,
+			"region": "Pangyo",
+			"levelerCount": [0, 0, 1, 1, 1],
+			"formation": "4-2-2",
+			"goal": 10,
+			"lossGoal": 3,
+			"matchCount": 10,
+			"win": 9,
+			"lose": 1,
+			"draw": 0
+		},
+		{
+			"teamName": "FC AImtvs",
+			"memberNum": 5,
+			"region": "Pangyo",
+			"levelerCount": [1, 1, 1, 1, 1],
+			"formation": "3-5-2",
+			"goal": 0,
+			"lossGoal": 0,
+			"matchCount": 0,
+			"win": 0,
+			"lose": 0,
+			"draw": 0
+		},
+		{
+			"teamName": "FC Netmtvs",
+			"memberNum": 13,
+			"region": "Pangyo",
+			"levelerCount": [3, 2, 5, 1, 2],
+			"formation": "4-3-3",
+			"goal": 0,
+			"lossGoal": 0,
+			"matchCount": 0,
+			"win": 0,
+			"lose": 0,
+			"draw": 0
+		},
+		{
+			"teamName": "FC Cremtvs",
+			"memberNum": 9,
+			"region": "Pangyo",
+			"levelerCount": [1, 1, 4, 2, 1],
+			"formation": "4-2-3-1",
+			"goal": 0,
+			"lossGoal": 0,
+			"matchCount": 0,
+			"win": 0,
+			"lose": 0,
+			"draw": 0
+		}
+	]
+}
