@@ -14,6 +14,8 @@ public class YS_MapCustom : MonoBehaviour
     bool isCheck = false;
     // rot 짐벌락 해결
     Vector3 rot;
+    // 복제 키 작동 중
+    bool isCopy = false;
 
     // Start is called before the first frame update
     void Start()
@@ -27,9 +29,19 @@ public class YS_MapCustom : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
 
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            isCopy = true;
+        }
+
         if(Input.GetMouseButtonDown(0))
         {
             Check();
+
+            if(isCopy == true)
+            {
+                Instantiate(transform.gameObject);
+            }
         }
         else if (Input.GetMouseButtonDown(1))
         {
@@ -47,7 +59,7 @@ public class YS_MapCustom : MonoBehaviour
             if(isCheck == true)
             {
                 ObjMove();
-            }    
+            }
         }
         else if(Input.GetMouseButton(1))
         {
@@ -67,6 +79,7 @@ public class YS_MapCustom : MonoBehaviour
     {
         isClick = false;
         isCheck = false;
+        isCopy = false;
     }
 
     void ObjMove()
