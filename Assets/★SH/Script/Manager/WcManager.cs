@@ -51,7 +51,7 @@ public class WcManager : MonoBehaviourPunCallbacks
         print(selectWorld + " 진입 성공");
 
         // RegionChoiceScene으로 이동
-        PhotonNetwork.LoadLevel("RegionChoiceScene");
+        PhotonNetwork.LoadLevel("LeagueChoiceScene");
     }
 
     public void OnClickSoccer()
