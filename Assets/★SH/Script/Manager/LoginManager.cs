@@ -4,18 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
+using PlayFab;
+using PlayFab.ClientModels;
 
 public class LoginManager : MonoBehaviourPunCallbacks
 {
     public InputField inputID;
     public InputField inputPW;
+    // 회원가입용(영수)
+    public InputField emailSignUp, pwSignUp, nameSignUp;
 
     public Button btnLogin;
 
     // Start is called before the first frame update
     void Start()
     {
-        inputPW.onValueChanged.AddListener(OnValueChanged);
+        //inputPW.onValueChanged.AddListener(OnValueChanged); // 영수 : 오류나서 막아놨습니다.
         inputPW.onSubmit.AddListener(OnSubmit);
     }
 
@@ -43,6 +47,10 @@ public class LoginManager : MonoBehaviourPunCallbacks
     {
         //서버 접속 요청
         PhotonNetwork.ConnectUsingSettings();
+
+        // 플레이팹 로그인 (영수)
+        var request = new LoginWithEmailAddressRequest { Email = inputID.text, Password = inputPW.text };
+        PlayFabClientAPI.LoginWithEmailAddress(request, OnLoginSuccess, OnLoginFailure);
     }
 
     public override void OnConnected()
@@ -57,4 +65,20 @@ public class LoginManager : MonoBehaviourPunCallbacks
         print("SPOPIA에 오신걸 환영합니다!!");
         PhotonNetwork.LoadLevel("WorldChoiceScene");
     }
+
+    // 플레이팹 회원가입 (영수)
+    public void RegisterBtn()
+    {
+        var request = new RegisterPlayFabUserRequest { Email = emailSignUp.text, Password = pwSignUp.text, Username = nameSignUp.text };
+        PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegisterFailure);
+    }
+
+
+    void OnLoginSuccess(LoginResult result) => print("로그인 성공");
+
+    void OnLoginFailure(PlayFabError error) => print("로그인 실패");
+
+    void OnRegisterSuccess(RegisterPlayFabUserResult result) => print("회원가입 성공");
+
+    void OnRegisterFailure(PlayFabError error) => print("회원가입 실패");
 }
