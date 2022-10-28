@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SH_MatchDataSphere : MonoBehaviour
 {
-    MeshRenderer mr;
-
     void Start()
     {
         
@@ -13,13 +11,6 @@ public class SH_MatchDataSphere : MonoBehaviour
 
     void Update()
     {
-        
+
     }
-
-    public void MeshRendereON()
-    {
-        mr.enabled = true;
-    }
-
-
 }
