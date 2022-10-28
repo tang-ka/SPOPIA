@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 public class SH_DropDownController : MonoBehaviour
 {
-    TMP_Dropdown options;
+    TMP_Dropdown dropdown;
 
     List<string> optionList = new List<string>();
 
@@ -15,28 +15,29 @@ public class SH_DropDownController : MonoBehaviour
 
     void Start()
     {
-        options = this.GetComponent<TMP_Dropdown>();
+        // 드랍다운 옵션
+        dropdown = this.GetComponent<TMP_Dropdown>();
+        dropdown.ClearOptions();
 
-        options.ClearOptions();
+        // fakeLeagueData.teams 이용해서 드랍다운 옵션 초기화 하고 싶다.
+        optionList = DataManager.instance.GetTeamsNames();
 
-        // leagueData.teams 이용해서 초기화 하기
-        optionList.Add("FC XR");
-        optionList.Add("FC AI");
-        optionList.Add("FC Net");
-        optionList.Add("FC Cre");
+        dropdown.AddOptions(optionList);
 
-        options.AddOptions(optionList);
+        // 드랍다운 옵션 변경시 호출 되는 함수를 등록 하고 싶다.
+        dropdown.onValueChanged.AddListener(OnValueChanged);
 
-        options.onValueChanged.AddListener(OnValueChanged);
+        // 옵션 초기값 넣어주기
         OnValueChanged(0);
     }
 
+    // 옵션을 선택할 때 마다 호출 되는 함수
     private void OnValueChanged(int arg)
     {
         print(optionList[arg]);
 
-        // 가짜 데이터
-        teamData.teamName = optionList[arg];
+        // 클래스는 레퍼런스 타입이라 이렇게 대입해도 원본 데이터가 수정이 된다.
+        teamData = DataManager.instance.fakeLeagueData.teams[arg];
     }
 
     public void SetMatchData(int ourScore, int oppScore)
@@ -51,10 +52,5 @@ public class SH_DropDownController : MonoBehaviour
             teamData.lose++;
         else
             teamData.draw++;
-    }
-
-    void Update()
-    {
-        
     }
 }

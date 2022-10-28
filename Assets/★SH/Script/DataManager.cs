@@ -1,3 +1,5 @@
+using Newtonsoft.Json.Linq;
+using Photon.Pun.Demo.Cockpit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,4 +66,69 @@ public class LeagueData
     public string startDate;
     public string endDate;
     public bool isfinished;
+}
+
+public class DataManager : MonoBehaviour
+{
+    public static DataManager instance;
+
+    public LeagueData fakeLeagueData;
+    public LeagueData realLeagueData;
+
+    private void Awake()
+    {
+        instance = this;
+
+        // 가짜 LeagueData 생성 -> 그 안에 팀 데이터(teams) 생성
+        fakeLeagueData = new LeagueData();
+        fakeLeagueData.teams = new List<TeamData>();
+
+        SetTeamData();
+    }
+
+    void SetTeamData()
+    {
+        SetFakeTeamData();
+    }
+
+    void SetFakeTeamData()
+    {
+        TeamData temp;
+
+        string[] teamsName = { "FC XR", "FC AI", "FC Net", "FC Cre" };
+
+        for (int i = 0; i < teamsName.Length; i++)
+        {
+            // 가짜 팀 데이터에 이름만 설정해준다.
+            temp = new TeamData();
+            temp.teamName = teamsName[i];
+
+            //temp.goal = i;
+            //temp.lossGoal = i;
+            //temp.matchCount = i;
+            //temp.win = i;
+            //temp.lose = i;
+            //temp.draw = i;
+
+            // 가짜 리그 데이터의 teams에 가짜 팀데이터 추가
+            fakeLeagueData.teams.Add(temp);
+        }
+    }
+
+    void SetRealTeamData()
+    {
+
+    }
+
+    public List<string> GetTeamsNames()
+    {
+        List<string> teamNames = new List<string>();
+
+        for (int i = 0; i < fakeLeagueData.teams.Count; i++)
+        {
+            teamNames.Add(fakeLeagueData.teams[i].teamName);
+        }
+        
+        return teamNames;
+    }
 }

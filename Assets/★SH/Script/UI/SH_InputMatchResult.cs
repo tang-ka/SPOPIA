@@ -10,6 +10,7 @@ public class SH_InputMatchResult : MonoBehaviour
     public InputField inputAssist;
 
     public SH_InputMatchResult opponent;
+    public SH_DropDownController selectedTeam;
 
     public GameObject showBarFactory;
 
@@ -75,7 +76,8 @@ public class SH_InputMatchResult : MonoBehaviour
         data.goal = Random.Range(1, 5);
 
         sb.Init(data);
-        
+        sb.deleteList += DeleteListScorer;
+
         listScorer.Add(sb);
     }
 
@@ -100,6 +102,7 @@ public class SH_InputMatchResult : MonoBehaviour
         data.assist = Random.Range(1, 5);
 
         sb.Init(data);
+        sb.deleteList += DeleteListAssist;
 
         listAssist.Add(sb);
     }
@@ -110,20 +113,11 @@ public class SH_InputMatchResult : MonoBehaviour
     }
     public void DeleteListAssist(SH_ShowBar sb)
     {
-        if (listAssist.Contains(sb))
-        {
-            listAssist.Remove(sb);
-        }
+        listAssist.Remove(sb);
     }
 
     public void OnClickOkay()
     {
-        //if (isInputScore == false)
-        //{
-        //    //teamData.goal += goal;
-        //    print(goal);
-        //}
-
         for (int i = 0; i < listScorer.Count; i++)
         {
             listScorer[i].AddGoal();
@@ -134,14 +128,7 @@ public class SH_InputMatchResult : MonoBehaviour
             listAssist[i].AddAssist();
         }
 
-        //if (goal > opponent.goal)
-        //    teamData.win++;
-        //else if (goal < opponent.goal)
-        //    teamData.lose++;
-        //else
-        //    teamData.draw++;
-
-        this.GetComponent<SH_DropDownController>().SetMatchData(goal, opponent.goal);
+        selectedTeam.SetMatchData(goal, opponent.goal);
 
         AllClear(listScorer.Count, listAssist.Count);
     }
@@ -154,16 +141,12 @@ public class SH_InputMatchResult : MonoBehaviour
 
         for (int i = 0; i < scorer; i++)
         {
-            Destroy(gameObject);
-
-            //listScorer[0].OnCLickDelete();
+            listScorer[0].OnCLickDelete();
         }
 
         for (int i = 0; i < assist; i++)
         {
-            Destroy(gameObject);
-
-            //listAssist[0].OnCLickDelete();
+            listAssist[0].OnCLickDelete();
         }
 
         isInputScore = false;

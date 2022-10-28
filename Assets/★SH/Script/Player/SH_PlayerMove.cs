@@ -31,7 +31,8 @@ public class SH_PlayerMove : MonoBehaviour
 
     void Update()
     {
-        PlayerMove();
+        
+        
     }
 
     public void PlayerMove()

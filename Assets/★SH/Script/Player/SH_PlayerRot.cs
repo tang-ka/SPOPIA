@@ -16,7 +16,8 @@ public class SH_PlayerRot : MonoBehaviour
     float rotX;
     float rotY;
 
-    bool isClick = false;
+    [HideInInspector]
+    public bool isClick = false;
 
     public enum ViewState
     {
@@ -29,8 +30,8 @@ public class SH_PlayerRot : MonoBehaviour
     {
         camPivot.gameObject.SetActive(true);
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.visible = false;
 
         cam = Camera.main.transform;
     }
@@ -38,12 +39,6 @@ public class SH_PlayerRot : MonoBehaviour
     void Update()
     {
         ClickKey();
-
-        if (isClick)
-            PlayerRot(ViewState.FIRST, false);
-        else if (isClick == false)
-            PlayerRot(ViewState.THIRD, false);
-            
     }
 
     public void PlayerRot(ViewState s, bool isLookAround)
@@ -82,6 +77,12 @@ public class SH_PlayerRot : MonoBehaviour
         {
             camPivot.transform.localEulerAngles = new Vector3(rotY, rotX, 0);
         }
+    }
+
+    public void CusorControll(CursorLockMode lockMode, bool isVisible)
+    {
+        Cursor.lockState = lockMode;
+        Cursor.visible = isVisible;
     }
 
     public void ClickKey()

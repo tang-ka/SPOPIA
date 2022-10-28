@@ -9,9 +9,11 @@ public class SH_PlayerCrossHair : MonoBehaviour
 
     public GameObject DataInputTable;
 
+    SH_PlayerFSM fsm;
+
     void Start()
     {
-        
+        fsm = GetComponent<SH_PlayerFSM>();
     }
 
     MeshRenderer sphere;
@@ -30,6 +32,7 @@ public class SH_PlayerCrossHair : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     DataInputTable.SetActive(true);
+                    fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
                 }
             }
             else
@@ -37,6 +40,11 @@ public class SH_PlayerCrossHair : MonoBehaviour
                 if (sphere == null) return;
                 sphere.enabled = false;
             }
+        }
+        else
+        {
+            if (sphere == null) return;
+            sphere.enabled = false;
         }
     }
 }
