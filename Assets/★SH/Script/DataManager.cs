@@ -51,6 +51,8 @@ public class TeamData
     public int win;
     public int lose;
     public int draw;
+    public int rank;
+    public int points;
 
     //int SPOPIAscore : 팀 전투력
     //recent5
@@ -72,8 +74,9 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager instance;
 
-    public LeagueData fakeLeagueData;
-    public LeagueData realLeagueData;
+    [SerializeField]
+    private LeagueData fakeLeagueData;
+    private LeagueData realLeagueData;
 
     private void Awake()
     {
@@ -82,7 +85,7 @@ public class DataManager : MonoBehaviour
         // 가짜 LeagueData 생성 -> 그 안에 팀 데이터(teams) 생성
         fakeLeagueData = new LeagueData();
         fakeLeagueData.teams = new List<TeamData>();
-
+        
         SetTeamData();
     }
 
@@ -95,7 +98,7 @@ public class DataManager : MonoBehaviour
     {
         TeamData temp;
 
-        string[] teamsName = { "FC XR", "FC AI", "FC Net", "FC Cre" };
+        string[] teamsName = { "FC XR", "FC AI", "FC Net", "FC Cre", "FC Tangka" };
 
         for (int i = 0; i < teamsName.Length; i++)
         {
@@ -103,10 +106,10 @@ public class DataManager : MonoBehaviour
             temp = new TeamData();
             temp.teamName = teamsName[i];
 
-            //temp.goal = i;
-            //temp.lossGoal = i;
-            //temp.matchCount = i;
-            //temp.win = i;
+            temp.goal = i * 2;
+            temp.lossGoal = i;
+            temp.matchCount = i;
+            temp.win = i;
             //temp.lose = i;
             //temp.draw = i;
 
@@ -130,5 +133,10 @@ public class DataManager : MonoBehaviour
         }
         
         return teamNames;
+    }
+
+    public List<TeamData> GetTeamDataList()
+    {
+        return fakeLeagueData.teams;
     }
 }

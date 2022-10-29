@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static Photon.Pun.UtilityScripts.PunTeams;
 
 public class SH_LeaderBoardManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class SH_LeaderBoardManager : MonoBehaviour
         TOPSCORES,
         TOPASSISTS,
     }
-    Category category = Category.TEAMRANKING;
+    Category category = Category.TOPASSISTS;
     Category preCategory;
 
     public GameObject tr;
@@ -21,23 +22,26 @@ public class SH_LeaderBoardManager : MonoBehaviour
 
     public GameObject rankBarFactory;
     public Transform rankBarParent;
+    
 
     List<GameObject> ranking;
 
+    [SerializeField]
+    List<TeamData> teamDataList = new List<TeamData>();
+    [SerializeField]
+    List<TeamData> teamRankList = new List<TeamData>();
+
     bool on = true;
-    int index = 1;
+    int index = 0;
 
     void Start()
     {
-        for (int i = 0; i < 4; i++)
-        {
-            ranking.Add();
-        }
+        ChangeCategory(Category.TEAMRANKING);
     }
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Alpha1))
+        if (Input.GetKeyUp(KeyCode.BackQuote))
         {
             ChangeIndex();
         }
@@ -93,7 +97,14 @@ public class SH_LeaderBoardManager : MonoBehaviour
                 ts.SetActive(!on);
                 ta.SetActive(!on);
 
-                GameObject bar = Instantiate(rankBarFactory, rankBarParent);
+                teamDataList = DataManager.instance.GetTeamDataList();
+
+                // 1. 팀 랭킹에 표시할 항목을 계산하고 싶다.
+                CalcTeamRank(teamDataList);
+                // 2. 계산한 정보를 담은 RankBar를 순서대로 생성하고 싶다.
+                CreateRankBar(teamRankList);
+                // 3. 생성한 RankBar를 모두 삭제하고 싶다.
+
                 break;
 
             case Category.TOPSCORES:
@@ -132,4 +143,62 @@ public class SH_LeaderBoardManager : MonoBehaviour
         ChangeCategory((Category)index);
     }
 
+    void CalcTeamRank(List<TeamData> teams)
+    {
+        TeamData[] temp = new TeamData[teams.Count];
+
+        int rank = 1;
+
+        // 승점 계산
+        for (int i = 0; i < teams.Count; i++)
+        {
+            int pts = 3 * teams[i].win + teams[i].draw;
+            teams[i].points = pts;
+        }
+
+        // 랭킹 계산
+        for (int i = 0; i < teams.Count; i++)
+        {
+            // 1. 가장 포인트가 많은 팀을 알고 싶다.
+            for (int j = 0; j < teams.Count; j++)
+            {
+                if (teams[i].points >= teams[j].points)
+                    continue;
+                else
+                    rank++;
+            }
+            // 2. temp에 rank에 맞게 담고 싶다.
+            teams[i].rank = rank;
+            while (true)
+            {
+                if (temp[rank - 1] != null)
+                {
+                    rank++;
+                }
+                else
+                {
+                    temp[rank - 1] = teams[i];
+                    break;
+                }
+
+            }
+            rank = 1;
+        }
+
+        // teamRankList를 클리어 하고 temp를 이용해 다시 정렬해준다.
+        teamRankList.Clear();
+        for (int i = 0; i < temp.Length; i++)
+        {
+            teamRankList.Add(temp[i]);
+        }
+    }
+
+    void CreateRankBar(List<TeamData> teams)
+    {
+        for (int i = 0; i < teams.Count; i++)
+        {
+            GameObject bar = Instantiate(rankBarFactory, rankBarParent);
+            bar.transform.position = rankBarParent.position + Vector3.down * 7 * i;
+        }
+    }
 }

@@ -11,7 +11,8 @@ public class SH_DropDownController : MonoBehaviour
 
     List<string> optionList = new List<string>();
 
-    [SerializeField] TeamData teamData = new TeamData();
+    [SerializeField]
+    TeamData teamData = new TeamData();
 
     void Start()
     {
@@ -37,7 +38,7 @@ public class SH_DropDownController : MonoBehaviour
         print(optionList[arg]);
 
         // 클래스는 레퍼런스 타입이라 이렇게 대입해도 원본 데이터가 수정이 된다.
-        teamData = DataManager.instance.fakeLeagueData.teams[arg];
+        teamData = DataManager.instance.GetTeamDataList()[arg];
     }
 
     public void SetMatchData(int ourScore, int oppScore)
