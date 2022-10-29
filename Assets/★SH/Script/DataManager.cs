@@ -117,7 +117,7 @@ public class DataManager : MonoBehaviour
 
     void SetRealTeamData()
     {
-
+        
     }
 
     public List<string> GetTeamsNames()
