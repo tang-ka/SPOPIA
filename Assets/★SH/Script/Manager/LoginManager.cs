@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine.SceneManagement;
 using PlayFab;
 using PlayFab.ClientModels;
@@ -11,16 +12,21 @@ public class LoginManager : MonoBehaviourPunCallbacks
 {
     public InputField inputID;
     public InputField inputPW;
+    public Button btnLogin;
+
     // 회원가입용(영수)
     public InputField emailSignUp, pwSignUp, nameSignUp;
-
-    public Button btnLogin;
+    // DB매니저(영수)
+    DBManager DBManager;
 
     // Start is called before the first frame update
     void Start()
     {
         //inputPW.onValueChanged.AddListener(OnValueChanged); // 영수 : 오류나서 막아놨습니다.
         inputPW.onSubmit.AddListener(OnSubmit);
+
+        // DBManager
+        DBManager = GameObject.Find("DBManager").GetComponent<DBManager>();
     }
 
     public void OnValueChanged(string s)
@@ -46,7 +52,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
     public void OnClickLogin()
     {
         //서버 접속 요청
-        PhotonNetwork.ConnectUsingSettings();
+        //PhotonNetwork.ConnectUsingSettings();
 
         // 플레이팹 로그인 (영수)
         var request = new LoginWithEmailAddressRequest { Email = inputID.text, Password = inputPW.text };
@@ -73,12 +79,21 @@ public class LoginManager : MonoBehaviourPunCallbacks
         PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegisterFailure);
     }
 
-
-    void OnLoginSuccess(LoginResult result) => print("로그인 성공");
+    void OnLoginSuccess(LoginResult result)
+    {
+        print("로그인 성공");
+        DBManager.GetLeaderboard(result.PlayFabId);
+    }
 
     void OnLoginFailure(PlayFabError error) => print("로그인 실패");
 
-    void OnRegisterSuccess(RegisterPlayFabUserResult result) => print("회원가입 성공");
+    void OnRegisterSuccess(RegisterPlayFabUserResult result)
+    {
+        print("회원가입 성공");
+        DBManager.SetStat();
+    }
 
     void OnRegisterFailure(PlayFabError error) => print("회원가입 실패");
+
+    
 }
