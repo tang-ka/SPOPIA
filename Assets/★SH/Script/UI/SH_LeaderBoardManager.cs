@@ -20,16 +20,19 @@ public class SH_LeaderBoardManager : MonoBehaviour
     public GameObject ts;
     public GameObject ta;
 
-    public GameObject rankBarFactory;
+    public GameObject teamRankBarFactory;
+    public GameObject playerRankBarFactory;
     public Transform rankBarParent;
-    
-
-    List<GameObject> ranking;
 
     [SerializeField]
     List<TeamData> teamDataList = new List<TeamData>();
     [SerializeField]
     List<TeamData> teamRankList = new List<TeamData>();
+
+    [SerializeField]
+    List<UserData> userDataList = new List<UserData>();
+    [SerializeField]
+    List<UserData> playerRankList = new List<UserData>();
 
     bool on = true;
     int index = 0;
@@ -109,6 +112,9 @@ public class SH_LeaderBoardManager : MonoBehaviour
                 tr.SetActive(!on);
                 ts.SetActive(on);
                 ta.SetActive(!on);
+
+                userDataList = DataManager.instance.GetUserDataList(); ;
+
                 break;
 
             case Category.TOPASSISTS:
@@ -197,7 +203,7 @@ public class SH_LeaderBoardManager : MonoBehaviour
     {
         for (int i = 0; i < teams.Count; i++)
         {
-            GameObject bar = Instantiate(rankBarFactory, rankBarParent);
+            GameObject bar = Instantiate(teamRankBarFactory, rankBarParent);
             bar.transform.position = rankBarParent.position + new Vector3(0, -7 * i, 0);
 
             Transform canvas = bar.transform.Find("Canvas");

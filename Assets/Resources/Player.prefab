@@ -470,6 +470,7 @@ GameObject:
   - component: {fileID: 9083367404687738557}
   - component: {fileID: 9083367404687738558}
   - component: {fileID: 545830411073557441}
+  - component: {fileID: 1514982164}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -528,7 +529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 9083367404687738556}
   camPivot: {fileID: 9083367403529721197}
-  walkSpeed: 20
+  walkSpeed: 100
   runSpeed: 15
   jumpPower: 3
   maxJumpCount: 1
@@ -565,6 +566,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 9083367403200029103}
   DataInputTable: {fileID: 0}
+--- !u!114 &1514982164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9083367404687738559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a76205da298a243834b5bfcf1dfe80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  preState: 0
 --- !u!1 &9083367405148856246
 GameObject:
   m_ObjectHideFlags: 0

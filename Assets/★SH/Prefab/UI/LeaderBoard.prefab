@@ -934,8 +934,11 @@ MonoBehaviour:
   tr: {fileID: 4712304714219630720}
   ts: {fileID: 2454683828763056681}
   ta: {fileID: 1458573285}
-  rankBarFactory: {fileID: 5140781527556612829, guid: 19514a79941c2f044918b3531ca068ae, type: 3}
+  teamRankBarFactory: {fileID: 5140781527556612829, guid: 19514a79941c2f044918b3531ca068ae, type: 3}
+  playerRankBarFactory: {fileID: 766124913280005399, guid: 8171e17ff41c7d145918cac652ad6561, type: 3}
   rankBarParent: {fileID: 854706368193454634}
+  teamDataList: []
+  teamRankList: []
 --- !u!1 &3929345950672245526
 GameObject:
   m_ObjectHideFlags: 0

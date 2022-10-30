@@ -3,6 +3,7 @@ using Photon.Pun.Demo.Cockpit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 [System.Serializable]
 public class UserData
@@ -85,8 +86,10 @@ public class DataManager : MonoBehaviour
         // 가짜 LeagueData 생성 -> 그 안에 팀 데이터(teams) 생성
         fakeLeagueData = new LeagueData();
         fakeLeagueData.teams = new List<TeamData>();
-        
+
         SetData();
+
+        GetUserDataList();
     }
 
     void SetData()
@@ -99,7 +102,7 @@ public class DataManager : MonoBehaviour
     {
         TeamData temp;
 
-        string[] teamsName = { "FC XR", "FC AI", "FC Net", "FC Cre" };
+        string[] teamsName = { "FC Robot", "FC Mech", "FC Archi", "FC Elec" };
 
         for (int i = 0; i < teamsName.Length; i++)
         {
@@ -129,9 +132,9 @@ public class DataManager : MonoBehaviour
 
     void SetRealTeamData()
     {
-        
-    }
 
+    }
+    
     void SetFakeUserData()
     {
         UserData temp;
@@ -163,6 +166,10 @@ public class DataManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 가짜 팀 데이터의 이름을 반환해준다.
+    /// </summary>
+    /// <returns></returns>
     public List<string> GetTeamsNames()
     {
         List<string> teamNames = new List<string>();
@@ -171,12 +178,34 @@ public class DataManager : MonoBehaviour
         {
             teamNames.Add(fakeLeagueData.teams[i].teamName);
         }
-        
+
         return teamNames;
     }
 
+    /// <summary>
+    /// 가짜 팀 데이터 리스트를 반환해 준다.
+    /// </summary>
+    /// <returns></returns>
     public List<TeamData> GetTeamDataList()
     {
         return fakeLeagueData.teams;
+    }
+
+    /// <summary>
+    /// 가짜 유저 데이터 리스트를 반환해 준다.
+    /// </summary>
+    public List<UserData> GetUserDataList()
+    {
+        List<UserData> userDataList = new List<UserData>();
+
+        for (int i = 0; i < fakeLeagueData.teams.Count; i++)
+        {
+            for (int j = 0; j < fakeLeagueData.teams[i].users.Count; j++)
+            {
+                userDataList.Add(fakeLeagueData.teams[i].users[j]);
+            }
+        }
+
+        return userDataList;
     }
 }
