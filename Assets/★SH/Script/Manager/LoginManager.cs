@@ -52,7 +52,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
     public void OnClickLogin()
     {
         //서버 접속 요청
-        //PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.ConnectUsingSettings();
 
         // 플레이팹 로그인 (영수)
         var request = new LoginWithEmailAddressRequest { Email = inputID.text, Password = inputPW.text };

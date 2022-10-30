@@ -9,17 +9,29 @@ using Photon.Realtime;
 
 public class DBManager : MonoBehaviour
 {
-    //public InputField dbTest;
-    public string testDBid = "2F2D067A082E0E55";
+    // 싱글톤
+    public static DBManager instance;
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    string testDBid = "A45FE526BA86DD94"; // teamDataBase TEST
+    string testDBid2 = "2F2D067A082E0E55"; // LeageDataBase TEST
+    string testDBid3 = "8B9D85404288CD65"; // UserDataBase TEST -> 필요한가?! 지금처럼 리더보드로 받아올 수 있는데
 
     // 플레이어 관리
     public PlayerLeaderboardEntry MyPlayFabInfo;
     public List<PlayerLeaderboardEntry> PlayFabUserList = new List<PlayerLeaderboardEntry>();
-
-    private void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -42,48 +54,41 @@ public class DBManager : MonoBehaviour
     public void GetData()
     {
         var request = new GetUserDataRequest() { PlayFabId = testDBid };
-        PlayFabClientAPI.GetUserData(request, (result) => print(result.Data["UserData"].Value), (error) => print("너 데이터 불러오기 실패했어"));
+        //PlayFabClientAPI.GetUserData(request, (result) => print(result.Data["UserData"].Value), (error) => print("너 데이터 불러오기 실패했어"));
+        PlayFabClientAPI.GetUserData(request, Parsing, (error) => print("너 데이터 불러오기 실패했어"));
         PlayFabClientAPI.GetUserData(request, (result) => print(result.Data["TeamData"].Value), (error) => print("너 데이터 불러오기 실패했어"));
     }
 
-    public void SaveJson()
+    void Parsing(GetUserDataResult result)
     {
-        UserData userData = new UserData();
-        TeamData teamData = new TeamData();
+        UserData myData = JsonUtility.FromJson<UserData>(result.Data["UserData"].Value.ToString());
+        print(myData.nickName);
+    }
 
-        // testData
-        userData.nickName = "tangka";
-        userData.age = 27;
-        userData.playerLevel = 4;
-        userData.position = "CM";
-        userData.teamName = "FC MTVS";
-        userData.height = 175;
-        userData.weight = 75;
-
-        userData.goal = 10;
-        userData.assist = 10;
-        userData.matchCount = 5;
-
-        teamData.memberNum = 13;
-        teamData.region = "Pangyo";
-        //teamData.levelerCount;
-        teamData.formation = "4-4-2";
-
-        teamData.goal = 23;
-        teamData.lossGoal = 8;
-        teamData.matchCount = 5;
-        teamData.win = 4;
-        teamData.lose = 0;
-        teamData.draw = 1;
-
+    public void SaveJson(TeamData teamData, string key) // 팀 생성할 때, TeamData를 기반으로 TeamListDB에 넣어주는 부분
+    {
         // To Playfab
-        Dictionary<string, string> dataDic = new Dictionary<string, string>();
+        //Dictionary<string, string> dataDic = new Dictionary<string, string>();
         Dictionary<string, string> dataDic2 = new Dictionary<string, string>();
-        dataDic.Add("UserData", JsonUtility.ToJson(userData));
-        dataDic2.Add("TeamData", JsonUtility.ToJson(teamData));
+        //dataDic.Add("UserData", JsonUtility.ToJson(userData));
+        dataDic2.Add(key, JsonUtility.ToJson(teamData));
 
-        SetUserData(dataDic);
+        //SetUserData(dataDic);
         SetUserData(dataDic2);
+    }
+
+    public void SaveJsonLeagueData(LeagueData leagueData, string key) // 리그 생성할 때, LeagueData를 기반으로 LeagueListDB에 넣어주는 부분
+    {
+        Dictionary<string, string> dataDic = new Dictionary<string, string>();
+        dataDic.Add("LeagueData", JsonUtility.ToJson(leagueData));
+        SetUserData(dataDic);
+    }
+
+    public void SaveTeamData(TeamData teamData, string key) // 팀 데이터 수정
+    {
+        // 서버용
+        var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = testDBid, Data = new Dictionary<string, string>() { { key, JsonUtility.ToJson(teamData) } }, Permission = PlayFab.AdminModels.UserDataPermission.Public };
+        PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
     }
 
     public void SetUserData(Dictionary<string, string> jsonData)
@@ -92,7 +97,7 @@ public class DBManager : MonoBehaviour
         /*var request = new UpdateUserDataRequest() { Data = jsonData, Permission = UserDataPermission.Public };
         PlayFabClientAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));*/
         // 서버용
-        var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = "2F2D067A082E0E55", Data = jsonData, Permission = PlayFab.AdminModels.UserDataPermission.Public };
+        var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = testDBid, Data = jsonData, Permission = PlayFab.AdminModels.UserDataPermission.Public };
         PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
     }
 
