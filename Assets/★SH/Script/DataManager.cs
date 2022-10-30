@@ -7,7 +7,7 @@ using UnityEngine;
 [System.Serializable]
 public class UserData
 {
-    public int serverID;
+    //public int serverID;
     // user info
     public string nickName;
     public int age;
@@ -86,19 +86,20 @@ public class DataManager : MonoBehaviour
         fakeLeagueData = new LeagueData();
         fakeLeagueData.teams = new List<TeamData>();
         
-        SetTeamData();
+        SetData();
     }
 
-    void SetTeamData()
+    void SetData()
     {
         SetFakeTeamData();
+        SetFakeUserData();
     }
 
     void SetFakeTeamData()
     {
         TeamData temp;
 
-        string[] teamsName = { "FC XR", "FC AI", "FC Net", "FC Cre", "FC Tangka" };
+        string[] teamsName = { "FC XR", "FC AI", "FC Net", "FC Cre" };
 
         for (int i = 0; i < teamsName.Length; i++)
         {
@@ -113,14 +114,53 @@ public class DataManager : MonoBehaviour
             //temp.lose = i;
             //temp.draw = i;
 
+            // 가짜 팀 데이터 안에 유저 데이터(users) 생성
+            temp.users = new List<UserData>();
+
             // 가짜 리그 데이터의 teams에 가짜 팀데이터 추가
             fakeLeagueData.teams.Add(temp);
         }
+
+        //for (int i = 0; i < fakeLeagueData.teams.Count; i++)
+        //{
+        //    fakeLeagueData.teams[i].users = new List<UserData>();
+        //}
     }
 
     void SetRealTeamData()
     {
         
+    }
+
+    void SetFakeUserData()
+    {
+        UserData temp;
+
+        string[] usersName = new string[1];
+        for (int i = 0; i < usersName.Length; i++)
+        {
+            usersName[i] = "User_" + i;
+        }
+
+        for (int i = 0; i < fakeLeagueData.teams.Count; i++)
+        {
+            for (int j = 0; j < usersName.Length; j++)
+            {
+                temp = new UserData();
+                temp.nickName = fakeLeagueData.teams[i].teamName + "_" + usersName[j];
+
+                temp.goal = i;
+                temp.assist = 4 - i;
+                temp.matchCount = 1;
+
+                fakeLeagueData.teams[i].users.Add(temp);
+            }
+        }
+    }
+
+    void SetRealUserData()
+    {
+
     }
 
     public List<string> GetTeamsNames()

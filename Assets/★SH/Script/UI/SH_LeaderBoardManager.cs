@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using static Photon.Pun.UtilityScripts.PunTeams;
+using UnityEngine.UI;
 
 public class SH_LeaderBoardManager : MonoBehaviour
 {
@@ -103,8 +103,6 @@ public class SH_LeaderBoardManager : MonoBehaviour
                 CalcTeamRank(teamDataList);
                 // 2. 계산한 정보를 담은 RankBar를 순서대로 생성하고 싶다.
                 CreateRankBar(teamRankList);
-                // 3. 생성한 RankBar를 모두 삭제하고 싶다.
-
                 break;
 
             case Category.TOPSCORES:
@@ -126,6 +124,8 @@ public class SH_LeaderBoardManager : MonoBehaviour
         switch (c)
         {
             case Category.TEAMRANKING:
+                // 3. 생성한 RankBar를 모두 삭제하고 싶다.
+                DestroyRankBar();
                 break;
 
             case Category.TOPSCORES:
@@ -198,7 +198,27 @@ public class SH_LeaderBoardManager : MonoBehaviour
         for (int i = 0; i < teams.Count; i++)
         {
             GameObject bar = Instantiate(rankBarFactory, rankBarParent);
-            bar.transform.position = rankBarParent.position + Vector3.down * 7 * i;
+            bar.transform.position = rankBarParent.position + new Vector3(0, -7 * i, 0);
+
+            Transform canvas = bar.transform.Find("Canvas");
+            canvas.Find("Rank").GetComponent<Text>().text = teams[i].rank.ToString();
+            //canvas.Find("Emblem").GetComponent<Text>().text = teams[i].rank.ToString();
+            canvas.Find("ClubName").GetComponent<Text>().text = teams[i].teamName;
+            canvas.Find("Played").GetComponent<Text>().text = teams[i].matchCount.ToString();
+            canvas.Find("Won").GetComponent<Text>().text = teams[i].win.ToString();
+            canvas.Find("Drawn").GetComponent<Text>().text = teams[i].draw.ToString();
+            canvas.Find("Lost").GetComponent<Text>().text = teams[i].lose.ToString();
+            canvas.Find("GoalsFor").GetComponent<Text>().text = teams[i].goal.ToString();
+            canvas.Find("GoalsAgainst").GetComponent<Text>().text = teams[i].lossGoal.ToString();
+            canvas.Find("Points").GetComponent<Text>().text = teams[i].points.ToString();
+        }
+    }
+
+    void DestroyRankBar()
+    {
+        foreach (Transform tr in rankBarParent)
+        {
+            Destroy(tr.gameObject);
         }
     }
 }

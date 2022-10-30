@@ -759,7 +759,7 @@ GameObject:
   - component: {fileID: 5140781527556612831}
   - component: {fileID: 5140781527556612830}
   m_Layer: 0
-  m_Name: RankBar
+  m_Name: TeamRankBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
