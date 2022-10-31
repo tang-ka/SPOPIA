@@ -14,6 +14,9 @@ public class SH_DropDownController : MonoBehaviour
     [SerializeField]
     TeamData teamData = new TeamData();
 
+    // DB에 저장할 때, teams에서 어떤 팀이 선택되었는지 알려주는 public 값 (영수)
+    public int idx;
+
     void Start()
     {
         // 드랍다운 옵션
@@ -39,6 +42,9 @@ public class SH_DropDownController : MonoBehaviour
 
         // 클래스는 레퍼런스 타입이라 이렇게 대입해도 원본 데이터가 수정이 된다.
         teamData = DataManager.instance.GetTeamDataList()[arg];
+
+        // DB에 보낼 인덱스 번호 (영수)
+        idx = arg;
     }
 
     public void SetMatchData(int ourScore, int oppScore)
@@ -53,5 +59,9 @@ public class SH_DropDownController : MonoBehaviour
             teamData.lose++;
         else
             teamData.draw++;
+
+        // DB에 저장 (영수)
+        string s = idx.ToString();
+        DBManager.instance.SaveTeamData(teamData, s);
     }
 }
