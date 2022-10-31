@@ -28,6 +28,7 @@ public class DBManager : MonoBehaviour
     string testDBid = "A45FE526BA86DD94"; // teamDataBase TEST
     string testDBid2 = "2F2D067A082E0E55"; // LeageDataBase TEST
     string testDBid3 = "8B9D85404288CD65"; // UserDataBase TEST -> 필요한가?! 지금처럼 리더보드로 받아올 수 있는데
+    string testDBid4 = "1F7F85444A2EE882"; // MapCustomDataBase TEST
 
     // 플레이어 관리
     public PlayerLeaderboardEntry MyPlayFabInfo;
@@ -91,6 +92,13 @@ public class DBManager : MonoBehaviour
         PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
     }
 
+    public void SaveJsonMapCustom(ArrayJson info, string key)
+    {
+        Dictionary<string, string> dataDic = new Dictionary<string, string>();
+        dataDic.Add(key, JsonUtility.ToJson(info));
+        SetMapData(dataDic);
+    }
+
     public void SetUserData(Dictionary<string, string> jsonData)
     {
         // 클라이언트용(자기자신만 수정 가능, 남의 데이터 수정 불가)
@@ -98,6 +106,13 @@ public class DBManager : MonoBehaviour
         PlayFabClientAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));*/
         // 서버용
         var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = testDBid, Data = jsonData, Permission = PlayFab.AdminModels.UserDataPermission.Public };
+        PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
+    }
+
+    public void SetMapData(Dictionary<string, string> jsonData)
+    {
+        // 서버용
+        var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = testDBid4, Data = jsonData, Permission = PlayFab.AdminModels.UserDataPermission.Public };
         PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
     }
 
