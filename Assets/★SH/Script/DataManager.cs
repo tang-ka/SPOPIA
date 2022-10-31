@@ -12,7 +12,7 @@ public class UserData
     // user info
     public string nickName;
     public int age;
-    public int playerLevel; // 0: normal, 1: middle, 2: high, 3: university, 4: over
+    //public int playerLevel; // 0: normal, 1: middle, 2: high, 3: university, 4: over
     public string position;
     public string teamName;
     public int height;
@@ -42,7 +42,7 @@ public class TeamData
     public int memberNum;
     public List<UserData> users;
     public string region; // league
-    public int[] levelerCount = new int[5] { 0, 0, 9, 4, 0 };
+    //public int[] levelerCount = new int[5] { 0, 0, 9, 4, 0 };
     public string formation; // 4-4-2, 4-2-3-1
 
     // team record
@@ -122,6 +122,10 @@ public class DataManager : MonoBehaviour
 
             // 가짜 리그 데이터의 teams에 가짜 팀데이터 추가
             fakeLeagueData.teams.Add(temp);
+
+            // DB에 저장
+            string s = i.ToString();
+            DBManager.instance.SaveJson(temp, s);
         }
 
         //for (int i = 0; i < fakeLeagueData.teams.Count; i++)
