@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,17 +68,17 @@ public class SH_LeaderBoardManager : MonoBehaviour
 
     private void CategoryTEAMRANKING()
     {
-        print("Show me the Team Ranking");
+        //print("Show me the Team Ranking");
     }
 
     private void CategoryTopScorers()
     {
-        print("Show me the Top Scorers");
+        //print("Show me the Top Scorers");
     }
 
     private void CategoryTOPASSISTS()
     {
-        print("Show me the Top Assists");
+        //print("Show me the Top Assists");
     }
 
     void ChangeCategory(Category c)
@@ -102,10 +103,12 @@ public class SH_LeaderBoardManager : MonoBehaviour
 
                 teamDataList = DataManager.instance.GetTeamDataList();
 
+                //teamDataList.Sort(SortRank);
+
                 // 1. 팀 랭킹에 표시할 항목을 계산하고 싶다.
                 CalcTeamRank(teamDataList);
                 // 2. 계산한 정보를 담은 RankBar를 순서대로 생성하고 싶다.
-                CreateRankBar(teamRankList);
+                CreateTeamRankBar(teamRankList);
                 break;
 
             case Category.TOPSCORES:
@@ -113,14 +116,26 @@ public class SH_LeaderBoardManager : MonoBehaviour
                 ts.SetActive(on);
                 ta.SetActive(!on);
 
-                userDataList = DataManager.instance.GetUserDataList(); ;
+                userDataList = DataManager.instance.GetUserDataList();
 
+                // 1. 득점 랭킹에 표시할 항목을 계산하고 싶다.
+                userDataList.Sort(SortTopScorers);
+                // 2. 계산한 정보를 담은 RankBar를 순서대로 생성하고 싶다.
+                CreatePlayerRankBar(userDataList, "goal");
                 break;
 
             case Category.TOPASSISTS:
+
                 tr.SetActive(!on);
                 ts.SetActive(!on);
                 ta.SetActive(on);
+
+                userDataList = DataManager.instance.GetUserDataList();
+
+                // 1. 득점 랭킹에 표시할 항목을 계산하고 싶다.
+                userDataList.Sort(SortTopAssists);
+                // 2. 계산한 정보를 담은 RankBar를 순서대로 생성하고 싶다.
+                CreatePlayerRankBar(userDataList, "assist");
                 break;
         }
     }
@@ -135,9 +150,11 @@ public class SH_LeaderBoardManager : MonoBehaviour
                 break;
 
             case Category.TOPSCORES:
+                DestroyRankBar();
                 break;
 
             case Category.TOPASSISTS:
+                DestroyRankBar();
                 break;
         }
     }
@@ -186,7 +203,6 @@ public class SH_LeaderBoardManager : MonoBehaviour
                     temp[rank - 1] = teams[i];
                     break;
                 }
-
             }
             rank = 1;
         }
@@ -199,7 +215,7 @@ public class SH_LeaderBoardManager : MonoBehaviour
         }
     }
 
-    void CreateRankBar(List<TeamData> teams)
+    void CreateTeamRankBar(List<TeamData> teams)
     {
         for (int i = 0; i < teams.Count; i++)
         {
@@ -226,5 +242,84 @@ public class SH_LeaderBoardManager : MonoBehaviour
         {
             Destroy(tr.gameObject);
         }
+    }
+
+    int SortTopScorers(UserData left, UserData right)
+    {
+        if (left.goal < right.goal)
+        {
+            return 1;
+        }
+        return -1;
+    }
+
+    int SortTopAssists(UserData left, UserData right)
+    {
+        if (left.assist < right.assist)
+        {
+            return 1;
+        }
+        return -1;
+    }
+
+    void CreatePlayerRankBar(List<UserData> users, string first)
+    {
+        Text nickNameText;
+
+        switch (first)
+        {
+            case "goal":
+                for (int i = 0; i < users.Count; i++)
+                {
+                    GameObject bar = Instantiate(playerRankBarFactory, rankBarParent);
+                    bar.transform.position = rankBarParent.position + new Vector3(0, -7 * i, 0);
+                    Transform canvas = bar.transform.Find("Canvas");
+
+                    canvas.Find("Rank").GetComponent<Text>().text = users[i].goalRank.ToString();
+                    //canvas.Find("Emblem").GetComponent<Text>().text = users[i].rank.ToString();
+                    nickNameText = canvas.Find("PlayerName").GetComponent<Text>();
+                    nickNameText.text = users[i].nickName;
+                    canvas.Find("First").GetComponent<Text>().text = users[i].goal.ToString();
+                    canvas.Find("Second").GetComponent<Text>().text = users[i].assist.ToString();
+                    canvas.Find("Played").GetComponent<Text>().text = users[i].matchCount.ToString();
+
+                    SetFont(ref nickNameText, 50, 0, 10, 12, 14);
+                }
+                break;
+
+            case "assist":
+                for (int i = 0; i < users.Count; i++)
+                {
+                    GameObject bar = Instantiate(playerRankBarFactory, rankBarParent);
+                    bar.transform.position = rankBarParent.position + new Vector3(0, -7 * i, 0);
+                    Transform canvas = bar.transform.Find("Canvas");
+
+                    canvas.Find("Rank").GetComponent<Text>().text = users[i].goalRank.ToString();
+                    //canvas.Find("Emblem").GetComponent<Text>().text = users[i].rank.ToString();
+                    nickNameText = canvas.Find("PlayerName").GetComponent<Text>();
+                    nickNameText.text = users[i].nickName;
+                    canvas.Find("First").GetComponent<Text>().text = users[i].assist.ToString();
+                    canvas.Find("Second").GetComponent<Text>().text = users[i].goal.ToString();
+                    canvas.Find("Played").GetComponent<Text>().text = users[i].matchCount.ToString();
+
+                    SetFont(ref nickNameText, 50, 0, 10, 12, 14);
+                }
+                break;
+        }
+    }
+
+    void SetFont(ref Text inputText, int sizeStep,
+        int first = 0, int second = 98, int third = 99, int fourth = 100)
+    {
+        int len = inputText.text.Length;
+
+        if (len >= first && len < second)
+            inputText.fontSize = 250;
+
+        else if (len >= second && len < third)
+            inputText.fontSize = 250 - sizeStep;
+
+        else if (len >= third && len < fourth)
+            inputText.fontSize = 250 - (sizeStep * 2);
     }
 }

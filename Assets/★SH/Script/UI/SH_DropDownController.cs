@@ -61,7 +61,7 @@ public class SH_DropDownController : MonoBehaviour
             teamData.draw++;
 
         // DB에 저장 (영수)
-        string s = idx.ToString();
-        DBManager.instance.SaveTeamData(teamData, s);
+        //string s = idx.ToString();
+        //DBManager.instance.SaveTeamData(teamData, s);
     }
 }

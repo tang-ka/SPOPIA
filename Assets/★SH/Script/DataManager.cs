@@ -28,7 +28,8 @@ public class UserData
     public int goal;
     public int assist;
     public int matchCount;
-    
+    public int goalRank;
+    public int assistRank;
 
     //int SPOPIAscore : 개인 전투력
     //recent5
@@ -88,8 +89,6 @@ public class DataManager : MonoBehaviour
         fakeLeagueData.teams = new List<TeamData>();
 
         SetData();
-
-        GetUserDataList();
     }
 
     void SetData()
@@ -102,7 +101,7 @@ public class DataManager : MonoBehaviour
     {
         TeamData temp;
 
-        string[] teamsName = { "FC Robot", "FC Mech", "FC Archi", "FC Elec" };
+        string[] teamsName = { "FC Robot", "FC Mech", "FC Archi", "FC Elec", "FC XR" };
 
         for (int i = 0; i < teamsName.Length; i++)
         {
@@ -124,8 +123,8 @@ public class DataManager : MonoBehaviour
             fakeLeagueData.teams.Add(temp);
 
             // DB에 저장
-            string s = i.ToString();
-            DBManager.instance.SaveJson(temp, s);
+            //string s = i.ToString();
+            //DBManager.instance.SaveJson(temp, s);
         }
 
         //for (int i = 0; i < fakeLeagueData.teams.Count; i++)
