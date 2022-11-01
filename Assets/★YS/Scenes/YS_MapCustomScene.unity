@@ -711,6 +711,9 @@ MonoBehaviour:
       ValuesToDate: []
     StatValue: 0
   PlayFabUserList: []
+  arrayJson:
+    datas: []
+  createdObj: []
 --- !u!4 &339486908
 Transform:
   m_ObjectHideFlags: 0

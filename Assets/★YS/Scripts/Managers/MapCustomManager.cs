@@ -3,19 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SaveJsonInfo
-{
-    public GameObject go;
-    public Vector3 position;
-    public Vector3 eulerAngle;
-    public Vector3 localScale;
-}
-
-public class ArrayJson
-{
-    public List<SaveJsonInfo> datas;
-}
-
 public class MapCustomManager : MonoBehaviour
 {
     // 커스텀 생성 오브젝트
@@ -24,8 +11,6 @@ public class MapCustomManager : MonoBehaviour
     public GameObject player;
     // 탭
     public GameObject[] tabs = new GameObject[2];
-    // Json배열
-    ArrayJson arrayJson = new ArrayJson();
 
     // Start is called before the first frame update
     void Start()
@@ -45,15 +30,7 @@ public class MapCustomManager : MonoBehaviour
         GameObject Go = Instantiate(obj, Vector3.zero, Quaternion.identity);
         Go.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + 30f);
 
-        // 만들어진 오브젝트를 리스트에 추가
-        SaveJsonInfo info = new SaveJsonInfo();
-
-        info.go = obj;
-        info.position = obj.transform.position;
-        info.eulerAngle = obj.transform.eulerAngles;
-        info.localScale = obj.transform.localScale;
-
-        arrayJson.datas.Add(info);
+        DBManager.instance.createdObj.Add(Go);
     }
 
     public void ChangeTab()
@@ -73,11 +50,20 @@ public class MapCustomManager : MonoBehaviour
 
     public void SaveJson()
     {
-        // arrayJson을 Json으로 변환
-        //string jsonData = JsonUtility.ToJson(arrayJson);
+        for(int i = 0; i < DBManager.instance.createdObj.Count; i++)
+        {
+            SaveJsonInfo info = new SaveJsonInfo();
+
+            info.go = DBManager.instance.createdObj[i];
+            info.position = DBManager.instance.createdObj[i].transform.position;
+            info.eulerAngle = DBManager.instance.createdObj[i].transform.eulerAngles;
+            info.localScale = DBManager.instance.createdObj[i].transform.localScale;
+
+            DBManager.instance.arrayJson.datas.Add(info);
+        }
 
         // DB에 저장
-        DBManager.instance.SaveJsonMapCustom(arrayJson, "MapData");
+        DBManager.instance.SaveJsonMapCustom(DBManager.instance.arrayJson, "MapData");
     }
 
     public void LoadJson()

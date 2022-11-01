@@ -7,6 +7,21 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 
+[System.Serializable]
+public class SaveJsonInfo
+{
+    public GameObject go;
+    public Vector3 position;
+    public Vector3 eulerAngle;
+    public Vector3 localScale;
+}
+
+[System.Serializable]
+public class ArrayJson
+{
+    public List<SaveJsonInfo> datas;
+}
+
 public class DBManager : MonoBehaviour
 {
     // 싱글톤
@@ -34,10 +49,17 @@ public class DBManager : MonoBehaviour
     public PlayerLeaderboardEntry MyPlayFabInfo;
     public List<PlayerLeaderboardEntry> PlayFabUserList = new List<PlayerLeaderboardEntry>();
 
+    // MapCustom 리스트
+    public ArrayJson arrayJson = new ArrayJson();
+
+    // MapCustom을 위한 Object 리스트
+    public List<GameObject> createdObj = new List<GameObject>();
+
     // Start is called before the first frame update
     void Start()
     {
-
+        // MapCustom 리스트
+        arrayJson.datas = new List<SaveJsonInfo>();
     }
 
     // Update is called once per frame
@@ -92,10 +114,10 @@ public class DBManager : MonoBehaviour
         PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
     }
 
-    public void SaveJsonMapCustom(ArrayJson info, string key)
+    public void SaveJsonMapCustom(ArrayJson array, string key)
     {
         Dictionary<string, string> dataDic = new Dictionary<string, string>();
-        dataDic.Add(key, JsonUtility.ToJson(info));
+        dataDic.Add(key, JsonUtility.ToJson(array));
         SetMapData(dataDic);
     }
 
