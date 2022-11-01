@@ -31,6 +31,7 @@ public class MapCustomManager : MonoBehaviour
         Go.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + 30f);
 
         DBManager.instance.createdObj.Add(Go);
+        DBManager.instance.createdPrefab.Add(obj);
     }
 
     public void ChangeTab()
@@ -54,7 +55,7 @@ public class MapCustomManager : MonoBehaviour
         {
             SaveJsonInfo info = new SaveJsonInfo();
 
-            info.go = DBManager.instance.createdObj[i];
+            info.name = DBManager.instance.createdPrefab[i].name;
             info.position = DBManager.instance.createdObj[i].transform.position;
             info.eulerAngle = DBManager.instance.createdObj[i].transform.eulerAngles;
             info.localScale = DBManager.instance.createdObj[i].transform.localScale;
@@ -64,10 +65,5 @@ public class MapCustomManager : MonoBehaviour
 
         // DBø° ¿˙¿Â
         DBManager.instance.SaveJsonMapCustom(DBManager.instance.arrayJson, "MapData");
-    }
-
-    public void LoadJson()
-    {
-
     }
 }

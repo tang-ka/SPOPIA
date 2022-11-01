@@ -64,7 +64,8 @@ public class LoginManager : MonoBehaviourPunCallbacks
     {
         base.OnConnectedToMaster();
         print("SPOPIA에 오신걸 환영합니다!!");
-        PhotonNetwork.LoadLevel("WorldChoiceScene");
+        //PhotonNetwork.LoadLevel("WorldChoiceScene");
+        PhotonNetwork.LoadLevel("YS_MapCustomScene");
     }
 
     // 플레이팹 회원가입 (영수)

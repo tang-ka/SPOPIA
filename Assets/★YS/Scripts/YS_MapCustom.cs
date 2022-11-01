@@ -40,7 +40,17 @@ public class YS_MapCustom : MonoBehaviour
 
             if(isCopy == true)
             {
-                Instantiate(transform.gameObject);
+                string name = transform.gameObject.name.Substring(0, transform.gameObject.name.IndexOf("("));
+                GameObject go = Instantiate(Resources.Load<GameObject>("YS/" + name));
+                //Instantiate(transform.gameObject);
+
+                // 복제품을 원본과 똑같은 위치에
+                go.transform.position = transform.position;
+                go.transform.eulerAngles = transform.eulerAngles;
+                go.transform.localScale = transform.localScale;
+
+                DBManager.instance.createdObj.Add(transform.gameObject);
+                DBManager.instance.createdPrefab.Add(transform.gameObject);
             }
         }
         else if (Input.GetMouseButtonDown(1))
