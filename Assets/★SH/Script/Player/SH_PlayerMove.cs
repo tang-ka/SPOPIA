@@ -90,7 +90,7 @@ public class SH_PlayerMove : MonoBehaviour
             //float preSpeed
             // 1. 1.5초 동안 서서히 증가해 runSpeed에 도달하고 싶다.
             if (time > 1)
-                speed = Mathf.Lerp(walkSpeed, runSpeed, time / 2.5f);
+                speed = Mathf.Lerp(walkSpeed, runSpeed, (time - 1) / 2.5f);
         }
         else
         {
