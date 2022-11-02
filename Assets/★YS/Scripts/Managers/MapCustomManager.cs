@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MapCustomManager : MonoBehaviour
 {
@@ -60,10 +61,18 @@ public class MapCustomManager : MonoBehaviour
             info.eulerAngle = DBManager.instance.createdObj[i].transform.eulerAngles;
             info.localScale = DBManager.instance.createdObj[i].transform.localScale;
 
+            // info.name을 추출하여 저장
+            //info.name = info.name.Substring(0, info.name.IndexOf("("));
+            
             DBManager.instance.arrayJson.datas.Add(info);
         }
 
         // DB에 저장
         DBManager.instance.SaveJsonMapCustom(DBManager.instance.arrayJson, "MapData");
+    }
+
+    public void Back()
+    {
+        SceneManager.LoadScene("LoginScene");
     }
 }

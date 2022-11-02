@@ -59,7 +59,12 @@ public class DBManager : MonoBehaviour
 
     // MapDataLoad
     public ArrayJson mapData;
-    bool isEnter = false;
+    public bool isEnter = false;
+    // parsing 끝
+    bool isParsing = true;
+
+    // 로그인 된 상태
+    public bool isLogin = false;
 
     // Start is called before the first frame update
     void Start()
@@ -73,7 +78,10 @@ public class DBManager : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name == "YS_MapCustomScene" && isEnter == false)
         {
-            //LoadCustomMap();
+            if(isLogin == true)
+            {
+                LoadCustomMap();
+            }
         }
     }
 
@@ -99,7 +107,9 @@ public class DBManager : MonoBehaviour
         }
         else if (key == "MapData")
         {*/
+        isParsing = true;
             mapData = JsonUtility.FromJson<ArrayJson>(result.Data["MapData"].Value.ToString());
+        isParsing = false;
         //}
     }
 
@@ -190,15 +200,18 @@ public class DBManager : MonoBehaviour
     {
         // Json형태를 사용할 수 있는 데이터 형태로 변환
         GetData(testDBid4, "MapData");
-        for(int i = 0; i < mapData.datas.Count; i++)
+        if(isParsing == false)
         {
-            SaveJsonInfo info = mapData.datas[i];
+            for(int i = 0; i < mapData.datas.Count; i++)
+            {
+                SaveJsonInfo info = mapData.datas[i];
 
-            LoadObject(info);
+                LoadObject(info);
+            }
+
+            // 오브젝트를 다 생성하면 끝
+            isEnter = true;
         }
-
-        // 오브젝트를 다 생성하면 끝
-        isEnter = true;
     }
 
     public void LoadObject(SaveJsonInfo info)
