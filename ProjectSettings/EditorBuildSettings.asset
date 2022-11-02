@@ -32,4 +32,10 @@ EditorBuildSettings:
   - enabled: 1
     path: "Assets/\u2605SH/Scene/Cir_Leallage.unity"
     guid: ecfe28b5f9a8dd34b87ef68ee7cfade2
+  - enabled: 1
+    path: "Assets/\u2605YS/Scenes/YS_WorldScene.unity"
+    guid: 22be39d8f721ed4439d328a6f2b1edec
+  - enabled: 1
+    path: "Assets/\u2605YS/Scenes/YS_MapCustomScene.unity"
+    guid: 592af4e218e3f984a99f8d8d5e9ff3cf
   m_configObjects: {}

@@ -6,6 +6,22 @@ using PlayFab.ClientModels;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
+
+[System.Serializable]
+public class SaveJsonInfo
+{
+    public string name;
+    public Vector3 position;
+    public Vector3 eulerAngle;
+    public Vector3 localScale;
+}
+
+[System.Serializable]
+public class ArrayJson
+{
+    public List<SaveJsonInfo> datas;
+}
 
 public class DBManager : MonoBehaviour
 {
@@ -28,21 +44,45 @@ public class DBManager : MonoBehaviour
     string testDBid = "A45FE526BA86DD94"; // teamDataBase TEST
     string testDBid2 = "2F2D067A082E0E55"; // LeageDataBase TEST
     string testDBid3 = "8B9D85404288CD65"; // UserDataBase TEST -> 필요한가?! 지금처럼 리더보드로 받아올 수 있는데
+    string testDBid4 = "1F7F85444A2EE882"; // MapCustomDataBase TEST
 
     // 플레이어 관리
     public PlayerLeaderboardEntry MyPlayFabInfo;
     public List<PlayerLeaderboardEntry> PlayFabUserList = new List<PlayerLeaderboardEntry>();
 
+    // MapCustom 리스트
+    public ArrayJson arrayJson = new ArrayJson();
+
+    // MapCustom을 위한 Object 리스트
+    public List<GameObject> createdObj = new List<GameObject>();
+    public List<GameObject> createdPrefab = new List<GameObject>();
+
+    // MapDataLoad
+    public ArrayJson mapData;
+    public bool isEnter = false;
+    // parsing 끝
+    bool isParsing = true;
+
+    // 로그인 된 상태
+    public bool isLogin = false;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        // MapCustom 리스트
+        arrayJson.datas = new List<SaveJsonInfo>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(SceneManager.GetActiveScene().name == "YS_MapCustomScene" && isEnter == false)
+        {
+            if(isLogin == true)
+            {
+                LoadCustomMap();
+            }
+        }
     }
 
     /*public void SetData()
@@ -51,18 +91,26 @@ public class DBManager : MonoBehaviour
         PlayFabClientAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
     }*/
 
-    public void GetData()
+    public void GetData(string id, string key)
     {
-        var request = new GetUserDataRequest() { PlayFabId = testDBid };
+        var request = new GetUserDataRequest() { PlayFabId = id };
         //PlayFabClientAPI.GetUserData(request, (result) => print(result.Data["UserData"].Value), (error) => print("너 데이터 불러오기 실패했어"));
         PlayFabClientAPI.GetUserData(request, Parsing, (error) => print("너 데이터 불러오기 실패했어"));
-        PlayFabClientAPI.GetUserData(request, (result) => print(result.Data["TeamData"].Value), (error) => print("너 데이터 불러오기 실패했어"));
+        //PlayFabClientAPI.GetUserData(request, (result) => print(result.Data["TeamData"].Value), (error) => print("너 데이터 불러오기 실패했어"));
     }
 
     void Parsing(GetUserDataResult result)
     {
-        UserData myData = JsonUtility.FromJson<UserData>(result.Data["UserData"].Value.ToString());
-        print(myData.nickName);
+        /*if(key == "UserData")
+        {
+            UserData myData = JsonUtility.FromJson<UserData>(result.Data[key].Value.ToString());
+        }
+        else if (key == "MapData")
+        {*/
+        isParsing = true;
+            mapData = JsonUtility.FromJson<ArrayJson>(result.Data["MapData"].Value.ToString());
+        isParsing = false;
+        //}
     }
 
     public void SaveJson(TeamData teamData, string key) // 팀 생성할 때, TeamData를 기반으로 TeamListDB에 넣어주는 부분
@@ -91,6 +139,13 @@ public class DBManager : MonoBehaviour
         PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
     }
 
+    public void SaveJsonMapCustom(ArrayJson array, string key)
+    {
+        Dictionary<string, string> dataDic = new Dictionary<string, string>();
+        dataDic.Add(key, JsonUtility.ToJson(array));
+        SetMapData(dataDic);
+    }
+
     public void SetUserData(Dictionary<string, string> jsonData)
     {
         // 클라이언트용(자기자신만 수정 가능, 남의 데이터 수정 불가)
@@ -98,6 +153,13 @@ public class DBManager : MonoBehaviour
         PlayFabClientAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));*/
         // 서버용
         var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = testDBid, Data = jsonData, Permission = PlayFab.AdminModels.UserDataPermission.Public };
+        PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
+    }
+
+    public void SetMapData(Dictionary<string, string> jsonData)
+    {
+        // 서버용
+        var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = testDBid4, Data = jsonData, Permission = PlayFab.AdminModels.UserDataPermission.Public };
         PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
     }
 
@@ -131,5 +193,34 @@ public class DBManager : MonoBehaviour
     {
         var request = new UpdatePlayerStatisticsRequest { Statistics = new List<StatisticUpdate> { new StatisticUpdate { StatisticName = "IDInfo", Value = 0 } } };
         PlayFabClientAPI.UpdatePlayerStatistics(request, (result) => { }, (error) => print("값 저장실패"));
+    }
+
+    // Custom Map 불러오기
+    public void LoadCustomMap()
+    {
+        // Json형태를 사용할 수 있는 데이터 형태로 변환
+        GetData(testDBid4, "MapData");
+        if(isParsing == false)
+        {
+            for(int i = 0; i < mapData.datas.Count; i++)
+            {
+                SaveJsonInfo info = mapData.datas[i];
+
+                LoadObject(info);
+            }
+
+            // 오브젝트를 다 생성하면 끝
+            isEnter = true;
+        }
+    }
+
+    public void LoadObject(SaveJsonInfo info)
+    {
+        // 오브젝트 생성
+        GameObject obj = Instantiate(Resources.Load<GameObject>("YS/" + info.name));
+
+        obj.transform.position = info.position;
+        obj.transform.eulerAngles = info.eulerAngle;
+        obj.transform.localScale = info.localScale;
     }
 }

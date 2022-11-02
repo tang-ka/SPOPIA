@@ -16,17 +16,12 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
     // 회원가입용(영수)
     public InputField emailSignUp, pwSignUp, nameSignUp;
-    // DB매니저(영수)
-    DBManager DBManager;
 
     // Start is called before the first frame update
     void Start()
     {
         //inputPW.onValueChanged.AddListener(OnValueChanged); // 영수 : 오류나서 막아놨습니다.
         inputPW.onSubmit.AddListener(OnSubmit);
-
-        // DBManager
-        DBManager = GameObject.Find("DBManager").GetComponent<DBManager>();
     }
 
     public void OnValueChanged(string s)
@@ -69,7 +64,8 @@ public class LoginManager : MonoBehaviourPunCallbacks
     {
         base.OnConnectedToMaster();
         print("SPOPIA에 오신걸 환영합니다!!");
-        PhotonNetwork.LoadLevel("WorldChoiceScene");
+        //PhotonNetwork.LoadLevel("WorldChoiceScene");
+        //PhotonNetwork.LoadLevel("YS_MapCustomScene");
     }
 
     // 플레이팹 회원가입 (영수)
@@ -81,8 +77,12 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
     void OnLoginSuccess(LoginResult result)
     {
+        PhotonNetwork.LoadLevel("YS_MapCustomScene");
+
         print("로그인 성공");
-        DBManager.GetLeaderboard(result.PlayFabId);
+        DBManager.instance.GetLeaderboard(result.PlayFabId);
+        DBManager.instance.isLogin = true;
+        DBManager.instance.isEnter = false;
     }
 
     void OnLoginFailure(PlayFabError error) => print("로그인 실패");
@@ -90,7 +90,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
     void OnRegisterSuccess(RegisterPlayFabUserResult result)
     {
         print("회원가입 성공");
-        DBManager.SetStat();
+        DBManager.instance.SetStat();
     }
 
     void OnRegisterFailure(PlayFabError error) => print("회원가입 실패");

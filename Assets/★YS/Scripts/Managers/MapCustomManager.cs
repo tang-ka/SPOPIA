@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MapCustomManager : MonoBehaviour
 {
@@ -29,6 +30,9 @@ public class MapCustomManager : MonoBehaviour
     {
         GameObject Go = Instantiate(obj, Vector3.zero, Quaternion.identity);
         Go.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, player.transform.position.z + 30f);
+
+        DBManager.instance.createdObj.Add(Go);
+        DBManager.instance.createdPrefab.Add(obj);
     }
 
     public void ChangeTab()
@@ -44,5 +48,31 @@ public class MapCustomManager : MonoBehaviour
                 tabs[i].SetActive(false);
             }
         }
+    }
+
+    public void SaveJson()
+    {
+        for(int i = 0; i < DBManager.instance.createdObj.Count; i++)
+        {
+            SaveJsonInfo info = new SaveJsonInfo();
+
+            info.name = DBManager.instance.createdPrefab[i].name;
+            info.position = DBManager.instance.createdObj[i].transform.position;
+            info.eulerAngle = DBManager.instance.createdObj[i].transform.eulerAngles;
+            info.localScale = DBManager.instance.createdObj[i].transform.localScale;
+
+            // info.name을 추출하여 저장
+            //info.name = info.name.Substring(0, info.name.IndexOf("("));
+            
+            DBManager.instance.arrayJson.datas.Add(info);
+        }
+
+        // DB에 저장
+        DBManager.instance.SaveJsonMapCustom(DBManager.instance.arrayJson, "MapData");
+    }
+
+    public void Back()
+    {
+        SceneManager.LoadScene("LoginScene");
     }
 }
