@@ -101,7 +101,7 @@ public class DataManager : MonoBehaviour
     {
         TeamData temp;
 
-        string[] teamsName = { "FC Robot", "FC Mech", "FC Archi", "FC Elec", "FC XR" };
+        string[] teamsName = { "FC Robot", "FC Mech", "FC Archi", "FC Elec" };
 
         for (int i = 0; i < teamsName.Length; i++)
         {

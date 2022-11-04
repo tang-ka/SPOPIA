@@ -13,7 +13,7 @@ public class SH_PlayerFSM : MonoBehaviourPun
     public enum State
     {
         NORMAL,
-        UIPLAYING,           
+        UIPLAYING,
     }
     public State state = State.NORMAL;
     public State preState;
@@ -21,8 +21,6 @@ public class SH_PlayerFSM : MonoBehaviourPun
     SH_PlayerMove pm;
     SH_PlayerRot pr;
     SH_PlayerCrossHair pch;
-
-
 
     void Start()
     {
