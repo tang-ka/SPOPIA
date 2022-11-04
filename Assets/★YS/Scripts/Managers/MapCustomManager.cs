@@ -64,11 +64,11 @@ public class MapCustomManager : MonoBehaviour
             // info.name을 추출하여 저장
             //info.name = info.name.Substring(0, info.name.IndexOf("("));
             
-            DBManager.instance.arrayJson.datas.Add(info);
+            DBManager.instance.mapData.datas.Add(info);
         }
 
         // DB에 저장
-        DBManager.instance.SaveJsonMapCustom(DBManager.instance.arrayJson, "MapData");
+        DBManager.instance.SaveJsonMapCustom(DBManager.instance.mapData, "MapData");
     }
 
     public void Back()

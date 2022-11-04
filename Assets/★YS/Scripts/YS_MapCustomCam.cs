@@ -4,49 +4,76 @@ using UnityEngine;
 
 public class YS_MapCustomCam : MonoBehaviour
 {
-    float speed = 1;
     SH_PlayerRot sh_pr;
+    SH_PlayerMove sh_pm;
+    SH_PlayerCrossHair sh_pch;
+    SH_PlayerFSM sh_fsm;
+    GameObject player;
+    public int camNum = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        sh_pr = GameObject.Find("Player").GetComponent<SH_PlayerRot>();
+        player = GameObject.Find("Player");
+        sh_pr = player.GetComponent<SH_PlayerRot>();
+        sh_pm = player.GetComponent<SH_PlayerMove>();
+        sh_pch = player.GetComponent<SH_PlayerCrossHair>();
+        sh_fsm = player.GetComponent<SH_PlayerFSM>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha0))
+        KeyNum();
+
+        if (camNum == 0)
         {
-            Basic();
+            sh_pr.enabled = true;
+            sh_pm.enabled = true;
+            sh_pch.enabled = true;
+            sh_fsm.enabled = true;
             sh_pr.rotSpeed = 300f;
+            Basic();
         }
-        else if(Input.GetKeyDown(KeyCode.Alpha9))
+        else if (camNum == 1)
         {
-            Good();
+            sh_pr.enabled = false;
+            sh_pm.enabled = false;
+            sh_pch.enabled = false;
+            sh_fsm.enabled = false;
             sh_pr.rotSpeed = 0;
+            player.transform.eulerAngles = new Vector3(0, 0, 0);
+            TopView();
         }
     }
 
     void Basic()
     {
-        speed = 1f;
-        float rotSpeed = 0.5f;
+        float rotSpeed = 5f;
 
-        Vector3 goodPos = new Vector3(0, 0.8000002f, 0);
-        transform.localPosition = goodPos;
-        Vector3 rot = new Vector3(0, 0, 0f);
-        transform.eulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, rot, rotSpeed * Time.deltaTime);
+        Vector3 goodPos = new Vector3(0, 1.7f, 0);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, goodPos, rotSpeed * Time.deltaTime);
     }
 
-    void Good()
+    void TopView()
     {
-        speed = 1f;
-        float rotSpeed = 0.5f;
+        float rotSpeed = 1f;
 
         Vector3 goodPos = new Vector3(0, 400f, 0);
-        transform.localPosition = goodPos;
-        Vector3 rot = new Vector3(90, 0, 0f);
-        transform.eulerAngles = Vector3.Lerp(transform.rotation.eulerAngles, rot, rotSpeed * Time.deltaTime);
+        transform.localPosition = Vector3.Lerp(transform.localPosition, goodPos, rotSpeed * Time.deltaTime);
+        Quaternion rot = Quaternion.Euler(90, 0, 0f);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rot, rotSpeed * Time.deltaTime);
+    }
+
+    void KeyNum()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            camNum = 0;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            camNum = 1;
+        }
     }
 }

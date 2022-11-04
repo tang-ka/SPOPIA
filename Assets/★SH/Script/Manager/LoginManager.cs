@@ -77,7 +77,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
     void OnLoginSuccess(LoginResult result)
     {
-        PhotonNetwork.LoadLevel("YS_MapCustomScene");
+        PhotonNetwork.LoadLevel("YS_SelectScene");
 
         print("로그인 성공");
         DBManager.instance.GetLeaderboard(result.PlayFabId);

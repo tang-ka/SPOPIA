@@ -66,7 +66,7 @@ public class SH_PlayerRot : MonoBehaviour
         rotX += mx * rotSpeed * Time.deltaTime;
         rotY -= my * rotSpeed * Time.deltaTime;
 
-        rotY = Mathf.Clamp(rotY, -70.0f, 85.0f);
+        rotY = Mathf.Clamp(rotY, -70.0f, 90.0f);
 
         if (isLookAround == false)
         {
