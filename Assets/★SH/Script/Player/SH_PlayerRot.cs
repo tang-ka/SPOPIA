@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SH_PlayerRot : MonoBehaviour
+public class SH_PlayerRot : MonoBehaviourPun
 {
     Transform cam;
     public Transform player;
@@ -17,7 +17,7 @@ public class SH_PlayerRot : MonoBehaviour
     float rotY;
 
     [HideInInspector]
-    public bool isClick = false;
+    public bool isTabClick = false;
 
     public enum ViewState
     {
@@ -28,7 +28,10 @@ public class SH_PlayerRot : MonoBehaviour
 
     void Start()
     {
-        camPivot.gameObject.SetActive(true);
+        if (photonView.IsMine)
+        {
+            camPivot.gameObject.SetActive(true);
+        }
 
         //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
@@ -38,11 +41,13 @@ public class SH_PlayerRot : MonoBehaviour
 
     void Update()
     {
-        ClickKey();
+        ClickTabKey();
     }
 
     public void PlayerRot(ViewState s, bool isLookAround)
     {
+        if (photonView.IsMine == false) return;
+
         if (s == ViewState.FIRST)
         {
             index = 0;
@@ -85,9 +90,9 @@ public class SH_PlayerRot : MonoBehaviour
         Cursor.visible = isVisible;
     }
 
-    public void ClickKey()
+    public void ClickTabKey()
     {
         if (Input.GetKeyDown(KeyCode.Tab))
-            isClick = !isClick;
+            isTabClick = !isTabClick;
     }
 }

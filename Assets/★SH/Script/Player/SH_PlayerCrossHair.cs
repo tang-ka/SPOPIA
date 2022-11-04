@@ -2,22 +2,33 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class SH_PlayerCrossHair : MonoBehaviour
+public class SH_PlayerCrossHair : MonoBehaviourPun
 {
     public Transform cam;
 
     public GameObject DataInputTable;
 
+    public GameObject screenViewCanvas;
+
     SH_PlayerFSM fsm;
 
     void Start()
     {
+        if (photonView.IsMine)
+        {
+            screenViewCanvas.SetActive(true);
+        }
+
+        //screenViewCanvas.SetActive(true);
+
         fsm = GetComponent<SH_PlayerFSM>();
     }
 
     MeshRenderer sphere;
 
+    // Photon 동기화 필요 없음
     void Update()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

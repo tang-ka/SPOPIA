@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using JetBrains.Annotations;
 using static SH_PlayerRot;
 using static UnityEngine.Timeline.AnimationPlayableAsset;
+using Photon.Pun.UtilityScripts;
 
 public class SH_PlayerFSM : MonoBehaviourPun
 { 
@@ -48,9 +49,9 @@ public class SH_PlayerFSM : MonoBehaviourPun
         pm.PlayerMove();
         pr.CusorControll(CursorLockMode.Locked, false);
 
-        if (pr.isClick)
+        if (pr.isTabClick)
             pr.PlayerRot(ViewState.FIRST, false);
-        else if (pr.isClick == false)
+        else if (pr.isTabClick == false)
             pr.PlayerRot(ViewState.THIRD, false);
     }
 
@@ -66,6 +67,12 @@ public class SH_PlayerFSM : MonoBehaviourPun
     }
 
     public void ChangeState(State s)
+    {
+        photonView.RPC("RPC_ChangeState", RpcTarget.All, s);
+    }
+
+    [PunRPC]
+    public void RPC_ChangeState(State s)
     {
         if (state == s)
         {
