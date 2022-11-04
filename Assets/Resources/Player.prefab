@@ -4867,7 +4867,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 2a4e977f7da952c4ca9b13f26ad770a3, type: 2}
     - target: {fileID: 1425348900863795473, guid: ba164ae58c4be4b4a8f5e34e4bb887eb, type: 3}
       propertyPath: m_Name
-      value: man_astronaut
+      value: Character
       objectReference: {fileID: 0}
     - target: {fileID: 1425348900863795473, guid: ba164ae58c4be4b4a8f5e34e4bb887eb, type: 3}
       propertyPath: m_IsActive
@@ -4875,7 +4875,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1723450743255225129, guid: ba164ae58c4be4b4a8f5e34e4bb887eb, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1762893162302547937, guid: ba164ae58c4be4b4a8f5e34e4bb887eb, type: 3}
       propertyPath: m_Enabled
@@ -4890,6 +4890,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7102902342272343682, guid: ba164ae58c4be4b4a8f5e34e4bb887eb, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7763676178784614613, guid: ba164ae58c4be4b4a8f5e34e4bb887eb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7880819018671325518, guid: ba164ae58c4be4b4a8f5e34e4bb887eb, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
