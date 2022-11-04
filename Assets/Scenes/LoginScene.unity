@@ -757,7 +757,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c916968e765f1144ebc9ff499265ad71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dbID: A45FE526BA86DD94
   MyPlayFabInfo:
     DisplayName: 
     PlayFabId: 
@@ -780,6 +779,14 @@ MonoBehaviour:
       ValuesToDate: []
     StatValue: 0
   PlayFabUserList: []
+  arrayJson:
+    datas: []
+  createdObj: []
+  createdPrefab: []
+  mapData:
+    datas: []
+  isEnter: 0
+  isLogin: 0
 --- !u!4 &562326120
 Transform:
   m_ObjectHideFlags: 0
@@ -1731,6 +1738,7 @@ MonoBehaviour:
   emailSignUp: {fileID: 1487591327}
   pwSignUp: {fileID: 2107469267}
   nameSignUp: {fileID: 1367023872}
+  pwAgain: {fileID: 10726614}
 --- !u!4 &1251216444
 Transform:
   m_ObjectHideFlags: 0

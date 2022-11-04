@@ -15,7 +15,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
     public Button btnLogin;
 
     // 회원가입용(영수)
-    public InputField emailSignUp, pwSignUp, nameSignUp;
+    public InputField emailSignUp, pwSignUp, nameSignUp, pwAgain;
 
     // Start is called before the first frame update
     void Start()
@@ -71,18 +71,32 @@ public class LoginManager : MonoBehaviourPunCallbacks
     // 플레이팹 회원가입 (영수)
     public void RegisterBtn()
     {
-        var request = new RegisterPlayFabUserRequest { Email = emailSignUp.text, Password = pwSignUp.text, Username = nameSignUp.text };
-        PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegisterFailure);
+        if(pwSignUp.text == pwAgain.text)
+        {
+            var request = new RegisterPlayFabUserRequest { Email = emailSignUp.text, Password = pwSignUp.text, Username = nameSignUp.text };
+            PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegisterFailure);
+        }
     }
 
     void OnLoginSuccess(LoginResult result)
     {
-        PhotonNetwork.LoadLevel("YS_SelectScene");
-
         print("로그인 성공");
         DBManager.instance.GetLeaderboard(result.PlayFabId);
         DBManager.instance.isLogin = true;
         DBManager.instance.isEnter = false;
+
+        // 접속을 하면, userdata를 불러와서 아바타가 있는지 없는지 확인. (없으면 0, 있으면 다른 숫자)
+        // 없으면, AvatarScene으로
+        // 있으면, SelectScene으로
+        DBManager.instance.GetData(result.PlayFabId, "UserData");
+        if (DBManager.instance.isUserData == false)
+        {
+            PhotonNetwork.LoadLevel("AvatarCreateScene");
+        }
+        else
+        {
+            PhotonNetwork.LoadLevel("YS_SelectScene");
+        }
     }
 
     void OnLoginFailure(PlayFabError error) => print("로그인 실패");

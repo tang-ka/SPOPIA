@@ -43,7 +43,7 @@ public class DBManager : MonoBehaviour
 
     string testDBid = "A45FE526BA86DD94"; // teamDataBase TEST
     string testDBid2 = "2F2D067A082E0E55"; // LeageDataBase TEST
-    string testDBid3 = "8B9D85404288CD65"; // UserDataBase TEST -> 필요한가?! 지금처럼 리더보드로 받아올 수 있는데
+    //string testDBid3 = "8B9D85404288CD65"; // UserDataBase TEST -> UserData는 자기가 들고 다닐건데...?
     string testDBid4 = "1F7F85444A2EE882"; // MapCustomDataBase TEST
 
     // 플레이어 관리
@@ -65,6 +65,10 @@ public class DBManager : MonoBehaviour
 
     // 로그인 된 상태
     public bool isLogin = false;
+
+    // UserData 선언
+    public UserData myData;
+    public bool isUserData = true;
 
     // Start is called before the first frame update
     void Start()
@@ -99,25 +103,32 @@ public class DBManager : MonoBehaviour
     {
         var request = new GetUserDataRequest() { PlayFabId = id };
         //PlayFabClientAPI.GetUserData(request, (result) => print(result.Data["UserData"].Value), (error) => print("너 데이터 불러오기 실패했어"));
-        PlayFabClientAPI.GetUserData(request, Parsing, (error) => print("너 데이터 불러오기 실패했어"));
+        PlayFabClientAPI.GetUserData(request, (result) => Parsing(result, key), (error) => print("너 데이터 불러오기 실패했어"));
         //PlayFabClientAPI.GetUserData(request, (result) => print(result.Data["TeamData"].Value), (error) => print("너 데이터 불러오기 실패했어"));
     }
 
-    void Parsing(GetUserDataResult result)
+    void Parsing(GetUserDataResult result, string key)
     {
-        /*if(key == "UserData")
+        if(key == "UserData")
         {
-            UserData myData = JsonUtility.FromJson<UserData>(result.Data[key].Value.ToString());
+            if(result.Data.ContainsKey(key) == false)
+            {
+                isUserData = false;
+            }
+            else
+            {
+                myData = JsonUtility.FromJson<UserData>(result.Data[key].Value.ToString());
+            }
         }
         else if (key == "MapData")
-        {*/
-        if(isGetData == false)
         {
-            mapData = JsonUtility.FromJson<ArrayJson>(result.Data["MapData"].Value.ToString());
-            isParsing = false;
-            isGetData = true;
+            if(isGetData == false)
+            {
+                mapData = JsonUtility.FromJson<ArrayJson>(result.Data[key].Value.ToString());
+                isParsing = false;
+                isGetData = true;
+            }
         }
-        //}
     }
 
     public void SaveJson(TeamData teamData, string key) // 팀 생성할 때, TeamData를 기반으로 TeamListDB에 넣어주는 부분
@@ -129,14 +140,14 @@ public class DBManager : MonoBehaviour
         dataDic2.Add(key, JsonUtility.ToJson(teamData));
 
         //SetUserData(dataDic);
-        SetUserData(dataDic2);
+        SetTeamData(dataDic2);
     }
 
     public void SaveJsonLeagueData(LeagueData leagueData, string key) // 리그 생성할 때, LeagueData를 기반으로 LeagueListDB에 넣어주는 부분
     {
         Dictionary<string, string> dataDic = new Dictionary<string, string>();
         dataDic.Add("LeagueData", JsonUtility.ToJson(leagueData));
-        SetUserData(dataDic);
+        //SetTeamData(dataDic);
     }
 
     public void SaveTeamData(TeamData teamData, string key) // 팀 데이터 수정
@@ -153,7 +164,23 @@ public class DBManager : MonoBehaviour
         SetMapData(dataDic);
     }
 
-    public void SetUserData(Dictionary<string, string> jsonData)
+    public void SaveJsonUser(UserData userData, string key) // 유저 생성할 때, 추가적인 UserData를 넣어주는 부분
+    {
+        Dictionary<string, string> dataDic = new Dictionary<string, string>();
+        dataDic.Add(key, JsonUtility.ToJson(userData));
+        SetTeamData(dataDic);
+
+        isUserData = true;
+    }
+
+    public void SetUserData(UserData userData, string key)
+    {
+        // 서버용
+        var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = MyPlayFabInfo.PlayFabId, Data = new Dictionary<string, string>() { { key, JsonUtility.ToJson(userData) } }, Permission = PlayFab.AdminModels.UserDataPermission.Public };
+        PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
+    }
+
+    public void SetTeamData(Dictionary<string, string> jsonData)
     {
         // 클라이언트용(자기자신만 수정 가능, 남의 데이터 수정 불가)
         /*var request = new UpdateUserDataRequest() { Data = jsonData, Permission = UserDataPermission.Public };

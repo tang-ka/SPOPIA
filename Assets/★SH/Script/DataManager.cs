@@ -10,6 +10,7 @@ public class UserData
 {
     //public int serverID;
     // user info
+    public int avatarIdx;
     public string nickName;
     public int age;
     //public int playerLevel; // 0: normal, 1: middle, 2: high, 3: university, 4: over
