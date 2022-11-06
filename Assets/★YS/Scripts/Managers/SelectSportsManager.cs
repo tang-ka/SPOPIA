@@ -29,7 +29,7 @@ public class SelectSportsManager : MonoBehaviour
         {
             if(hit.transform.gameObject.name == "Soccer")
             {
-                SceneManager.LoadScene("YS_MyLeagueScene");
+                SceneManager.LoadScene("LeagueChoiceScene");
             }
         }
     }

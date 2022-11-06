@@ -48,6 +48,14 @@ public class LcManager : MonoBehaviourPunCallbacks
 
         // 해당 옵선으로 리그(방)를 생성하고 싶다.
         PhotonNetwork.CreateRoom(inputLeagueName.text, leagueOption, TypedLobby.Default);
+
+        // DB에 리그정보 셋팅
+        LeagueData leagueData = new LeagueData();
+        leagueData.leagueName = inputLeagueName.text;
+        leagueData.teamNum = int.Parse(inputTeamNum.text);
+
+        // DB에 리그데이터 저장
+        DBManager.instance.SaveJsonLeagueData(leagueData, "LeagueData");
     }
 
     public void JoinLeague()

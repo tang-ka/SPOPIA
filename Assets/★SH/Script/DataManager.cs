@@ -71,6 +71,9 @@ public class LeagueData
     public string startDate;
     public string endDate;
     public bool isfinished;
+
+    // Map관련
+    public int mapType;
 }
 
 public class DataManager : MonoBehaviour
@@ -125,7 +128,7 @@ public class DataManager : MonoBehaviour
 
             // DB에 저장
             //string s = i.ToString();
-            //DBManager.instance.SaveJson(temp, s);
+            //DBManager.instance.SaveJsonTeamData(temp, s);
         }
 
         //for (int i = 0; i < fakeLeagueData.teams.Count; i++)
@@ -168,6 +171,11 @@ public class DataManager : MonoBehaviour
     void SetRealUserData()
     {
 
+    }
+
+    void SetLeagueData()
+    {
+        DBManager.instance.GetData("2F2D067A082E0E55", "LeagueData");
     }
 
     /// <summary>

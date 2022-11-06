@@ -41,6 +41,7 @@ public class AvatarManager : MonoBehaviour
         UserData data = new UserData();
 
         data.avatarIdx = idx;
+        data.nickName = nickNameInputField.text;
         data.age = int.Parse(ageInputField.text);
         data.position = positionInputField.text;
         data.height = int.Parse(heightInputField.text);

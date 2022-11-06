@@ -88,15 +88,17 @@ public class LoginManager : MonoBehaviourPunCallbacks
         // 접속을 하면, userdata를 불러와서 아바타가 있는지 없는지 확인. (없으면 0, 있으면 다른 숫자)
         // 없으면, AvatarScene으로
         // 있으면, SelectScene으로
-        DBManager.instance.GetData(result.PlayFabId, "UserData");
-        if (DBManager.instance.isUserData == false)
+        // *서버(DB)에 요청을 하면, 일반 함수 진행 순서보다 한 박자 느리게 받아지기 때문에 GetData -> Parsing 순서 에서 Parsing으로 가기 전에 다시 돌아온다.
+        // -> 그냥 Parsing함수에서 처리해줘보자
+        DBManager.instance.GetData(result.PlayFabId, "MyData");
+        /*if (DBManager.instance.isUserData == false)
         {
             PhotonNetwork.LoadLevel("AvatarCreateScene");
         }
         else
         {
             PhotonNetwork.LoadLevel("YS_SelectScene");
-        }
+        }*/
     }
 
     void OnLoginFailure(PlayFabError error) => print("로그인 실패");
