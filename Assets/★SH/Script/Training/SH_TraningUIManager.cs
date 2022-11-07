@@ -1,29 +1,35 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
-
-public class FormationData
-{
-    List<Vector3> formation = new List<Vector3>();
-}
-
-public class FormationList
-{
-    Dictionary<string, FormationData> formationList = new Dictionary<string, FormationData>();
-}
 
 public class SH_TraningUIManager : MonoBehaviour
 {
     public Button btnTacticalBoard;
     public Button btnTool;
+    public TMP_Dropdown ddFormation;
+
+    public List<string> optionList = new List<string>();
+        
 
     bool isTBOpen = true;
     bool isToolOpen = true;
+    
+    
 
     void Start()
     {
+        // 드랍다운 옵션을 초기화 하고 싶다.
+        ddFormation.ClearOptions();
+
+        optionList = DataManager.instance.GetFormaitonNames();
+        ddFormation.AddOptions(optionList);
+
+        ddFormation.onValueChanged.AddListener(onValueChanged);
+
         btnTacticalBoard.onClick.AddListener(OnClickTBOpen);
         btnTool.onClick.AddListener(OnClickToolOpen);
     }
@@ -32,6 +38,11 @@ public class SH_TraningUIManager : MonoBehaviour
     {
         SlideMove(btnTacticalBoard, new Vector3(0, -1040, 0), isTBOpen);
         SlideMove(btnTool, new Vector3(150, 0, 0), isToolOpen);
+    }
+
+    private void onValueChanged(int arg)
+    {
+        print(optionList[arg]);
     }
 
     public void OnClickTBOpen()
