@@ -73,7 +73,7 @@ public class LeagueData
     public bool isfinished;
 
     // Map°ü·Ã
-    public int mapType;
+    public string mapType;
 }
 
 public class DataManager : MonoBehaviour
@@ -97,6 +97,7 @@ public class DataManager : MonoBehaviour
 
     void SetData()
     {
+        //SetLeagueData();
         SetFakeTeamData();
         SetFakeUserData();
     }
@@ -175,7 +176,7 @@ public class DataManager : MonoBehaviour
 
     void SetLeagueData()
     {
-        DBManager.instance.GetData("2F2D067A082E0E55", "LeagueData");
+        DBManager.instance.GetData(DBManager.instance.testDBid2, "LeagueData");
     }
 
     /// <summary>

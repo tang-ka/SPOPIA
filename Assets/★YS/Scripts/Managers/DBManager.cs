@@ -42,10 +42,10 @@ public class DBManager : MonoBehaviour
     }
 
     // DataBase들
-    string testDBid = "A45FE526BA86DD94"; // teamDataBase TEST
-    string testDBid2 = "2F2D067A082E0E55"; // LeageDataBase TEST
-    //string testDBid3 = "8B9D85404288CD65"; // UserDataBase TEST -> UserData는 자기가 들고 다닐건데...?
-    string testDBid4 = "1F7F85444A2EE882"; // MapCustomDataBase TEST
+    public string testDBid = "A45FE526BA86DD94"; // teamDataBase TEST
+    public string testDBid2 = "2F2D067A082E0E55"; // LeageDataBase TEST
+    //public string testDBid3 = "8B9D85404288CD65"; // UserDataBase TEST -> UserData는 자기가 들고 다닐건데...?
+    public string testDBid4 = "1F7F85444A2EE882"; // MapCustomDataBase TEST
 
     // 플레이어 관리
     public PlayerLeaderboardEntry MyPlayFabInfo;
@@ -69,6 +69,9 @@ public class DBManager : MonoBehaviour
 
     // UserData 선언
     public UserData myData;
+
+    // LeagueData 선언
+    public LeagueData leagueInfo;
 
     // Start is called before the first frame update
     void Start()
@@ -141,7 +144,7 @@ public class DBManager : MonoBehaviour
         }
         else if (key == "LeagueData")
         {
-
+            leagueInfo = JsonUtility.FromJson<LeagueData>(result.Data[key].Value.ToString());
         }
     }
 
