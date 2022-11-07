@@ -221,4 +221,55 @@ public class DataManager : MonoBehaviour
 
         return userDataList;
     }
+
+    public class FormationData
+    {
+        public List<Vector3> pos = new List<Vector3>();
+    }
+
+    [System.Serializable]
+    public class FormationList : MonoBehaviour
+    {
+        Dictionary<string, FormationData> formationList = new Dictionary<string, FormationData>();
+
+        FormationData formation0;
+        FormationData formation1;
+
+        void Start()
+        {
+            // 4-3-3
+            formation0.pos.Add(new Vector3(495, 0, 0));
+            formation0.pos.Add(new Vector3(350, 225, 0));
+            formation0.pos.Add(new Vector3(350, 75, 0));
+            formation0.pos.Add(new Vector3(350, -75, 0));
+            formation0.pos.Add(new Vector3(350, -225, 0));
+            formation0.pos.Add(new Vector3(75, 150, 0));
+            formation0.pos.Add(new Vector3(75, 0, 0));
+            formation0.pos.Add(new Vector3(75, -150, 0));
+            formation0.pos.Add(new Vector3(-200, 260, 0));
+            formation0.pos.Add(new Vector3(-200, 0, 0));
+            formation0.pos.Add(new Vector3(-200, -260, 0));
+
+            // 4-4-2
+            formation1.pos.Add(new Vector3(495, 0, 0));
+            formation1.pos.Add(new Vector3(350, 225, 0));
+            formation1.pos.Add(new Vector3(350, 75, 0));
+            formation1.pos.Add(new Vector3(350, -75, 0));
+            formation1.pos.Add(new Vector3(350, -225, 0));
+            formation1.pos.Add(new Vector3(75, 225, 0));
+            formation1.pos.Add(new Vector3(75, 75, 0));
+            formation1.pos.Add(new Vector3(75, -75, 0));
+            formation1.pos.Add(new Vector3(75, -225, 0));
+            formation1.pos.Add(new Vector3(-200, 75, 0));
+            formation1.pos.Add(new Vector3(-200, -75, 0));
+
+            SetFormationList();
+        }
+
+        public void SetFormationList()
+        {
+            formationList.Add("4-3-3", formation0);
+            formationList.Add("4-4-2", formation1);
+        }
+    }
 }

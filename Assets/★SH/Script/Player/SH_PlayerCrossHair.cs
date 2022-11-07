@@ -19,6 +19,7 @@ public class SH_PlayerCrossHair : MonoBehaviourPun
         if (photonView.IsMine)
         {
             screenViewCanvas.SetActive(true);
+            DataInputTable = GameObject.Find("InputMatchData");
         }
 
         //screenViewCanvas.SetActive(true);

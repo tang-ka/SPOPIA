@@ -21,7 +21,7 @@ public class SH_UISlide : MonoBehaviour
 
     void Update()
     {
-        SlideMove(isSlideOn);
+        와칸다포에버(isSlideOn);
     }
 
     public void OnClickOpen()
@@ -29,7 +29,7 @@ public class SH_UISlide : MonoBehaviour
         isSlideOn = !isSlideOn;
     }
 
-    public void SlideMove(bool isOn)
+    public void 와칸다포에버(bool isOn)
     {
         // 켜고싶다.
         if (isOn)
