@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using ExitGames.Client.Photon;
+using UnityEngine.EventSystems;
 
 public class LcManager : MonoBehaviourPunCallbacks
 {
@@ -127,5 +128,10 @@ public class LcManager : MonoBehaviourPunCallbacks
         {
             leagueInfoPage.SetActive(false);
         }
+    }
+
+    public void SelectMapType()
+    {
+        btnMapType = EventSystem.current.currentSelectedGameObject.name;
     }
 }

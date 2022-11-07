@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.31310028, g: 0.2938031, b: 0.5141275, a: 1}
+  m_IndirectSpecularColor: {r: 0.31303668, g: 0.29371712, b: 0.5140961, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -34755,6 +34755,7 @@ MonoBehaviour:
     startDate: 
     endDate: 
     isfinished: 0
+    mapType: 
 --- !u!4 &1799136630
 Transform:
   m_ObjectHideFlags: 0
@@ -41678,6 +41679,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5659720693578862062, guid: 6ba747ebdf33bb44085c68f9853e1dc0, type: 3}
+      propertyPath: sceneViewId
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5889127904752944130, guid: 6ba747ebdf33bb44085c68f9853e1dc0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -41920,7 +41925,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9083367404687738559, guid: 6ba747ebdf33bb44085c68f9853e1dc0, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9166605414610211120, guid: 6ba747ebdf33bb44085c68f9853e1dc0, type: 3}
       propertyPath: m_AnchorMax.y
