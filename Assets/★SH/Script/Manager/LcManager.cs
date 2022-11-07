@@ -10,9 +10,13 @@ public class LcManager : MonoBehaviourPunCallbacks
 {
     public InputField inputLeagueName;
     public InputField inputTeamNum;
+    public InputField inputStartDate, inputEndDate;
+    public string btnMapType;
 
     public Button btnCreateLeague;
     public Button btnJoinLeague;
+
+    public GameObject teamInfoPage, leagueInfoPage;
 
     void Start()
     {
@@ -48,11 +52,25 @@ public class LcManager : MonoBehaviourPunCallbacks
 
         // 해당 옵선으로 리그(방)를 생성하고 싶다.
         PhotonNetwork.CreateRoom(inputLeagueName.text, leagueOption, TypedLobby.Default);
+
+        // DB에 리그정보 셋팅
+        LeagueData leagueData = new LeagueData();
+        leagueData.leagueName = inputLeagueName.text;
+        leagueData.teamNum = int.Parse(inputTeamNum.text);
+        leagueData.startDate = inputStartDate.text;
+        leagueData.endDate = inputEndDate.text;
+        leagueData.mapType = btnMapType;
+
+        // DB에 리그데이터 저장
+        DBManager.instance.SaveJsonLeagueData(leagueData, "LeagueData");
     }
 
     public void JoinLeague()
     {
         PhotonNetwork.JoinRoom(inputLeagueName.text);
+
+        // 리그 데이터 받아오기
+        DBManager.instance.GetData(DBManager.instance.testDBid2, "LeagueData");
     }
 
     #region 콜백함수 (방생성 성공, 실패)
@@ -86,4 +104,28 @@ public class LcManager : MonoBehaviourPunCallbacks
         print("리그 진입 실패" + returnCode + ", " + message);
     }
     #endregion
+
+    public void CreateTeam()
+    {
+        if (teamInfoPage.activeSelf == false)
+        {
+            teamInfoPage.SetActive(true);
+        }
+        else
+        {
+            teamInfoPage.SetActive(false);
+        }
+    }
+
+    public void LeagueInfoPage()
+    {
+        if (leagueInfoPage.activeSelf == false)
+        {
+            leagueInfoPage.SetActive(true);
+        }
+        else
+        {
+            leagueInfoPage.SetActive(false);
+        }
+    }
 }

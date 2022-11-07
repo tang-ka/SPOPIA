@@ -7,7 +7,7 @@ using PlayFab.ClientModels;
 
 public class SignUpManager : MonoBehaviour
 {
-    public InputField emailSignUp, pwSignUp, nameSignUp, idInputField, pwInputField;
+    public InputField emailSignUp, pwSignUp, nameSignUp, idInputField, pwInputField, pwAgain;
 
     public void LoginBtn()
     {
@@ -18,8 +18,11 @@ public class SignUpManager : MonoBehaviour
 
     public void RegisterBtn()
     {
-        var request = new RegisterPlayFabUserRequest { Email = emailSignUp.text, Password = pwSignUp.text, Username = nameSignUp.text };
-        PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegisterFailure);
+        if(pwSignUp.text == pwAgain.text)
+        {
+            var request = new RegisterPlayFabUserRequest { Email = emailSignUp.text, Password = pwSignUp.text, Username = nameSignUp.text };
+            PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegisterFailure);
+        }
     }
 
 

@@ -10,6 +10,7 @@ public class UserData
 {
     //public int serverID;
     // user info
+    public int avatarIdx;
     public string nickName;
     public int age;
     //public int playerLevel; // 0: normal, 1: middle, 2: high, 3: university, 4: over
@@ -70,6 +71,9 @@ public class LeagueData
     public string startDate;
     public string endDate;
     public bool isfinished;
+
+    // Map관련
+    public string mapType;
 }
 
 public class DataManager : MonoBehaviour
@@ -93,6 +97,7 @@ public class DataManager : MonoBehaviour
 
     void SetData()
     {
+        //SetLeagueData();
         SetFakeTeamData();
         SetFakeUserData();
     }
@@ -124,7 +129,7 @@ public class DataManager : MonoBehaviour
 
             // DB에 저장
             //string s = i.ToString();
-            //DBManager.instance.SaveJson(temp, s);
+            //DBManager.instance.SaveJsonTeamData(temp, s);
         }
 
         //for (int i = 0; i < fakeLeagueData.teams.Count; i++)
@@ -167,6 +172,11 @@ public class DataManager : MonoBehaviour
     void SetRealUserData()
     {
 
+    }
+
+    void SetLeagueData()
+    {
+        DBManager.instance.GetData(DBManager.instance.testDBid2, "LeagueData");
     }
 
     /// <summary>
