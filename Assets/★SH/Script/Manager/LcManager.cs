@@ -94,7 +94,7 @@ public class LcManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-        PhotonNetwork.LoadLevel("LeagueAreaScene");
+        PhotonNetwork.LoadLevel(btnMapType);
         print("리그 진입에 성공했습니다.");
     }
 
