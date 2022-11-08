@@ -191,6 +191,11 @@ public class DBManager : MonoBehaviour
         PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
     }
 
+    public void UpdateUserData(UserData userData, string key) // 유저 데이터 수정
+    {
+
+    }
+
     public void SetUserData(Dictionary<string, string> userData)
     {
         // 서버용

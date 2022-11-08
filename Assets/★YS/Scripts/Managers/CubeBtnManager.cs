@@ -30,6 +30,7 @@ public class CubeBtnManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
+            // 팀 생성
             if (hit.transform.gameObject.name == "CubeButton")
             {
                 // 팀정보 세팅
@@ -42,6 +43,28 @@ public class CubeBtnManager : MonoBehaviour
 
                 // 리그 DB 업데이트
                 DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagueInfo, "LeagueData");
+            }
+
+            else if (hit.transform.gameObject.name == "AddUserButton")
+            {
+                // 리그DB에서 team리스트를 검사한다. (Add될 팀을 찾기 위해)
+                for (int i = 0; i < DBManager.instance.leagueInfo.teams.Count; i++)
+                {
+                    TeamData info = DBManager.instance.leagueInfo.teams[i];
+
+                    // User가 Add될 팀이라면?
+                    if(info.teamName == inputTeamName.text)
+                    {
+                        // 해당 팀의 user리스트에 user를 추가한다.
+                        info.users.Add(DBManager.instance.myData);
+
+                        // 리그 DB 업데이트
+                        DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagueInfo, "LeagueData");
+
+                        // for문을 종료한다.
+                        break;
+                    }
+                }
             }
         }
     }
