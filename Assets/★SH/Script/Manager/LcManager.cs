@@ -17,13 +17,21 @@ public class LcManager : MonoBehaviourPunCallbacks
     public Button btnCreateLeague;
     public Button btnJoinLeague;
 
-    public GameObject teamInfoPage, leagueInfoPage;
+    public GameObject leagueInfoPage;
+    public Transform contentTr;
+
+    private void Awake()
+    {
+        // 리그DB에서 리그들 불러오기
+        DBManager.instance.GetData(DBManager.instance.testDBid2, "LeagueData");
+    }
 
     void Start()
     {
-        
+        // 리그 목록 연동
+        StartCoroutine(CreateLeagueList());
     }
-    
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -106,18 +114,6 @@ public class LcManager : MonoBehaviourPunCallbacks
     }
     #endregion
 
-    public void CreateTeam()
-    {
-        if (teamInfoPage.activeSelf == false)
-        {
-            teamInfoPage.SetActive(true);
-        }
-        else
-        {
-            teamInfoPage.SetActive(false);
-        }
-    }
-
     public void LeagueInfoPage()
     {
         if (leagueInfoPage.activeSelf == false)
@@ -133,5 +129,27 @@ public class LcManager : MonoBehaviourPunCallbacks
     public void SelectMapType()
     {
         btnMapType = EventSystem.current.currentSelectedGameObject.name;
+    }
+
+    // 리그 목록 연동(리그DB에 있는 데이터 받아와서 목록에 띄우기)
+    public GameObject leagueItemFactory;
+    IEnumerator CreateLeagueList()
+    {
+        // 리그아이템 만든다.
+        /*Button leagueItem = Resources.Load<Button>("YS/LeagueItem");
+        leagueItem.transform.SetParent(contentTr, false);
+
+        Text t = leagueItem.GetComponentInChildren<Text>();
+        t.text = DBManager.instance.leagueInfo.leagueName;*/
+
+        // DB에서 Parsing이 끝날 때까지 다음으로 안넘어가게끔!!!!!
+        yield return new WaitUntil(() => DBManager.instance.isParsed == true);
+
+        GameObject leagueItem = Instantiate(leagueItemFactory, contentTr);
+
+        Text t = leagueItem.GetComponentInChildren<Text>();
+        t.text = DBManager.instance.leagueInfo.leagueName;
+
+        DBManager.instance.isParsed = false;
     }
 }

@@ -72,6 +72,7 @@ public class DBManager : MonoBehaviour
 
     // LeagueData 선언
     public LeagueData leagueInfo;
+    public bool isParsed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -146,6 +147,8 @@ public class DBManager : MonoBehaviour
         {
             leagueInfo = JsonUtility.FromJson<LeagueData>(result.Data[key].Value.ToString());
         }
+
+        isParsed = true;
     }
 
     public void SaveJsonTeamData(TeamData teamData, string key) // 팀 생성할 때, TeamData를 기반으로 TeamListDB에 넣어주는 부분
