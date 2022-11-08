@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using ExitGames.Client.Photon;
+using UnityEngine.EventSystems;
 
 public class LcManager : MonoBehaviourPunCallbacks
 {
@@ -93,7 +94,7 @@ public class LcManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-        PhotonNetwork.LoadLevel("LeagueAreaScene");
+        PhotonNetwork.LoadLevel(btnMapType);
         print("리그 진입에 성공했습니다.");
     }
 
@@ -127,5 +128,10 @@ public class LcManager : MonoBehaviourPunCallbacks
         {
             leagueInfoPage.SetActive(false);
         }
+    }
+
+    public void SelectMapType()
+    {
+        btnMapType = EventSystem.current.currentSelectedGameObject.name;
     }
 }

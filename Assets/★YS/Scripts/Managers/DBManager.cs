@@ -177,11 +177,23 @@ public class DBManager : MonoBehaviour
         SetUserData(dataDic);
     }
 
-    public void SaveTeamData(TeamData teamData, string key) // 팀 데이터 수정
+    public void UpdateTeamData(TeamData teamData, string key) // 팀 데이터 수정
     {
         // 서버용
         var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = testDBid, Data = new Dictionary<string, string>() { { key, JsonUtility.ToJson(teamData) } }, Permission = PlayFab.AdminModels.UserDataPermission.Public };
         PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
+    }
+
+    public void UpdateLeagueData(LeagueData leagueData, string key) // 리그 데이터 수정
+    {
+        // 서버용
+        var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = testDBid2, Data = new Dictionary<string, string>() { { key, JsonUtility.ToJson(leagueData) } }, Permission = PlayFab.AdminModels.UserDataPermission.Public };
+        PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
+    }
+
+    public void UpdateUserData(UserData userData, string key) // 유저 데이터 수정
+    {
+
     }
 
     public void SetUserData(Dictionary<string, string> userData)
