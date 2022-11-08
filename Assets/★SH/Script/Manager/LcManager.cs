@@ -76,7 +76,26 @@ public class LcManager : MonoBehaviourPunCallbacks
 
     public void JoinLeague()
     {
-        PhotonNetwork.JoinRoom(inputLeagueName.text);
+        //PhotonNetwork.JoinRoom(inputLeagueName.text);
+
+        RoomOptions leagueOption = new RoomOptions();
+        leagueOption.MaxPlayers = 0;
+        leagueOption.IsVisible = true;
+
+        int teamNum = int.Parse(inputTeamNum.text);
+
+        // 리그 정보 커스텀해서 넣고 싶다.
+        // 1. 커스텀 정보 세팅
+        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+        hash["teamNum"] = teamNum;
+
+        leagueOption.CustomRoomProperties = hash;
+
+        // 2. 커스텀 정보를 공개하고 싶다.
+        leagueOption.CustomRoomPropertiesForLobby = new string[] { "teamNum" };
+
+        // 해당 옵선으로 리그(방)를 생성하고 싶다.
+        PhotonNetwork.CreateRoom(inputLeagueName.text, leagueOption, TypedLobby.Default);
 
         // 리그 데이터 받아오기
         DBManager.instance.GetData(DBManager.instance.testDBid2, "LeagueData");
