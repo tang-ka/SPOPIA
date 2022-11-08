@@ -94,34 +94,6 @@ public class DataManager : MonoBehaviour
         fakeLeagueData.teams = new List<TeamData>();
 
         SetData();
-
-        // 4-3-3
-        formation0.pos.Add(new Vector3(495, 0, 0));
-        formation0.pos.Add(new Vector3(350, 225, 0));
-        formation0.pos.Add(new Vector3(350, 75, 0));
-        formation0.pos.Add(new Vector3(350, -75, 0));
-        formation0.pos.Add(new Vector3(350, -225, 0));
-        formation0.pos.Add(new Vector3(75, 150, 0));
-        formation0.pos.Add(new Vector3(75, 0, 0));
-        formation0.pos.Add(new Vector3(75, -150, 0));
-        formation0.pos.Add(new Vector3(-200, 260, 0));
-        formation0.pos.Add(new Vector3(-200, 0, 0));
-        formation0.pos.Add(new Vector3(-200, -260, 0));
-
-        // 4-4-2
-        formation1.pos.Add(new Vector3(495, 0, 0));
-        formation1.pos.Add(new Vector3(350, 225, 0));
-        formation1.pos.Add(new Vector3(350, 75, 0));
-        formation1.pos.Add(new Vector3(350, -75, 0));
-        formation1.pos.Add(new Vector3(350, -225, 0));
-        formation1.pos.Add(new Vector3(75, 225, 0));
-        formation1.pos.Add(new Vector3(75, 75, 0));
-        formation1.pos.Add(new Vector3(75, -75, 0));
-        formation1.pos.Add(new Vector3(75, -225, 0));
-        formation1.pos.Add(new Vector3(-200, 75, 0));
-        formation1.pos.Add(new Vector3(-200, -75, 0));
-
-        SetFormationList();
     }
 
     void SetData()
@@ -250,44 +222,4 @@ public class DataManager : MonoBehaviour
 
         return userDataList;
     }
-
-    private FormationList formationList;
-
-    FormationData formation0;
-    FormationData formation1;
-
-    private void Start()
-    {
-        
-    }
-
-    public void SetFormationList()
-    {
-        formationList.formations.Add("4-3-3", formation0);
-        formationList.formations.Add("4-4-2", formation1);
-    }
-
-    public List<string> GetFormaitonNames()
-    {
-        List<string> FormaitonNames = new List<string>();
-
-        foreach (string key in formationList.formations.Keys)
-        {
-            FormaitonNames.Add(key);
-        }
-
-        return FormaitonNames;
-    }
-}
-
-[System.Serializable]
-public class FormationData
-{
-    public List<Vector3> pos = new List<Vector3>();
-}
-
-[System.Serializable]
-public class FormationList : MonoBehaviour
-{
-    public Dictionary<string, FormationData> formations = new Dictionary<string, FormationData>();
 }

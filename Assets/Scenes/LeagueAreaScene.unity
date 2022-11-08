@@ -34755,6 +34755,7 @@ MonoBehaviour:
     startDate: 
     endDate: 
     isfinished: 0
+    mapType: 
 --- !u!4 &1799136630
 Transform:
   m_ObjectHideFlags: 0
@@ -41920,7 +41921,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9083367404687738559, guid: 6ba747ebdf33bb44085c68f9853e1dc0, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9166605414610211120, guid: 6ba747ebdf33bb44085c68f9853e1dc0, type: 3}
       propertyPath: m_AnchorMax.y

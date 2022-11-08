@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,25 +14,30 @@ public class SH_TraningUIManager : MonoBehaviour
     public TMP_Dropdown ddFormation;
 
     public List<string> optionList = new List<string>();
-        
+
+    public GameObject bluefactory;
+    public GameObject redfactory;
+
+    Transform blueParent;
+    Transform redParent;
 
     bool isTBOpen = true;
     bool isToolOpen = true;
-    
-    
 
     void Start()
     {
         // 드랍다운 옵션을 초기화 하고 싶다.
         ddFormation.ClearOptions();
 
-        optionList = DataManager.instance.GetFormaitonNames();
+        optionList = FormDataManager.instance.GetFormNames();
         ddFormation.AddOptions(optionList);
 
         ddFormation.onValueChanged.AddListener(onValueChanged);
-
         btnTacticalBoard.onClick.AddListener(OnClickTBOpen);
         btnTool.onClick.AddListener(OnClickToolOpen);
+
+        blueParent = btnTacticalBoard.transform.GetChild(0).Find("BlueTeam");
+        redParent = btnTacticalBoard.transform.GetChild(0).Find("RedTeam");
     }
 
     void Update()
@@ -42,7 +48,20 @@ public class SH_TraningUIManager : MonoBehaviour
 
     private void onValueChanged(int arg)
     {
-        print(optionList[arg]);
+        Formation selected = FormDataManager.instance.GetForm(optionList[arg]);
+
+        // 삭제하고
+        for (int i = 0; i < blueParent.childCount; i++)
+        {
+            Destroy(blueParent.GetChild(i).gameObject);
+        }
+
+        // 생성한다.
+        for (int i = 0; i < selected.pos.Length; i++)
+        {
+            GameObject bluePiece = Instantiate(bluefactory, blueParent);
+            bluePiece.transform.localPosition = selected.pos[i];
+        }
     }
 
     public void OnClickTBOpen()
