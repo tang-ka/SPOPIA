@@ -8,7 +8,7 @@ public class SH_PlayerCrossHair : MonoBehaviourPun
 {
     public Transform cam;
 
-    public GameObject DataInputTable;
+    public GameObject dataInputTable;
 
     public GameObject screenViewCanvas;
 
@@ -19,11 +19,11 @@ public class SH_PlayerCrossHair : MonoBehaviourPun
         if (photonView.IsMine)
         {
             screenViewCanvas.SetActive(true);
-            DataInputTable = GameObject.Find("InputMatchData");
+            dataInputTable = GameObject.Find("InputMatchData");
         }
 
         //screenViewCanvas.SetActive(true);
-
+        dataInputTable.SetActive(false);
         fsm = GetComponent<SH_PlayerFSM>();
     }
 
@@ -43,7 +43,7 @@ public class SH_PlayerCrossHair : MonoBehaviourPun
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    DataInputTable.SetActive(true);
+                    dataInputTable.SetActive(true);
                     fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
                 }
             }

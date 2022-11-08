@@ -61,7 +61,7 @@ public class SH_PlayerFSM : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            pch.DataInputTable.SetActive(false);
+            pch.dataInputTable.SetActive(false);
             ChangeState(State.NORMAL);
         }
     }

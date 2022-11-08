@@ -4681,7 +4681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 9083367403200029103}
-  DataInputTable: {fileID: 0}
+  dataInputTable: {fileID: 0}
   screenViewCanvas: {fileID: 86107923643688381}
 --- !u!114 &1514982164
 MonoBehaviour:

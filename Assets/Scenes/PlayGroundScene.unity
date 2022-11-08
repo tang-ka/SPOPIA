@@ -3660,6 +3660,7 @@ GameObject:
   - component: {fileID: 1098982393}
   - component: {fileID: 1098982395}
   - component: {fileID: 1098982394}
+  - component: {fileID: 1098982396}
   m_Layer: 0
   m_Name: CoachingTool
   m_TagString: Untagged
@@ -3680,7 +3681,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1098982394
 MonoBehaviour:
@@ -3713,6 +3714,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   time: 0
+--- !u!114 &1098982396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098982392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b23ac3ccb25224da02a4edc0052415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1284408391
 GameObject:
   m_ObjectHideFlags: 0
@@ -6319,7 +6332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 9083367403914424943}
-  DataInputTable: {fileID: 0}
+  dataInputTable: {fileID: 0}
   screenViewCanvas: {fileID: 0}
 --- !u!224 &564259984743196018
 RectTransform:
@@ -10878,7 +10891,7 @@ Transform:
   - {fileID: 5965364653467637038}
   - {fileID: 3188191735009685490}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9083367404581524861
 MonoBehaviour:
