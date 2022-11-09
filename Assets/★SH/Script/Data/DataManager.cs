@@ -98,9 +98,14 @@ public class DataManager : MonoBehaviour
 
     void SetData()
     {
+        // 가짜 데이터
         //SetLeagueData();
-        SetFakeTeamData();
-        SetFakeUserData();
+        //SetFakeTeamData();
+        //SetFakeUserData();
+
+        // 실제 데이터
+        SetRealTeamData();
+        SetRealUserData();
     }
 
     void SetFakeTeamData()
@@ -141,7 +146,21 @@ public class DataManager : MonoBehaviour
 
     void SetRealTeamData()
     {
+        for (int i = 0; i < DBManager.instance.leagueInfo.teams.Count; i++)
+        {
+            TeamData temp = new TeamData();
+            temp = DBManager.instance.leagueInfo.teams[i];
 
+            // 팀 데이터 안에 유저 데이터(users) 생성
+            //temp.users = new List<UserData>();
+
+            // 리그 데이터의 teams에 팀데이터 추가
+            fakeLeagueData.teams.Add(temp);
+
+            // DB에 저장
+            string s = i.ToString();
+            DBManager.instance.SaveJsonTeamData(temp, s);
+        }
     }
     
     void SetFakeUserData()
