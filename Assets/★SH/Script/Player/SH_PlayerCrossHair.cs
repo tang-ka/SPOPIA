@@ -32,6 +32,20 @@ public class SH_PlayerCrossHair : MonoBehaviourPun
     // Photon 동기화 필요 없음
     void Update()
     {
+        // 마우스 탈출 (영수)
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (fsm.state == SH_PlayerFSM.State.NORMAL)
+            {
+                fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
+            }
+            else
+            {
+                fsm.ChangeState(SH_PlayerFSM.State.NORMAL);
+            }
+        }
+        //
+
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 20))

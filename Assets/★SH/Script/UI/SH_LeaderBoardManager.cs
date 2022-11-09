@@ -94,6 +94,9 @@ public class SH_LeaderBoardManager : MonoBehaviour
 
         category = c;
 
+        // 페이지 바뀔 때마다 데이터 다시 설정
+        DataManager.instance.SetData();
+
         switch (category)
         {
             case Category.TEAMRANKING:

@@ -96,7 +96,7 @@ public class DataManager : MonoBehaviour
         SetData();
     }
 
-    void SetData()
+    public void SetData()
     {
         // 가짜 데이터
         //SetLeagueData();
@@ -146,6 +146,9 @@ public class DataManager : MonoBehaviour
 
     void SetRealTeamData()
     {
+        // 처음에 초기화 해주기(안해주면 계속 Add 됨)
+        fakeLeagueData.teams.Clear();
+
         for (int i = 0; i < DBManager.instance.leagueInfo.teams.Count; i++)
         {
             TeamData temp = new TeamData();
