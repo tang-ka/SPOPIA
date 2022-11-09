@@ -12,7 +12,7 @@ public class LcManager : MonoBehaviourPunCallbacks
     public InputField inputLeagueName;
     public InputField inputTeamNum;
     public InputField inputStartDate, inputEndDate;
-    public string btnMapType;
+    public string btnMapType, btnLeagueName;
 
     public Button btnCreateLeague;
     public Button btnJoinLeague;
@@ -74,15 +74,13 @@ public class LcManager : MonoBehaviourPunCallbacks
         DBManager.instance.SaveJsonLeagueData(leagueData, "LeagueData");
     }
 
-    public void JoinLeague()
+    public void CreateLeague()
     {
-        //PhotonNetwork.JoinRoom(inputLeagueName.text);
-
         RoomOptions leagueOption = new RoomOptions();
         leagueOption.MaxPlayers = 0;
         leagueOption.IsVisible = true;
 
-        int teamNum = int.Parse(inputTeamNum.text);
+        int teamNum = DBManager.instance.leagueInfo.teamNum;
 
         // 리그 정보 커스텀해서 넣고 싶다.
         // 1. 커스텀 정보 세팅
@@ -95,7 +93,19 @@ public class LcManager : MonoBehaviourPunCallbacks
         leagueOption.CustomRoomPropertiesForLobby = new string[] { "teamNum" };
 
         // 해당 옵선으로 리그(방)를 생성하고 싶다.
-        PhotonNetwork.CreateRoom(inputLeagueName.text, leagueOption, TypedLobby.Default);
+        PhotonNetwork.CreateRoom(DBManager.instance.leagueInfo.leagueName, leagueOption, TypedLobby.Default);
+    }
+
+    public void JoinLeague()
+    {
+        // 해당 리그에 user가 1명이라도 존재한다면,
+        // 그냥 Join
+        if(btnLeagueName != "")
+        {
+            PhotonNetwork.JoinRoom(btnLeagueName);
+        }
+        // 1명도 존재하지 않는다면, = Fail이 된다면(콜백함수 OnJoinRoomFailed)
+        // 방을 새로 생성!
 
         // 리그 데이터 받아오기
         DBManager.instance.GetData(DBManager.instance.testDBid2, "LeagueData");
@@ -121,8 +131,18 @@ public class LcManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-        PhotonNetwork.LoadLevel(btnMapType);
-        print("리그 진입에 성공했습니다.");
+        // 리그 생성할 때 (생성할 때는 btnMapType을 받아옴)
+        if(btnMapType != "")
+        {
+            PhotonNetwork.LoadLevel(btnMapType);
+            print("리그 진입에 성공했습니다.");
+        }
+        else
+        {
+            // 리그 참가할 때 (참가할 때는 LeagueDB에 있는 MapType을 받아옴)
+            PhotonNetwork.LoadLevel(DBManager.instance.leagueInfo.mapType);
+            print("리그 진입에 성공했습니다.");
+        }
     }
 
     // 방 입장 실패시 호출되는 함수
@@ -130,6 +150,10 @@ public class LcManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinRoomFailed(returnCode, message);
         print("리그 진입 실패" + returnCode + ", " + message);
+
+        // 1명도 존재하지 않는다면, = Fail이 된다면(콜백함수 OnJoinRoomFailed)
+        // 방을 새로 생성!
+        CreateLeague();
     }
     #endregion
 
@@ -162,13 +186,12 @@ public class LcManager : MonoBehaviourPunCallbacks
         t.text = DBManager.instance.leagueInfo.leagueName;*/
 
         // DB에서 Parsing이 끝날 때까지 다음으로 안넘어가게끔!!!!!
+        DBManager.instance.isParsed = false; // Parsing이 실행되게끔 false로 만들어주고 밑에서 함수를 실행시킨다.
         yield return new WaitUntil(() => DBManager.instance.isParsed == true);
 
         GameObject leagueItem = Instantiate(leagueItemFactory, contentTr);
 
         Text t = leagueItem.GetComponentInChildren<Text>();
         t.text = DBManager.instance.leagueInfo.leagueName;
-
-        DBManager.instance.isParsed = false;
     }
 }

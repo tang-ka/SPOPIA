@@ -3985,11 +3985,12 @@ MonoBehaviour:
   inputStartDate: {fileID: 735106890}
   inputEndDate: {fileID: 1545025199}
   btnMapType: 
+  btnLeagueName: 
   btnCreateLeague: {fileID: 377698082}
   btnJoinLeague: {fileID: 2033054023}
   leagueInfoPage: {fileID: 1318534849}
   contentTr: {fileID: 2110473221}
-  leagueItemFactory: {fileID: 7951816699259406696, guid: 944a2f1e87aad6c469dab94e61b4e897, type: 3}
+  leagueItemFactory: {fileID: 7951816699259406696, guid: 0e96783d311e45246ba39e8480175981, type: 3}
 --- !u!4 &1932603298
 Transform:
   m_ObjectHideFlags: 0
