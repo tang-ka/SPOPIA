@@ -23,7 +23,9 @@ public class SH_MouseControl : MonoBehaviour
     GraphicRaycaster m_gr;
     PointerEventData m_ped;
     List<RaycastResult> results;
-    RaycastResult piece = new RaycastResult();
+    //RaycastResult piece = new RaycastResult();
+    Transform slcPiece;
+
 
     public GameObject outlineFactory;
 
@@ -101,14 +103,17 @@ public class SH_MouseControl : MonoBehaviour
         {
             if (results[0].gameObject.CompareTag("BluePiece"))
             {
-                results[0].gameObject.transform.localScale = sizeUp;
-                piece = results[0];
+                slcPiece = results[0].gameObject.transform.parent;
+                slcPiece.localScale = sizeUp;
                 pieceFlag = true;
+
+                //results[0].gameObject.transform.localScale = sizeUp;
+                //piece = results[0];
             }
             else
             {
                 if (pieceFlag)
-                    piece.gameObject.transform.localScale = Vector3.one;
+                    slcPiece.localScale = Vector3.one;
             }
         }
     }
@@ -126,9 +131,9 @@ public class SH_MouseControl : MonoBehaviour
 
             if (isClickingM0 && !isClickedM0)
             {
-                curPosition = piece.gameObject.transform.localPosition;
-                curPosition = Vector3.Lerp(curPosition, targetPosition, Time.deltaTime * 10);
-                piece.gameObject.transform.localPosition = curPosition;
+                curPosition = slcPiece.localPosition;
+                curPosition = Vector3.Lerp(curPosition, targetPosition, Time.deltaTime * 60);
+                slcPiece.localPosition = curPosition;
             }
         }
     }
