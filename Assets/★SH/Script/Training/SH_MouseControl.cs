@@ -43,6 +43,8 @@ public class SH_MouseControl : MonoBehaviour
     void Update()
     {
         MouseInput();
+        print(isClickedM0 + ", " + isClickingM0);
+
         CanvaseRay();
         MovePiece();
     }
@@ -113,7 +115,14 @@ public class SH_MouseControl : MonoBehaviour
             else
             {
                 if (pieceFlag)
+                {
                     slcPiece.localScale = Vector3.one;
+
+                    if (!isClickedM0 && !isClickingM0)
+                        slcPiece = null;
+
+                    pieceFlag = false;
+                }
             }
         }
     }
@@ -123,18 +132,34 @@ public class SH_MouseControl : MonoBehaviour
 
     void MovePiece()
     {
+        if (slcPiece == null) return;
+
         if (results.Count > 0)
         {
             targetPosition.x = results[0].screenPosition.x - 960;
             targetPosition.y = results[0].screenPosition.y - 540;
             targetPosition.z = 0;
 
-            if (isClickingM0 && !isClickedM0)
+            if (!isClickedM0 && isClickingM0)
             {
                 curPosition = slcPiece.localPosition;
                 curPosition = Vector3.Lerp(curPosition, targetPosition, Time.deltaTime * 60);
                 slcPiece.localPosition = curPosition;
             }
+            //else if (!isClickedM0 && !isClickingM0)
+            //{
+            //    slcPiece = null;
+            //}
         }
+    }
+
+    void OpenWindow()
+    {
+
+    }
+
+    void InputText()
+    {
+
     }
 }
