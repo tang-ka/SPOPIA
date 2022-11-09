@@ -97,7 +97,6 @@ public class FormDataManager : MonoBehaviour
         formDic.Add("4-4-2", formation1);
         formDic.Add("4-2-3-1", formation2);
         formDic.Add("3-5-2", formation3);
-
     }
 
     public List<string> GetFormNames()

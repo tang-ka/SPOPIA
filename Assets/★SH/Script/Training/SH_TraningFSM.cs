@@ -41,7 +41,7 @@ public class SH_TraningFSM : MonoBehaviour
 
     private void TimeEXPLANATION()
     {
-        print("It is Explanation time~~!!");
+        //print("It is Explanation time~~!!");
     }
 
     private void TimePRACTICE()

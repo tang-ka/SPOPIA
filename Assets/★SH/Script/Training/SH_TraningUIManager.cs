@@ -9,6 +9,9 @@ using UnityEngine.UI;
 
 public class SH_TraningUIManager : MonoBehaviour
 {
+    public GameObject tacticalBoard;
+    public GameObject tool;
+
     public Button btnTacticalBoard;
     public Button btnTool;
     public TMP_Dropdown ddFormation;
@@ -36,14 +39,16 @@ public class SH_TraningUIManager : MonoBehaviour
         btnTacticalBoard.onClick.AddListener(OnClickTBOpen);
         btnTool.onClick.AddListener(OnClickToolOpen);
 
-        blueParent = btnTacticalBoard.transform.GetChild(0).Find("BlueTeam");
-        redParent = btnTacticalBoard.transform.GetChild(0).Find("RedTeam");
+        blueParent = tacticalBoard.transform.GetChild(0).Find("BlueTeam").transform;
+        redParent = tacticalBoard.transform.GetChild(0).Find("RedTeam").transform;
+
+        onValueChanged(0);
     }
 
     void Update()
     {
-        SlideMove(btnTacticalBoard, new Vector3(0, -1040, 0), isTBOpen);
-        SlideMove(btnTool, new Vector3(150, 0, 0), isToolOpen);
+        SlideMove(tacticalBoard, new Vector3(0, -1040, 0), isTBOpen);
+        SlideMove(tool, new Vector3(150, 0, 0), isToolOpen);
     }
 
     private void onValueChanged(int arg)
@@ -76,9 +81,9 @@ public class SH_TraningUIManager : MonoBehaviour
         isTBOpen = isToolOpen;
     }
 
-    public void SlideMove(Button btn, Vector3 onPos, bool isOn)
+    public void SlideMove(GameObject go, Vector3 onPos, bool isOn)
     {
-        Vector3 myPos = btn.GetComponent<RectTransform>().anchoredPosition;
+        Vector3 myPos = go.GetComponent<RectTransform>().anchoredPosition;
         Vector3 offPos = Vector3.zero;
 
         // 켜고싶다.
@@ -97,6 +102,6 @@ public class SH_TraningUIManager : MonoBehaviour
                 myPos = offPos;
         }
 
-        btn.GetComponent<RectTransform>().anchoredPosition = myPos;
+        go.GetComponent<RectTransform>().anchoredPosition = myPos;
     }
 }
