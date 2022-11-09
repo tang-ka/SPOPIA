@@ -61,7 +61,7 @@ public class CubeBtnManager : MonoBehaviour
                         // 리그 DB 업데이트
                         DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagueInfo, "LeagueData");
 
-                        // for문을 종료한다.
+                        // 찾는 것을 종료한다.
                         break;
                     }
                 }

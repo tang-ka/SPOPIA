@@ -45,6 +45,14 @@ public class LaManager : MonoBehaviourPunCallbacks
     {
 
         // 플레이어를 생성한다.
-        PhotonNetwork.Instantiate("Player", spawnPos, Quaternion.identity);
+        //PhotonNetwork.Instantiate("Player", spawnPos, Quaternion.identity);
+
+        // 아바타 다르게 생성(영수)
+        // 플레이어를 생성한다.
+        GameObject go = PhotonNetwork.Instantiate("Player", spawnPos, Quaternion.identity);
+        // 자식오브젝트 Body-Character-Geometry에 접근
+        GameObject goBaby = go.transform.Find("Body").gameObject.transform.Find("Character").gameObject.transform.Find("Geometry").gameObject;
+        // 자식오브젝트에 idx로 접근하여 해당 아바타를 켜준다.
+        goBaby.transform.GetChild(DBManager.instance.myData.avatarIdx).gameObject.SetActive(true);
     }
 }
