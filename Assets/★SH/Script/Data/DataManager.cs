@@ -194,7 +194,18 @@ public class DataManager : MonoBehaviour
 
     void SetRealUserData()
     {
+        for (int i = 0; i < fakeLeagueData.teams.Count; i++)
+        {
+            for (int j = 0; j < fakeLeagueData.teams[i].users.Count; j++)
+            {
+                UserData temp = new UserData();
+                temp.nickName = fakeLeagueData.teams[i].users[j].nickName;
 
+                temp.goal = fakeLeagueData.teams[i].users[j].goal;
+                temp.assist = fakeLeagueData.teams[i].users[j].assist;
+                temp.matchCount = fakeLeagueData.teams[i].users[j].matchCount;
+            }
+        }
     }
 
     void SetLeagueData()
