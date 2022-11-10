@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BluePiece
   - RedPiece
+  - Window
   layers:
   - Default
   - TransparentFX

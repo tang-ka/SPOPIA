@@ -6,16 +6,24 @@ using UnityEngine.UI;
 
 public class SH_MouseControl : MonoBehaviour
 {
+    public static SH_MouseControl instance;
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
+
     bool isClickingM0 = false;
     bool isClickingM1 = false;
     bool isClickedM0 = false;
     bool isClickedM1 = false;
 
     bool pieceFlag = false;
+    bool isWindowOpen = false;
 
     float clickTimeM0 = 0;
     float clickTimeM1 = 0;
-    float clickedTime = 0.1f;
+    float clickedTime = 0.2f;
 
     Vector3 sizeUp = Vector3.one * 1.2f;
 
@@ -24,8 +32,10 @@ public class SH_MouseControl : MonoBehaviour
     PointerEventData m_ped;
     List<RaycastResult> results;
     //RaycastResult piece = new RaycastResult();
-    Transform slcPiece;
 
+    Transform slcPiece;
+    Transform preSlcPiece;
+    GameObject preWindow;
 
     public GameObject outlineFactory;
 
@@ -105,23 +115,49 @@ public class SH_MouseControl : MonoBehaviour
         {
             if (results[0].gameObject.CompareTag("BluePiece"))
             {
+                preSlcPiece = slcPiece;
                 slcPiece = results[0].gameObject.transform.parent;
                 slcPiece.localScale = sizeUp;
                 pieceFlag = true;
 
-                //results[0].gameObject.transform.localScale = sizeUp;
-                //piece = results[0];
+                // 우클릭시 윈도우를 열고 싶다.
+                if (isClickedM1)
+                {
+                    if (preWindow != null)
+                    {
+                        preWindow.SetActive(false);
+                        //preWindow.transform.parent.localScale = Vector3.one;
+                    }
+
+                    preWindow = slcPiece.Find("Window").gameObject;
+                    preWindow.SetActive(true);
+                    isWindowOpen = true;
+                }
+
+            }
+            else if (results[0].gameObject.CompareTag("Window"))
+            {
+
             }
             else
             {
-                if (pieceFlag)
+                if (pieceFlag && !isWindowOpen)
                 {
                     slcPiece.localScale = Vector3.one;
 
+                    // 피스 밖에서 마우스 입력이 없으면 셀렉피스 초기화
                     if (!isClickedM0 && !isClickingM0)
                         slcPiece = null;
 
                     pieceFlag = false;
+
+                }
+                // 피스가 아닌 곳을 클릭하면 윈도우를 닫고 싶다.
+                if (isClickedM0 || isClickedM1)
+                {
+                    slcPiece.localScale = Vector3.one;
+                    preWindow.SetActive(false);
+                    isWindowOpen = false;
                 }
             }
         }
@@ -153,9 +189,9 @@ public class SH_MouseControl : MonoBehaviour
         }
     }
 
-    void OpenWindow()
+    void Window()
     {
-
+        
     }
 
     void InputText()
