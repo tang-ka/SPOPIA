@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class CubeBtnManager : MonoBehaviour
+public class CubeBtnManager : MonoBehaviourPunCallbacks
 {
     public GameObject teamInfoPage;
     public InputField inputTeamName, inputFormation;
@@ -61,10 +62,19 @@ public class CubeBtnManager : MonoBehaviour
                         // 리그 DB 업데이트
                         DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagueInfo, "LeagueData");
 
+                        // 개인 프로필 생성
+                        //PhotonNetwork.Instantiate("PlayerProfile", new Vector3(85, 8, 384.404388f), Quaternion.identity);
+
                         // 찾는 것을 종료한다.
                         break;
                     }
                 }
+            }
+
+            else if(hit.transform.gameObject.name == "testCube")
+            {
+                // 개인 프로필 생성
+                PhotonNetwork.Instantiate("PlayerProfile", new Vector3(85, 8, 384.404388f), Quaternion.identity);
             }
         }
     }
