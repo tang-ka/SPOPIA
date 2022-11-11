@@ -4717,6 +4717,7 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 9083367404687738557}
+  - {fileID: 7683606230025306327}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -4932,6 +4933,38 @@ PrefabInstance:
     - {fileID: 1762893162302547937, guid: ba164ae58c4be4b4a8f5e34e4bb887eb, type: 3}
     - {fileID: 3638259668736781498, guid: ba164ae58c4be4b4a8f5e34e4bb887eb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ba164ae58c4be4b4a8f5e34e4bb887eb, type: 3}
+--- !u!1 &1023542015295746555 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1425348900863795473, guid: ba164ae58c4be4b4a8f5e34e4bb887eb, type: 3}
+  m_PrefabInstance: {fileID: 2158210810908315882}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7683606230025306327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1023542015295746555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 4
+    SynchronizeType: 1
+    Name: Idle
+  - Type: 4
+    SynchronizeType: 1
+    Name: Walk
+  - Type: 1
+    SynchronizeType: 1
+    Name: Speed
+  m_SynchronizeLayers:
+  - SynchronizeType: 0
+    LayerIndex: 0
 --- !u!4 &1773090846759663744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 389783431082551402, guid: ba164ae58c4be4b4a8f5e34e4bb887eb, type: 3}
