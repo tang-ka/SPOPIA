@@ -13,10 +13,10 @@ public class SH_MouseControl : MonoBehaviour
             instance = this;
     }
 
-    bool isClickingM0 = false;
-    bool isClickingM1 = false;
-    bool isClickedM0 = false;
-    bool isClickedM1 = false;
+    public bool isClickingM0 = false;
+    public bool isClickingM1 = false;
+    public bool isClickedM0 = false;
+    public bool isClickedM1 = false;
 
     bool pieceFlag = false;
     bool isWindowOpen = false;
@@ -33,6 +33,7 @@ public class SH_MouseControl : MonoBehaviour
     List<RaycastResult> results;
     //RaycastResult piece = new RaycastResult();
 
+    public GameObject leftClickPiece;
     Transform slcPiece;
     Transform preSlcPiece;
     GameObject preWindow;
@@ -134,6 +135,12 @@ public class SH_MouseControl : MonoBehaviour
                     isWindowOpen = true;
                 }
 
+                // ÁÂÅ¬¸¯½Ã
+                if (isClickedM0)
+                {
+                    leftClickPiece = results[0].gameObject;
+                }
+
             }
             else if (results[0].gameObject.CompareTag("Window"))
             {
@@ -189,9 +196,9 @@ public class SH_MouseControl : MonoBehaviour
         }
     }
 
-    void Window()
+    RaycastResult GetReults(int idx)
     {
-        
+        return results[idx];
     }
 
     void InputText()

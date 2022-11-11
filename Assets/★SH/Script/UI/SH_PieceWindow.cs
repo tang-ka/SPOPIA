@@ -10,24 +10,45 @@ public class SH_PieceWindow : MonoBehaviour
     public Button btnInputText;
     public Button btnDistance;
     public Button btnArrow;
+    public Button btnArrowDelete;
 
     public InputField inputBackNumber;
     public InputField inputName;
 
     public Text backNumber;
-    public Text name;
+    public Text playerName;
 
     public GameObject window;
+
+    public Transform lineParent;
+    public GameObject lineFactory;
+
+    public Transform arrowParent;
+    public GameObject arrowFactory;
+
+    int arrowCount = 0;
 
     // 식당 예약인원 변경 전화하기
     void Start()
     {
+        lineParent = GameObject.Find("GroundBG").transform.Find("Line");
+        arrowParent = GameObject.Find("GroundBG").transform.Find("Arrow");
+
         btnInputText.onClick.AddListener(OnClickBtnInputText);
-        btnInputText.onClick.AddListener(OnClickBtnDistance);
-        btnInputText.onClick.AddListener(OnClickBtnArrow);
+        btnDistance.onClick.AddListener(OnClickBtnDistance);
+        btnArrow.onClick.AddListener(OnClickBtnArrow);
+        btnArrowDelete.onClick.AddListener(OnClickBtnArrowDelete);
 
         inputBackNumber.onSubmit.AddListener(OnSubmitInputBackNumber);
         inputName.onSubmit.AddListener(OnSubmitInputName);
+    }
+
+    void Update()
+    {
+        if (arrowCount > 0)
+            btnArrowDelete.gameObject.SetActive(true);
+        else
+            btnArrowDelete.gameObject.SetActive(false);
     }
 
     private void OnClickBtnInputText()
@@ -49,23 +70,104 @@ public class SH_PieceWindow : MonoBehaviour
 
     private void OnSubmitInputName(string s)
     {
-        name.text = s;
+        playerName.text = s;
 
         inputBackNumber.gameObject.SetActive(false);
         inputName.gameObject.SetActive(false);
 
         backNumber.gameObject.SetActive(true);
-        name.gameObject.SetActive(true);
+        playerName.gameObject.SetActive(true);
     }
 
-    private void OnClickBtnDistance()
+    GameObject first, second;
+
+    public void OnClickBtnDistance()
     {
-        print("Distance Button");
+        window.SetActive(false);
+
+        SH_MouseControl.instance.leftClickPiece = null;
+
+        print("거리계산");
+        first = this.gameObject;
+        StartCoroutine(SelectSecond());
     }
+
+    IEnumerator SelectSecond()
+    {
+        print("코루틴 시작");
+        
+        yield return new WaitUntil(() => SH_MouseControl.instance.leftClickPiece != null);
+
+        second = SH_MouseControl.instance.leftClickPiece;
+        GameObject line = Instantiate(lineFactory, lineParent);
+        line.GetComponent<SH_DistanceLine>().Init(first, second);
+
+        second = null;
+        first = null;
+        print("코루틴 끝");
+    }
+
+    GameObject start;
+    Vector3 end;
+    List<GameObject> arrowList = new List<GameObject>();
 
     private void OnClickBtnArrow()
     {
+        arrowCount++;
+
+        window.SetActive(false);
         print("Arrow Button");
+        start = this.gameObject;
+
+        StartCoroutine(SelectEnd());
     }
 
+    IEnumerator SelectEnd()
+    {
+        float dist;
+        GameObject arrow = Instantiate(arrowFactory, arrowParent);
+        Text distance = arrow.transform.GetChild(0).GetComponent<Text>();
+
+        while (true)
+        {
+            yield return null;
+
+            print("코루틴 시작");
+            end = Input.mousePosition;
+
+            arrow.GetComponent<RectTransform>().anchoredPosition = start.transform.localPosition;
+            arrow.transform.up = start.transform.position - end;
+
+            dist = Vector3.Distance(start.transform.position, end);
+            arrow.GetComponent<RectTransform>().sizeDelta = new Vector2(3, dist);
+
+            dist = Mathf.Round(dist);
+            dist /= 10;
+            distance.text = dist.ToString() + "m";  
+            distance.transform.up = Vector3.up;
+
+            if (SH_MouseControl.instance.isClickedM0)
+            {
+                arrow.GetComponent<SH_Arrow>().Init(start, end);
+                arrowList.Add(arrow);
+                break;
+            }
+            // 우클릭시 arrow 생성 취소
+            else if (SH_MouseControl.instance.isClickedM1)
+            {
+                Destroy(arrow);
+                break;
+            }
+        }
+    }
+
+    private void OnClickBtnArrowDelete()
+    {
+        arrowCount = 0;
+
+        for (int i = 0; i < arrowList.Count; i++)
+        {
+            Destroy(arrowList[i].gameObject);
+        }
+    }
 }
