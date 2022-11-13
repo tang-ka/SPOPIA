@@ -50,4 +50,7 @@ EditorBuildSettings:
   - enabled: 1
     path: "Assets/\u2605YS/Scenes/YS_SelectScene.unity"
     guid: c04de3fa0cec1d444bafc04e459d0c43
+  - enabled: 1
+    path: "Assets/\u2605YS/Scenes/YS_ToPlayPractice.unity"
+    guid: 6b75e2dd185be7443859ba266348b9d5
   m_configObjects: {}

@@ -34,7 +34,7 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
             // 팀 생성
             if (hit.transform.gameObject.name == "CubeButton")
             {
-                // 팀정보 세팅
+                /*// 팀정보 세팅
                 TeamData teamData = new TeamData();
                 teamData.teamName = inputTeamName.text;
                 teamData.formation = inputFormation.text;
@@ -43,7 +43,17 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
                 DBManager.instance.leagueInfo.teams.Add(teamData);
 
                 // 리그 DB 업데이트
-                DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagueInfo, "LeagueData");
+                DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagueInfo, "LeagueData");*/
+
+                // teamInfoPage 열기
+                if(teamInfoPage.activeSelf == false)
+                {
+                    teamInfoPage.SetActive(true);
+                }
+                else
+                {
+                    teamInfoPage.SetActive(false);
+                }
             }
 
             else if (hit.transform.gameObject.name == "AddUserButton")
@@ -63,7 +73,9 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
                         DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagueInfo, "LeagueData");
 
                         // 개인 프로필 생성
-                        //PhotonNetwork.Instantiate("PlayerProfile", new Vector3(85, 8, 384.404388f), Quaternion.identity);
+                        PhotonNetwork.Instantiate("PlayerProfile", new Vector3(85, 8, 384.404388f), Quaternion.Euler(0, 90, 0));
+
+                        print("개인 프로필 생성!");
 
                         // 찾는 것을 종료한다.
                         break;
@@ -71,11 +83,30 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
                 }
             }
 
-            else if(hit.transform.gameObject.name == "testCube")
+            /*else if(hit.transform.gameObject.name == "testCube")
             {
                 // 개인 프로필 생성
                 PhotonNetwork.Instantiate("PlayerProfile", new Vector3(85, 8, 384.404388f), Quaternion.identity);
-            }
+            }*/
         }
+    }
+
+    public void AddTeam()
+    {
+        // 팀정보 세팅
+        TeamData teamData = new TeamData();
+        teamData.teamName = inputTeamName.text;
+        teamData.formation = inputFormation.text;
+
+        // 리그 정보에 팀 추가
+        DBManager.instance.leagueInfo.teams.Add(teamData);
+
+        // 리그 DB 업데이트
+        DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagueInfo, "LeagueData");
+    }
+
+    public void Cancel()
+    {
+        teamInfoPage.SetActive(false);
     }
 }
