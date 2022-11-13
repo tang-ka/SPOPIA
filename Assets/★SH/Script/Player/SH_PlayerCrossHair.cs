@@ -23,7 +23,8 @@ public class SH_PlayerCrossHair : MonoBehaviourPun
         }
 
         //screenViewCanvas.SetActive(true);
-        dataInputTable.SetActive(false);
+        if (dataInputTable != null)
+            dataInputTable.SetActive(false);
         fsm = GetComponent<SH_PlayerFSM>();
     }
 
