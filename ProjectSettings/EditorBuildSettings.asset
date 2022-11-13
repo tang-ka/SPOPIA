@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/LoginScene.unity
+    guid: 6069b35003d5e684294155aca3dc94c5
+  - enabled: 1
     path: Assets/Scenes/AvatarCreateScene.unity
     guid: ac94eb98bca81cd49bcce1583793e221
   - enabled: 1
@@ -17,9 +20,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LockerRoomScene.unity
     guid: 64e538b9c59695e478f95e8d12056b95
-  - enabled: 1
-    path: Assets/Scenes/LoginScene.unity
-    guid: 6069b35003d5e684294155aca3dc94c5
   - enabled: 1
     path: Assets/Scenes/PlayGroundScene.unity
     guid: a298f0ee412fc6d4ca14b98ce97df912
