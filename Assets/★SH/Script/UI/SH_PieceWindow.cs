@@ -163,6 +163,7 @@ public class SH_PieceWindow : MonoBehaviour
 
     private void OnClickBtnArrowDelete()
     {
+        window.SetActive(false);
         arrowCount = 0;
 
         for (int i = 0; i < arrowList.Count; i++)
