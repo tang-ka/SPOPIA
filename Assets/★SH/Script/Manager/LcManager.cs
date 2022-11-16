@@ -29,7 +29,10 @@ public class LcManager : MonoBehaviourPunCallbacks
     void Start()
     {
         // 리그 목록 연동
-        StartCoroutine(CreateLeagueList());
+        for(int i = 0; i < DBManager.instance.leagues.leagueDatas.Count; i++)
+        {
+            StartCoroutine(CreateLeagueList(i));
+        }
     }
 
     void Update()
@@ -71,7 +74,8 @@ public class LcManager : MonoBehaviourPunCallbacks
         leagueData.mapType = btnMapType;
 
         // DB에 리그데이터 저장
-        DBManager.instance.SaveJsonLeagueData(leagueData, "LeagueData");
+        DBManager.instance.leagues.leagueDatas.Add(leagueData);
+        DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagues, "LeagueData");
     }
 
     public void CreateLeague()
@@ -107,8 +111,18 @@ public class LcManager : MonoBehaviourPunCallbacks
         // 1명도 존재하지 않는다면, = Fail이 된다면(콜백함수 OnJoinRoomFailed)
         // 방을 새로 생성!
 
-        // 리그 데이터 받아오기
+        /*// 리그 데이터 받아오기
         DBManager.instance.GetData(DBManager.instance.testDBid2, "LeagueData");
+        for(int i = 0; i < DBManager.instance.leagues.leagueDatas.Count; i++)
+        {
+            // 누른 리그 데이터를 리그 리스트에서 찾아서 leagueInfo에 넣어주기
+            if(DBManager.instance.leagues.leagueDatas[i].leagueName == btnLeagueName)
+            {
+                DBManager.instance.leagueInfo = DBManager.instance.leagues.leagueDatas[i];
+
+                break;
+            }
+        }*/
     }
 
     #region 콜백함수 (방생성 성공, 실패)
@@ -137,12 +151,12 @@ public class LcManager : MonoBehaviourPunCallbacks
             PhotonNetwork.LoadLevel(btnMapType);
             print("리그 진입에 성공했습니다.");
         }
-        else
+        /*else
         {
             // 리그 참가할 때 (참가할 때는 LeagueDB에 있는 MapType을 받아옴)
             PhotonNetwork.LoadLevel(DBManager.instance.leagueInfo.mapType);
             print("리그 진입에 성공했습니다.");
-        }
+        }*/
     }
 
     // 방 입장 실패시 호출되는 함수
@@ -176,7 +190,7 @@ public class LcManager : MonoBehaviourPunCallbacks
 
     // 리그 목록 연동(리그DB에 있는 데이터 받아와서 목록에 띄우기)
     public GameObject leagueItemFactory;
-    IEnumerator CreateLeagueList()
+    IEnumerator CreateLeagueList(int idx)
     {
         // 리그아이템 만든다.
         /*Button leagueItem = Resources.Load<Button>("YS/LeagueItem");
@@ -192,6 +206,6 @@ public class LcManager : MonoBehaviourPunCallbacks
         GameObject leagueItem = Instantiate(leagueItemFactory, contentTr);
 
         Text t = leagueItem.GetComponentInChildren<Text>();
-        t.text = DBManager.instance.leagueInfo.leagueName;
+        t.text = DBManager.instance.leagues.leagueDatas[idx].leagueName;
     }
 }

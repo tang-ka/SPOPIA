@@ -77,6 +77,12 @@ public class LeagueData
     public string mapType;
 }
 
+[System.Serializable]
+public class LeagueArray
+{
+    public List<LeagueData> leagueDatas;
+}
+
 public class DataManager : MonoBehaviour
 {
     public static DataManager instance;
