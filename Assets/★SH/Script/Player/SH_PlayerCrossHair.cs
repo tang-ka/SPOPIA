@@ -62,6 +62,11 @@ public class SH_PlayerCrossHair : MonoBehaviourPun
                     fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
                 }
             }
+            else if (hit.transform.gameObject.name == "MovePracticeCube")
+            {
+                if (Input.GetMouseButtonDown(0))
+                    ShiftPosition();
+            }
             else
             {
                 if (sphere == null) return;
@@ -73,5 +78,10 @@ public class SH_PlayerCrossHair : MonoBehaviourPun
             if (sphere == null) return;
             sphere.enabled = false;
         }
+    }
+
+    public void ShiftPosition()
+    {
+        print("¿Ãµø!!!!!");
     }
 }

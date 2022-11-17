@@ -64,4 +64,6 @@ public class LaManager : MonoBehaviourPunCallbacks
     {
         PhotonView.Find(ID).gameObject.transform.Find("Body").gameObject.transform.Find("Character").gameObject.transform.Find("Geometry").gameObject.transform.GetChild(idx).gameObject.SetActive(true);
     }
+
+
 }

@@ -23,7 +23,7 @@ public class SH_MouseControl : MonoBehaviour
 
     float clickTimeM0 = 0;
     float clickTimeM1 = 0;
-    float clickedTime = 0.2f;
+    float clickedTime = 0.1f;
 
     Vector3 sizeUp = Vector3.one * 1.2f;
 

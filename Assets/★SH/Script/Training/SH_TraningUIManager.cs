@@ -14,6 +14,7 @@ public class SH_TraningUIManager : MonoBehaviour
 
     public Button btnTacticalBoard;
     public Button btnTool;
+    public Button btnPracticeStart;
     public TMP_Dropdown ddFormation;
 
     public List<string> optionList = new List<string>();
@@ -27,6 +28,8 @@ public class SH_TraningUIManager : MonoBehaviour
     bool isTBOpen = true;
     bool isToolOpen = true;
 
+    SH_TraningFSM trFSM;
+
     void Start()
     {
         // 드랍다운 옵션을 초기화 하고 싶다.
@@ -38,9 +41,12 @@ public class SH_TraningUIManager : MonoBehaviour
         ddFormation.onValueChanged.AddListener(onValueChanged);
         btnTacticalBoard.onClick.AddListener(OnClickTBOpen);
         btnTool.onClick.AddListener(OnClickToolOpen);
+        btnPracticeStart.onClick.AddListener(OnClickPracticeStart);
 
         blueParent = tacticalBoard.transform.GetChild(0).Find("BlueTeam").transform;
         redParent = tacticalBoard.transform.GetChild(0).Find("RedTeam").transform;
+
+        trFSM = GetComponent<SH_TraningFSM>();
 
         onValueChanged(0);
     }
@@ -73,12 +79,23 @@ public class SH_TraningUIManager : MonoBehaviour
     {
         isTBOpen = !isTBOpen;
         isToolOpen = isTBOpen;
+
+        if (isTBOpen)
+            trFSM.instance.ChangeTime(SH_TraningFSM.Time.EXPLANATION);
+        else
+            trFSM.instance.ChangeTime(SH_TraningFSM.Time.PRACTICE);
     }
 
     public void OnClickToolOpen()
     {
         isToolOpen = !isToolOpen;
         isTBOpen = isToolOpen;
+    }
+
+    public void OnClickPracticeStart()
+    {
+        trFSM.instance.ChangeTime(SH_TraningFSM.Time.PRACTICE);
+        OnClickTBOpen();
     }
 
     public void SlideMove(GameObject go, Vector3 onPos, bool isOn)

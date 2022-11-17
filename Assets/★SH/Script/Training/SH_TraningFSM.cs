@@ -6,6 +6,13 @@ using UnityEngine;
 
 public class SH_TraningFSM : MonoBehaviour
 {
+    public SH_TraningFSM instance;
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+    }
+
     public enum Time
     {
         EXPLANATION,
@@ -47,13 +54,11 @@ public class SH_TraningFSM : MonoBehaviour
     private void TimePRACTICE()
     {
         print("It is Practice time~~!!");
-
     }
 
     private void TimeFEEDBACK()
     {
         print("It is Feedback time~~!!");
-
     }
 
     public void ChangeTime(Time t)

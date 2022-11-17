@@ -15,6 +15,8 @@ public class SH_PlayerFSM : MonoBehaviourPun
     {
         NORMAL,
         UIPLAYING,
+        TEACH,
+        LEARN,
     }
     public State state = State.NORMAL;
     public State preState;

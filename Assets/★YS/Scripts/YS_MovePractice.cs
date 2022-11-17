@@ -31,7 +31,7 @@ public class YS_MovePractice : MonoBehaviour
             // ÆÀ »ý¼º
             if (hit.transform.gameObject.name == "MovePracticeCube")
             {
-                SceneManager.LoadScene("PlayGroundScene");
+                //PhotonNetwork.LoadLevel("PlayGroundScene");
             }
         }
     }
