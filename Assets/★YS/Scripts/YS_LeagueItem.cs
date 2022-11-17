@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class YS_LeagueItem : MonoBehaviour
 {
     public Button btn;
+    public Text name;
     LcManager lcManager;
 
     // Start is called before the first frame update
@@ -25,7 +26,7 @@ public class YS_LeagueItem : MonoBehaviour
 
     public void OnClick()
     {
-        lcManager.btnLeagueName = btn.GetComponent<Text>().text;
+        lcManager.btnLeagueName = name.GetComponent<Text>().text;
 
         // 리그 데이터 받아오기
         DBManager.instance.GetData(DBManager.instance.testDBid2, "LeagueData");

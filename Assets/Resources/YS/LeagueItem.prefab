@@ -136,6 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   btn: {fileID: 7345247109659173316}
+  name: {fileID: 2385917923098743542}
 --- !u!1 &7957418811002819035
 GameObject:
   m_ObjectHideFlags: 0
