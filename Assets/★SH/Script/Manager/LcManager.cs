@@ -160,12 +160,12 @@ public class LcManager : MonoBehaviourPunCallbacks
             PhotonNetwork.LoadLevel(btnMapType);
             print("리그 진입에 성공했습니다.");
         }
-        /*else
+        else
         {
             // 리그 참가할 때 (참가할 때는 LeagueDB에 있는 MapType을 받아옴)
             PhotonNetwork.LoadLevel(DBManager.instance.leagueInfo.mapType);
             print("리그 진입에 성공했습니다.");
-        }*/
+        }
     }
 
     // 방 입장 실패시 호출되는 함수
