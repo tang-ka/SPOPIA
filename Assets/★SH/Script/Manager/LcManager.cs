@@ -105,7 +105,7 @@ public class LcManager : MonoBehaviourPunCallbacks
         // 2. 커스텀 정보를 공개하고 싶다.
         leagueOption.CustomRoomPropertiesForLobby = new string[] { "teamNum" };
 
-        // 해당 옵선으로 리그(방)를 생성하고 싶다.
+        // 해당 옵션으로 리그(방)를 생성하고 싶다.
         PhotonNetwork.CreateRoom(DBManager.instance.leagueInfo.leagueName, leagueOption, TypedLobby.Default);
     }
 
@@ -136,10 +136,14 @@ public class LcManager : MonoBehaviourPunCallbacks
 
     #region 콜백함수 (방생성 성공, 실패)
     // 방 생성 완료
+  
+
     public override void OnCreatedRoom()
     {
         base.OnCreatedRoom();
         print("해당 리그를 생성하였습니다.");
+
+
     }
     // 방 생성 실패
     public override void OnCreateRoomFailed(short returnCode, string message)
