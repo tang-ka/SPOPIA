@@ -44,7 +44,7 @@ public class DBManager : MonoBehaviour
     // DataBase들
     public string testDBid = "A45FE526BA86DD94"; // teamDataBase TEST
     public string testDBid2 = "2F2D067A082E0E55"; // LeageDataBase TEST
-    //public string testDBid3 = "8B9D85404288CD65"; // UserDataBase TEST -> UserData는 자기가 들고 다닐건데...?
+    public string testDBid3 = "8B9D85404288CD65"; // Formation TEST
     public string testDBid4 = "1F7F85444A2EE882"; // MapCustomDataBase TEST
 
     // 플레이어 관리
