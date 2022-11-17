@@ -25,6 +25,19 @@ public class YS_LeagueItem : MonoBehaviour
 
     public void OnClick()
     {
-        lcManager.btnLeagueName = DBManager.instance.leagueInfo.leagueName;
+        lcManager.btnLeagueName = btn.GetComponent<Text>().text;
+
+        // 리그 데이터 받아오기
+        DBManager.instance.GetData(DBManager.instance.testDBid2, "LeagueData");
+        for (int i = 0; i < DBManager.instance.leagues.leagueDatas.Count; i++)
+        {
+            // 누른 해당 리그 데이터를 리그 리스트에서 찾아서 leagueInfo에 넣어주기
+            if (DBManager.instance.leagues.leagueDatas[i].leagueName == lcManager.btnLeagueName)
+            {
+                DBManager.instance.leagueInfo = DBManager.instance.leagues.leagueDatas[i];
+
+                break;
+            }
+        }
     }
 }

@@ -71,6 +71,7 @@ public class DBManager : MonoBehaviour
     public UserData myData;
 
     // LeagueData 선언
+    public LeagueArray leagues;
     public LeagueData leagueInfo;
     public bool isParsed = false;
 
@@ -145,7 +146,7 @@ public class DBManager : MonoBehaviour
         }
         else if (key == "LeagueData")
         {
-            leagueInfo = JsonUtility.FromJson<LeagueData>(result.Data[key].Value.ToString());
+            leagues = JsonUtility.FromJson<LeagueArray>(result.Data[key].Value.ToString());
         }
 
         isParsed = true;
@@ -159,10 +160,10 @@ public class DBManager : MonoBehaviour
         SetTeamData(dataDic);
     }
 
-    public void SaveJsonLeagueData(LeagueData leagueData, string key) // 리그 생성할 때, LeagueData를 기반으로 LeagueListDB에 넣어주는 부분
+    public void SaveJsonLeagueData(LeagueArray leagueArray, string key) // 리그 생성할 때, LeagueData를 기반으로 LeagueListDB에 넣어주는 부분
     {
         Dictionary<string, string> dataDic = new Dictionary<string, string>();
-        dataDic.Add(key, JsonUtility.ToJson(leagueData));
+        dataDic.Add(key, JsonUtility.ToJson(leagueArray));
         SetLeagueData(dataDic);
     }
 

@@ -70,7 +70,18 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
                         info.users.Add(DBManager.instance.myData);
 
                         // 리그 DB 업데이트
-                        DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagueInfo, "LeagueData");
+                        for (int j = 0; j < DBManager.instance.leagues.leagueDatas.Count; j++)
+                        {
+                            if (DBManager.instance.leagues.leagueDatas[j].leagueName == DBManager.instance.leagueInfo.leagueName)
+                            {
+                                DBManager.instance.leagues.leagueDatas[j] = DBManager.instance.leagueInfo;
+
+                                break;
+                            }
+                        }
+
+                        // DB에 수정사항 요청
+                        DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagues, "LeagueData");
 
                         // 개인 프로필 생성
                         PhotonNetwork.Instantiate("PlayerProfile", new Vector3(85, 8, 384.404388f), Quaternion.Euler(0, 90, 0));
@@ -102,7 +113,18 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         DBManager.instance.leagueInfo.teams.Add(teamData);
 
         // 리그 DB 업데이트
-        DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagueInfo, "LeagueData");
+        for (int i = 0; i < DBManager.instance.leagues.leagueDatas.Count; i++)
+        {
+            if (DBManager.instance.leagues.leagueDatas[i].leagueName == DBManager.instance.leagueInfo.leagueName)
+            {
+                DBManager.instance.leagues.leagueDatas[i] = DBManager.instance.leagueInfo;
+
+                break;
+            }
+        }
+
+        // DB에 수정사항 요청
+        DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagues, "LeagueData");
     }
 
     public void Cancel()
