@@ -22,5 +22,10 @@ public class SH_CheatKey : MonoBehaviour
             id.text = "gur0907@hanyang.ac.kr";
             pw.text = "gur135";
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            id.text = "a@gmail.com";
+            pw.text = "123456";
+        }
     }
 }

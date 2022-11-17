@@ -86,6 +86,8 @@ public class SH_PlayerRot : MonoBehaviourPun
 
     public void CusorControll(CursorLockMode lockMode, bool isVisible)
     {
+        if (photonView.IsMine == false) return;
+
         Cursor.lockState = lockMode;
         Cursor.visible = isVisible;
     }

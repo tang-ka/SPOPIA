@@ -84,7 +84,6 @@ public class SH_TraningFSM : MonoBehaviour
             case Time.FEEDBACK:
                 break;
         }
-
     }
 
     public void EndTime(Time t)

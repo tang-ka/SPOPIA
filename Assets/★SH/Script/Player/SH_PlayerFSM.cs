@@ -43,13 +43,20 @@ public class SH_PlayerFSM : MonoBehaviourPun
             case State.UIPLAYING:
                 StateUIPLAYING();
                 break;
+
+            case State.TEACH:
+                StateTEACH();
+                break;
+
+            case State.LEARN:
+                StateLEARN();
+                break;
         }
     }
 
     private void StateNORMAL()
     {
         pm.PlayerMove();
-        pr.CusorControll(CursorLockMode.Locked, false);
 
         if (pr.isTabClick)
             pr.PlayerRot(ViewState.FIRST, false);
@@ -59,14 +66,24 @@ public class SH_PlayerFSM : MonoBehaviourPun
 
     private void StateUIPLAYING()
     {
-        pr.CusorControll(CursorLockMode.None, true);
-
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             pch.dataInputTable.SetActive(false);
             ChangeState(State.NORMAL);
         }
     }
+
+    private void StateTEACH()
+    {
+        
+    }
+
+    private void StateLEARN()
+    {
+        pm.PlayerMove();
+        pr.PlayerRot(ViewState.THIRD, false);
+    }
+
 
     public void ChangeState(State s)
     {
@@ -90,9 +107,19 @@ public class SH_PlayerFSM : MonoBehaviourPun
         switch (state)
         {
             case State.NORMAL:
+                pr.CusorControll(CursorLockMode.Locked, false);
                 break;
 
             case State.UIPLAYING:
+                pr.CusorControll(CursorLockMode.None, true);
+                break;
+
+            case State.TEACH:
+                pr.CusorControll(CursorLockMode.None, true);
+                break;
+
+            case State.LEARN:
+                pr.CusorControll(CursorLockMode.Locked, false);
                 break;
         }
     }
@@ -106,6 +133,12 @@ public class SH_PlayerFSM : MonoBehaviourPun
                 break;
 
             case State.UIPLAYING:
+                break;
+
+            case State.TEACH:
+                break;
+
+            case State.LEARN:
                 break;
         }
     }

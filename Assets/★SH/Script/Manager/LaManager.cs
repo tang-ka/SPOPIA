@@ -13,6 +13,9 @@ public class LaManager : MonoBehaviourPunCallbacks
             instance = this;
     }
 
+    public GameObject leagueAreaCanvas;
+    public GameObject playgroundCanvas;
+
     // Spawn Position
     public Vector3 spawnPos;
 
@@ -29,6 +32,9 @@ public class LaManager : MonoBehaviourPunCallbacks
         SettingSpawnOption();
 
         CreateUser();
+
+        leagueAreaCanvas.SetActive(true);
+        playgroundCanvas.SetActive(false);
     }
 
     void Update()
@@ -65,5 +71,48 @@ public class LaManager : MonoBehaviourPunCallbacks
         PhotonView.Find(ID).gameObject.transform.Find("Body").gameObject.transform.Find("Character").gameObject.transform.Find("Geometry").gameObject.transform.GetChild(idx).gameObject.SetActive(true);
     }
 
+    public void CanvasSwitch()
+    {
+        if (leagueAreaCanvas.activeSelf != playgroundCanvas.activeSelf)
+        {
+            leagueAreaCanvas.SetActive(!leagueAreaCanvas.activeSelf);
+            playgroundCanvas.SetActive(!playgroundCanvas.activeSelf);
+        }
+        else
+        {
+            print("캔버스 상태가 같습니다. 확인이 필요합니다.");
+        }
+    }
+
+    int trainNum = 0;
+
+    public void PlusTrainNum()
+    {
+        photonView.RPC("RPC_PlusTrainNum", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void RPC_PlusTrainNum()
+    {
+        trainNum++;
+    }
+
+    public void MinusTrainNum()
+    {
+        photonView.RPC("RPC_MinusTrainNum", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void RPC_MinusTrainNum()
+    {
+        trainNum--;
+
+        if (trainNum < 0)
+            trainNum = 0;
+    }
+    public int GetTrainNum()
+    {
+        return trainNum;
+    }
 
 }
