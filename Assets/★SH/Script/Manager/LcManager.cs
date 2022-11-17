@@ -28,8 +28,17 @@ public class LcManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        StartCoroutine(StartLeagueList());
+    }
+
+    IEnumerator StartLeagueList()
+    {
+        // DB에서 Parsing이 끝날 때까지 다음으로 안넘어가게끔!!!!!
+        DBManager.instance.isParsed = false; // Parsing이 실행되게끔 false로 만들어주고 밑에서 함수를 실행시킨다.
+        yield return new WaitUntil(() => DBManager.instance.isParsed == true);
+
         // 리그 목록 연동
-        for(int i = 0; i < DBManager.instance.leagues.leagueDatas.Count; i++)
+        for (int i = 0; i < DBManager.instance.leagues.leagueDatas.Count; i++)
         {
             StartCoroutine(CreateLeagueList(i));
         }
@@ -200,12 +209,14 @@ public class LcManager : MonoBehaviourPunCallbacks
         t.text = DBManager.instance.leagueInfo.leagueName;*/
 
         // DB에서 Parsing이 끝날 때까지 다음으로 안넘어가게끔!!!!!
-        DBManager.instance.isParsed = false; // Parsing이 실행되게끔 false로 만들어주고 밑에서 함수를 실행시킨다.
-        yield return new WaitUntil(() => DBManager.instance.isParsed == true);
+        //DBManager.instance.isParsed = false; // Parsing이 실행되게끔 false로 만들어주고 밑에서 함수를 실행시킨다.
+        //yield return new WaitUntil(() => DBManager.instance.isParsed == true);
 
         GameObject leagueItem = Instantiate(leagueItemFactory, contentTr);
 
         Text t = leagueItem.GetComponentInChildren<Text>();
         t.text = DBManager.instance.leagues.leagueDatas[idx].leagueName;
+
+        yield return null;
     }
 }
