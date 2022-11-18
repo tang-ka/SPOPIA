@@ -72,6 +72,8 @@ public class SH_TrainingUIManager : MonoBehaviour
         {
             GameObject bluePiece = Instantiate(bluefactory, blueParent);
             bluePiece.transform.localPosition = selected.pos[i];
+
+            FormationManager.instance.pieces[i] = bluePiece;
         }
     }
 
