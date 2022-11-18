@@ -125,6 +125,9 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
 
         // DB에 수정사항 요청
         DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagues, "LeagueData");
+
+        // 경기장에 팀명 띄우기
+
     }
 
     public void Cancel()

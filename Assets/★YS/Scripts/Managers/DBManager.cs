@@ -75,6 +75,9 @@ public class DBManager : MonoBehaviour
     public LeagueData leagueInfo;
     public bool isParsed = false;
 
+    // FormationData 선언
+    public FormationArrayJson formationDatas;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -148,6 +151,10 @@ public class DBManager : MonoBehaviour
         {
             leagues = JsonUtility.FromJson<LeagueArray>(result.Data[key].Value.ToString());
         }
+        else if (key == myData.teamName)
+        {
+            formationDatas = JsonUtility.FromJson<FormationArrayJson>(result.Data[key].Value.ToString());
+        }
 
         isParsed = true;
     }
@@ -179,6 +186,13 @@ public class DBManager : MonoBehaviour
         Dictionary<string, string> dataDic = new Dictionary<string, string>();
         dataDic.Add(key, JsonUtility.ToJson(userData));
         SetUserData(dataDic);
+    }
+
+    public void SaveJsonFormation(FormationArrayJson formationData, string key)
+    {
+        Dictionary<string, string> dataDic = new Dictionary<string, string>();
+        dataDic.Add(key, JsonUtility.ToJson(formationData));
+        SetMapData(dataDic);
     }
 
     public void UpdateTeamData(TeamData teamData, string key) // 팀 데이터 수정
@@ -228,6 +242,13 @@ public class DBManager : MonoBehaviour
     {
         // 서버용
         var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = testDBid2, Data = leagueData, Permission = PlayFab.AdminModels.UserDataPermission.Public };
+        PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
+    }
+
+    public void SetFormation(Dictionary<string, string> formationData)
+    {
+        // 서버용
+        var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = testDBid3, Data = formationData, Permission = PlayFab.AdminModels.UserDataPermission.Public };
         PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
     }
 
