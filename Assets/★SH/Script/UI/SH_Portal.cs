@@ -30,8 +30,10 @@ public class SH_Portal : MonoBehaviourPun
             dir.y = 0;
             dir.Normalize();
 
-            float angle = Vector3.Angle(dir, enterBG.transform.right);
-            enterBG.transform.eulerAngles = new Vector3(90, 0, angle);
+            enterBG.transform.forward = dir;
+
+            //float angle = Vector3.Angle(dir, enterBG.transform.right);
+            //enterBG.transform.eulerAngles = new Vector3(90, 0, angle);
         }
     }
 

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using JetBrains.Annotations;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
 {
@@ -14,6 +16,11 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
     public GameObject screenViewCanvas;
 
     SH_PlayerFSM fsm;
+
+    Canvas m_canvas;
+    GraphicRaycaster m_gr;
+    PointerEventData m_ped;
+    List<RaycastResult> results;
 
     void Start()
     {
@@ -29,6 +36,8 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
 
 
         fsm = GetComponent<SH_PlayerFSM>();
+
+        m_ped = new PointerEventData(null);
     }
 
     MeshRenderer sphere;
@@ -72,6 +81,17 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
                 {
                     dataInputTable.SetActive(true);
                     fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
+                }
+            }
+            else if (hit.transform.gameObject.name == "EnterBG")
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Canvas c = hit.transform.parent.transform.Find("Canvas").GetComponent<Canvas>();
+                    m_gr = m_canvas.GetComponent<GraphicRaycaster>();
+                    UIRay(c, ray.origin);
+                    //ShiftPosition();
+                    //EnterPlaygroundScene();
                 }
             }
             //else if (hit.transform.gameObject.name == "MovePracticeCube")
@@ -130,6 +150,19 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
     //    }
     //    GetComponent<CharacterController>().enabled = true;
     //}
+
+    public void UIRay(Canvas c, Vector3 origin)
+    {
+        m_ped.position = origin;
+        //m_ped.position = Input.mousePosition;
+        results = new List<RaycastResult>();
+        m_gr.Raycast(m_ped, results);
+
+        if (results.Count > 0)
+        {
+            print(results[0].gameObject.name);
+        }
+    }
 
     public static string roomName;
 
