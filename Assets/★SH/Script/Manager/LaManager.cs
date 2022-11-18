@@ -68,51 +68,51 @@ public class LaManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void RpcCreateUser(int ID, int idx)
     {
-        PhotonView.Find(ID).gameObject.transform.Find("Body").gameObject.transform.Find("Character").gameObject.transform.Find("Geometry").gameObject.transform.GetChild(idx).gameObject.SetActive(true);
+        PhotonView.Find(ID).transform.Find("Body").transform.Find("Character").transform.Find("Geometry").transform.GetChild(idx).gameObject.SetActive(true);
     }
 
-    public void CanvasSwitch()
-    {
-        if (leagueAreaCanvas.activeSelf != playgroundCanvas.activeSelf)
-        {
-            leagueAreaCanvas.SetActive(!leagueAreaCanvas.activeSelf);
-            playgroundCanvas.SetActive(!playgroundCanvas.activeSelf);
-        }
-        else
-        {
-            print("캔버스 상태가 같습니다. 확인이 필요합니다.");
-        }
-    }
+    //public void CanvasSwitch()
+    //{
+    //    if (leagueAreaCanvas.activeSelf != playgroundCanvas.activeSelf)
+    //    {
+    //        leagueAreaCanvas.SetActive(!leagueAreaCanvas.activeSelf);
+    //        playgroundCanvas.SetActive(!playgroundCanvas.activeSelf);
+    //    }
+    //    else
+    //    {
+    //        print("캔버스 상태가 같습니다. 확인이 필요합니다.");
+    //    }
+    //}
 
-    int trainNum = 0;
+    //int trainNum = 0;
 
-    public void PlusTrainNum()
-    {
-        photonView.RPC("RPC_PlusTrainNum", RpcTarget.All);
-    }
+    //public void PlusTrainNum()
+    //{
+    //    photonView.RPC("RPC_PlusTrainNum", RpcTarget.All);
+    //}
 
-    [PunRPC]
-    public void RPC_PlusTrainNum()
-    {
-        trainNum++;
-    }
+    //[PunRPC]
+    //public void RPC_PlusTrainNum()
+    //{
+    //    trainNum++;
+    //}
 
-    public void MinusTrainNum()
-    {
-        photonView.RPC("RPC_MinusTrainNum", RpcTarget.All);
-    }
+    //public void MinusTrainNum()
+    //{
+    //    photonView.RPC("RPC_MinusTrainNum", RpcTarget.All);
+    //}
 
-    [PunRPC]
-    public void RPC_MinusTrainNum()
-    {
-        trainNum--;
+    //[PunRPC]
+    //public void RPC_MinusTrainNum()
+    //{
+    //    trainNum--;
 
-        if (trainNum < 0)
-            trainNum = 0;
-    }
-    public int GetTrainNum()
-    {
-        return trainNum;
-    }
+    //    if (trainNum < 0)
+    //        trainNum = 0;
+    //}
+    //public int GetTrainNum()
+    //{
+    //    return trainNum;
+    //}
 
 }

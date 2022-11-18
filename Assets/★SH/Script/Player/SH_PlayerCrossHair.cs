@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using JetBrains.Annotations;
 
-public class SH_PlayerCrossHair : MonoBehaviourPun
+public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
 {
     public Transform cam;
 
@@ -61,6 +62,7 @@ public class SH_PlayerCrossHair : MonoBehaviourPun
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 20))
         {
+            print(hit.transform.gameObject.name);
             if (hit.transform.gameObject.name == "MatchDataSphere")
             {
                 hit.transform.GetComponent<MeshRenderer>().enabled = true;
@@ -72,11 +74,14 @@ public class SH_PlayerCrossHair : MonoBehaviourPun
                     fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
                 }
             }
-            else if (hit.transform.gameObject.name == "MovePracticeCube")
-            {
-                if (Input.GetMouseButtonDown(0))
-                    ShiftPosition();
-            }
+            //else if (hit.transform.gameObject.name == "MovePracticeCube")
+            //{
+            //    if (Input.GetMouseButtonDown(0))
+            //    {
+            //        //ShiftPosition();
+            //        EnterPlaygroundScene();
+            //    }
+            //}
             else
             {
                 if (sphere == null) return;
@@ -90,41 +95,77 @@ public class SH_PlayerCrossHair : MonoBehaviourPun
         }
     }
 
-    public void ShiftPosition()
+    //public void ShiftPosition()
+    //{
+    //    // 훈련장으로 이동하고 싶다.
+    //    // 1. 이동할 위치
+    //    GetComponent<CharacterController>().enabled = false;
+    //    if (fsm.state == SH_PlayerFSM.State.NORMAL)
+    //    {
+    //        // 감독이면 TEACH로 상태를 전환하고 싶다.
+    //        if (LaManager.instance.GetTrainNum() == 0)
+    //            fsm.ChangeState(SH_PlayerFSM.State.TEACH);
+    //        // 일반선수면 LEARN으로 상태를 전환하고 싶다.
+    //        else
+    //            fsm.ChangeState(SH_PlayerFSM.State.LEARN);
+
+    //        transform.position += new Vector3(10000, 3, 10000);
+    //        LaManager.instance.CanvasSwitch();
+    //        LaManager.instance.PlusTrainNum();
+
+    //        print("훈련장 이동 완료!!!!!");
+    //    }
+    //    else if (fsm.state == SH_PlayerFSM.State.TEACH || fsm.state == SH_PlayerFSM.State.LEARN)
+    //    {
+    //        fsm.ChangeState(SH_PlayerFSM.State.NORMAL);
+    //        transform.position += new Vector3(-10000, 3, -10000);
+    //        LaManager.instance.CanvasSwitch();
+    //        LaManager.instance.MinusTrainNum();
+
+    //        print("리그공간 이동 완료!!!!!");
+    //    }
+    //    else
+    //    {
+    //        print("훈련장으로 들어갈 수 없는 상태입니다.");
+    //    }
+    //    GetComponent<CharacterController>().enabled = true;
+    //}
+
+    public static string roomName;
+
+    public void EnterPlaygroundScene()
     {
-        // 훈련장으로 이동하고 싶다.
-        // 1. 이동할 위치
-        GetComponent<CharacterController>().enabled = false;
-        if (fsm.state == SH_PlayerFSM.State.NORMAL)
-        {
-            // 감독이면 TEACH로 상태를 전환하고 싶다.
-            if (LaManager.instance.GetTrainNum() == 0)
-                fsm.ChangeState(SH_PlayerFSM.State.TEACH);
-            // 일반선수면 LEARN으로 상태를 전환하고 싶다.
-            else
-                fsm.ChangeState(SH_PlayerFSM.State.LEARN);
-
-            transform.position += new Vector3(10000, 3, 10000);
-            LaManager.instance.CanvasSwitch();
-            LaManager.instance.PlusTrainNum();
-
-            print("훈련장 이동 완료!!!!!");
-        }
-        else if (fsm.state == SH_PlayerFSM.State.TEACH || fsm.state == SH_PlayerFSM.State.LEARN)
-        {
-            fsm.ChangeState(SH_PlayerFSM.State.NORMAL);
-            transform.position += new Vector3(-10000, 3, -10000);
-            LaManager.instance.CanvasSwitch();
-            LaManager.instance.MinusTrainNum();
-
-            print("리그공간 이동 완료!!!!!");
-        }
-        else
-        {
-            print("훈련장으로 들어갈 수 없는 상태입니다.");
-        }
-        GetComponent<CharacterController>().enabled = true;
+        LeaveRoom();
+        roomName = PhotonNetwork.CurrentRoom.Name;
+        Debug.Log("나이스하냐!!!!!!!!");
     }
 
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+
+        PhotonNetwork.ConnectUsingSettings();
+
+        Debug.Log("나이스하고");
+    }
+
+    public override void OnConnected()
+    {
+        base.OnConnected();
+        print("온커넥티드");
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        base.OnConnectedToMaster();
+        print("온커넥티드투마스터");
+        //PhotonNetwork.LoadLevel("WorldChoiceScene");
+        //PhotonNetwork.LoadLevel("YS_MapCustomScene");
+    }
 
 }

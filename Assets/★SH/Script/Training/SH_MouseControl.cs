@@ -162,6 +162,7 @@ public class SH_MouseControl : MonoBehaviour
                 // 피스가 아닌 곳을 클릭하면 윈도우를 닫고 싶다.
                 if (isClickedM0 || isClickedM1)
                 {
+                    if (slcPiece == null || preWindow == null) return;
                     slcPiece.localScale = Vector3.one;
                     preWindow.SetActive(false);
                     isWindowOpen = false;

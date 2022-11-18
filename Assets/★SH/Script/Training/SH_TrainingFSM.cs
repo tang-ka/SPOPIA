@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SH_TraningFSM : MonoBehaviour
+public class SH_TrainingFSM : MonoBehaviour
 {
-    public SH_TraningFSM instance;
+    public SH_TrainingFSM instance;
     private void Awake()
     {
         if (instance == null)

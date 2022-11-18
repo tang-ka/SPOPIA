@@ -30,6 +30,8 @@ public class SH_PlayerFSM : MonoBehaviourPun
         pm = GetComponent<SH_PlayerMove>();
         pr = GetComponent<SH_PlayerRot>();
         pch = GetComponent<SH_PlayerCrossHair>();
+
+        pr.CusorControll(CursorLockMode.Locked, false);
     }
 
     void Update()

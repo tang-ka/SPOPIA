@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class SH_TraningUIManager : MonoBehaviour
+public class SH_TrainingUIManager : MonoBehaviour
 {
     public GameObject tacticalBoard;
     public GameObject tool;
@@ -28,7 +28,7 @@ public class SH_TraningUIManager : MonoBehaviour
     bool isTBOpen = true;
     bool isToolOpen = true;
 
-    SH_TraningFSM trFSM;
+    SH_TrainingFSM trFSM;
 
     void Start()
     {
@@ -46,7 +46,7 @@ public class SH_TraningUIManager : MonoBehaviour
         blueParent = tacticalBoard.transform.GetChild(0).Find("BlueTeam").transform;
         redParent = tacticalBoard.transform.GetChild(0).Find("RedTeam").transform;
 
-        trFSM = GetComponent<SH_TraningFSM>();
+        trFSM = GetComponent<SH_TrainingFSM>();
 
         onValueChanged(0);
     }
@@ -81,9 +81,9 @@ public class SH_TraningUIManager : MonoBehaviour
         isToolOpen = isTBOpen;
 
         if (isTBOpen)
-            trFSM.instance.ChangeTime(SH_TraningFSM.Time.EXPLANATION);
+            trFSM.instance.ChangeTime(SH_TrainingFSM.Time.EXPLANATION);
         else
-            trFSM.instance.ChangeTime(SH_TraningFSM.Time.PRACTICE);
+            trFSM.instance.ChangeTime(SH_TrainingFSM.Time.PRACTICE);
     }
 
     public void OnClickToolOpen()
@@ -94,7 +94,7 @@ public class SH_TraningUIManager : MonoBehaviour
 
     public void OnClickPracticeStart()
     {
-        trFSM.instance.ChangeTime(SH_TraningFSM.Time.PRACTICE);
+        trFSM.instance.ChangeTime(SH_TrainingFSM.Time.PRACTICE);
         OnClickTBOpen();
     }
 
