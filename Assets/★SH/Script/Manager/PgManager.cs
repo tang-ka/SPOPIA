@@ -24,6 +24,9 @@ public class PgManager : MonoBehaviourPunCallbacks
         // RPC 호출 빈도
         PhotonNetwork.SendRate = 60;
 
+        // 입력을 받을 떄까지 플레이어가 생성 되지 않게 하고 싶다.
+
+
         SettingSpawnOption();
 
         CreateUser();
@@ -36,7 +39,6 @@ public class PgManager : MonoBehaviourPunCallbacks
 
     public void CreateUser()
     {
-
         // 플레이어를 생성한다.
         //PhotonNetwork.Instantiate("Player", spawnPos, Quaternion.identity);
 
@@ -58,5 +60,10 @@ public class PgManager : MonoBehaviourPunCallbacks
     {
         PhotonView.Find(ID).transform.Find("Body").Find("Character").Find("Geometry").GetChild(idx).gameObject.SetActive(true);
         print(ID + ",  " + idx);
+    }
+
+    void SetAuthority()
+    {
+        // 플레이어의 authority가 coach면 
     }
 }
