@@ -18,8 +18,8 @@ public class YS_NewsText : MonoBehaviour
         text2 = newsText2.GetComponent<Text>();
         img = transform.Find("Image").gameObject.GetComponent<Image>();
 
-        text1.text = "¹¹ ¾îÂ¼¶ó°í!";
-        text2.text = "ÀúÈñ°¡ 100% ÀÌ±é´Ï´Ù.";
+        text1.text = STTManager.instance.t1.text;
+        text2.text = STTManager.instance.t2.text;
     }
 
     // Update is called once per frame
