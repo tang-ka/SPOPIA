@@ -26,6 +26,9 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
 
     void BtnClick()
     {
+        // 상혁 - 씬 전환할때 main카메라 없어서 오류 나는 거때문에 추가
+        if (Camera.current == null) return;
+
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 

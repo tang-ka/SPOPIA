@@ -67,11 +67,15 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
             GetComponent<CharacterController>().enabled = true;
         }
 
+        int layerMask = (-1) - (1 << LayerMask.NameToLayer("IgnoreRay"));
+
+        // 크로스 헤어에 레이 쏘기
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 20))
+        Debug.DrawRay(ray.origin, ray.direction.normalized * 20, Color.red);
+
+        if (Physics.Raycast(ray, out hit, 20, layerMask))
         {
-            print(hit.transform.gameObject.name);
             if (hit.transform.gameObject.name == "MatchDataSphere")
             {
                 hit.transform.GetComponent<MeshRenderer>().enabled = true;
@@ -87,9 +91,14 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    Canvas c = hit.transform.parent.transform.Find("Canvas").GetComponent<Canvas>();
-                    m_gr = m_canvas.GetComponent<GraphicRaycaster>();
-                    UIRay(c, ray.origin);
+                    string curRoom = PhotonNetwork.CurrentRoom.Name;
+                    string nextRoom = "PlayGround"; // DBManager.instance.myData.teamName;
+                    string preLobby = "1"; //PhotonNetwork.CurrentLobby.Name;
+                    LaManager.instance.EnterPlaygroundScene(curRoom, nextRoom, preLobby);
+                    //Canvas c = hit.transform.parent.transform.Find("Canvas").GetComponent<Canvas>();
+                    //m_gr = m_canvas.GetComponent<GraphicRaycaster>();
+                    //UIRay(c, ray.origin);
+
                     //ShiftPosition();
                     //EnterPlaygroundScene();
                 }
@@ -112,6 +121,19 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
         {
             if (sphere == null) return;
             sphere.enabled = false;
+        }
+    }
+
+    public void UIRay(Canvas c, Vector3 origin)
+    {
+        m_ped.position = origin;
+        //m_ped.position = Input.mousePosition;
+        results = new List<RaycastResult>();
+        m_gr.Raycast(m_ped, results);
+
+        if (results.Count > 0)
+        {
+            print(results[0].gameObject.name);
         }
     }
 
@@ -150,55 +172,4 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
     //    }
     //    GetComponent<CharacterController>().enabled = true;
     //}
-
-    public void UIRay(Canvas c, Vector3 origin)
-    {
-        m_ped.position = origin;
-        //m_ped.position = Input.mousePosition;
-        results = new List<RaycastResult>();
-        m_gr.Raycast(m_ped, results);
-
-        if (results.Count > 0)
-        {
-            print(results[0].gameObject.name);
-        }
-    }
-
-    public static string roomName;
-
-    public void EnterPlaygroundScene()
-    {
-        LeaveRoom();
-        roomName = PhotonNetwork.CurrentRoom.Name;
-        Debug.Log("나이스하냐!!!!!!!!");
-    }
-
-    public void LeaveRoom()
-    {
-        PhotonNetwork.LeaveRoom();
-    }
-
-    public override void OnLeftRoom()
-    {
-        base.OnLeftRoom();
-
-        PhotonNetwork.ConnectUsingSettings();
-
-        Debug.Log("나이스하고");
-    }
-
-    public override void OnConnected()
-    {
-        base.OnConnected();
-        print("온커넥티드");
-    }
-
-    public override void OnConnectedToMaster()
-    {
-        base.OnConnectedToMaster();
-        print("온커넥티드투마스터");
-        //PhotonNetwork.LoadLevel("WorldChoiceScene");
-        //PhotonNetwork.LoadLevel("YS_MapCustomScene");
-    }
-
 }

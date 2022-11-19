@@ -1,4 +1,5 @@
 using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -19,12 +20,25 @@ public class SH_Portal : MonoBehaviourPun
         
     void Start()
     {
+        btnYes.onClick.AddListener(OnClickYes);
+        btnNo.onClick.AddListener(OnClickNo);
+
         enterBG.SetActive(false);
+    }
+
+    private void OnClickYes()
+    {
+        print("예쓰~~~!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    }
+
+    private void OnClickNo()
+    {
+        print("노노노노노노노노!!!!!!!!!!!!!!!!!!!!!!");
     }
 
     void Update()
     {
-        if (enterBG.activeSelf)
+        if (enterBG.activeSelf && triggerPlayer != null)
         {
             dir = transform.position - triggerPlayer.transform.position;
             dir.y = 0;

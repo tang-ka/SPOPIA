@@ -1,8 +1,10 @@
 using Photon.Pun;
+using Photon.Realtime;
 using PlayFab.MultiplayerModels;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LaManager : MonoBehaviourPunCallbacks
 {
@@ -23,7 +25,6 @@ public class LaManager : MonoBehaviourPunCallbacks
     {
         // 게임씬에서 다음씬으로 넘어갈때 동기화해주기 ( 게임씬 등에서 한번 )
         PhotonNetwork.AutomaticallySyncScene = true;
-
         // OnPhotonSerializeView 호출 빈도
         PhotonNetwork.SerializationRate = 60;
         // RPC 호출 빈도
@@ -33,13 +34,8 @@ public class LaManager : MonoBehaviourPunCallbacks
 
         CreateUser();
 
-        leagueAreaCanvas.SetActive(true);
-        playgroundCanvas.SetActive(false);
-    }
-
-    void Update()
-    {
-        
+        //leagueAreaCanvas.SetActive(true);
+        //playgroundCanvas.SetActive(false);
     }
 
     public void SettingSpawnOption()
@@ -70,6 +66,112 @@ public class LaManager : MonoBehaviourPunCallbacks
     {
         PhotonView.Find(ID).transform.Find("Body").transform.Find("Character").transform.Find("Geometry").transform.GetChild(idx).gameObject.SetActive(true);
     }
+
+    #region Change scene from LeagueArea to Playground
+    public string preRoomName;
+    public string nextRoomName;
+    public string preLobbyName;
+
+    public void EnterPlaygroundScene(string preRoom, string nextRoom, string preLobby)
+    {
+        preRoomName = preRoom;
+        nextRoomName = nextRoom;
+        preLobbyName = preLobby;
+
+        LeaveRoom();
+        Debug.Log("나이스하냐!!!!!!!!");
+    }
+
+    public void LeaveRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+
+        PhotonNetwork.ConnectUsingSettings();
+
+        Debug.Log("온레프트룸");
+    }
+
+    public override void OnConnected()
+    {
+        base.OnConnected();
+        print("온커넥티드");
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        base.OnConnectedToMaster();
+        PhotonNetwork.JoinLobby();
+        print("온커넥티드투마스터");
+    }
+
+    public override void OnJoinedLobby()
+    {
+        base.OnJoinedLobby();
+        CreatePlayground();
+        print("온쪼인드로비");
+    }
+
+    public void CreatePlayground()
+    {
+        RoomOptions leagueOption = new RoomOptions();
+        leagueOption.MaxPlayers = 11;
+        leagueOption.IsVisible = false;
+
+        //int teamNum = DBManager.instance.leagueInfo.teamNum;
+
+        //// 리그 정보 커스텀해서 넣고 싶다.
+        //// 1. 커스텀 정보 세팅
+        //ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+        //hash["teamNum"] = teamNum;
+
+        //leagueOption.CustomRoomProperties = hash;
+
+        // 2. 커스텀 정보를 공개하고 싶다.
+        //leagueOption.CustomRoomPropertiesForLobby = new string[] { "teamNum" };
+
+        // 해당 옵션의 방에 참가하거나 방을 생성하고 싶다.
+        PhotonNetwork.JoinOrCreateRoom(nextRoomName, leagueOption, TypedLobby.Default);
+    }
+
+    // 방 생성 완료
+    public override void OnCreatedRoom()
+    {
+        base.OnCreatedRoom();
+        print("훈련장 생성 완료");
+    }
+    // 방 생성 실패
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        base.OnCreateRoomFailed(returnCode, message);
+        print("훈련장 생성 실패, " + returnCode + ", " + message);
+    }
+
+    // 방 입장
+    public void JoinPlayground()
+    {
+        PhotonNetwork.JoinRoom(nextRoomName);
+    }
+
+    // 방 입장이 성공했을 때 호출되는 함수
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+        SceneManager.LoadScene("PlayGroundScene");
+        print("훈련장 진입에 성공했습니다.");
+    }
+
+    // 방 입장 실패시 호출되는 함수
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        base.OnJoinRoomFailed(returnCode, message);
+        print("훈련장 진입 실패" + returnCode + ", " + message);
+    }
+    #endregion
 
     //public void CanvasSwitch()
     //{
@@ -114,5 +216,4 @@ public class LaManager : MonoBehaviourPunCallbacks
     //{
     //    return trainNum;
     //}
-
 }

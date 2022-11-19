@@ -136,14 +136,10 @@ public class LcManager : MonoBehaviourPunCallbacks
 
     #region 콜백함수 (방생성 성공, 실패)
     // 방 생성 완료
-  
-
     public override void OnCreatedRoom()
     {
         base.OnCreatedRoom();
         print("해당 리그를 생성하였습니다.");
-
-
     }
     // 방 생성 실패
     public override void OnCreateRoomFailed(short returnCode, string message)
