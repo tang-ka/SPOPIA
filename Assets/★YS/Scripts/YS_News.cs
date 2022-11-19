@@ -7,7 +7,7 @@ public class YS_News : MonoBehaviour
 {
     public GameObject newsContent;
     public RectTransform rect;
-    public Image tumbnail;
+    //public Image tumbnail;
 
     float myloc;
 
@@ -16,7 +16,7 @@ public class YS_News : MonoBehaviour
     {
         newsContent = transform.Find("NewsContent").gameObject;
         // 뉴스 썸네일 설정
-        tumbnail = transform.Find("NewsTumbnail").gameObject.GetComponent<Image>();
+        //tumbnail = transform.Find("NewsTumbnail").gameObject.GetComponent<Image>();
 
         // 뉴스내용 생성 위치 설정
         rect = newsContent.GetComponent<RectTransform>();

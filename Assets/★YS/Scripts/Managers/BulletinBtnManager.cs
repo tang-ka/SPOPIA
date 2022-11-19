@@ -72,6 +72,9 @@ public class BulletinBtnManager : MonoBehaviour
             {
                 q2.enabled = false;
                 q3.enabled = true;
+
+                // 기사에 들어갈 사진찍기
+                YS_Capture.instance.Shot();
             }
         }
     }

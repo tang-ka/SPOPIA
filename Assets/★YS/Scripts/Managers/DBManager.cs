@@ -192,7 +192,7 @@ public class DBManager : MonoBehaviour
     {
         Dictionary<string, string> dataDic = new Dictionary<string, string>();
         dataDic.Add(key, JsonUtility.ToJson(formationData));
-        SetMapData(dataDic);
+        SetFormation(dataDic);
     }
 
     public void UpdateTeamData(TeamData teamData, string key) // 팀 데이터 수정

@@ -34,7 +34,7 @@ public class FormationManager : MonoBehaviour
     }
 
     public GameObject[] pieces = new GameObject[11];
-    public FormationArrayJson formationArray = new FormationArrayJson();
+    //public FormationArrayJson formationArray = new FormationArrayJson();
 
     // Start is called before the first frame update
     void Start()
@@ -58,11 +58,11 @@ public class FormationManager : MonoBehaviour
             //info.teamName = DBManager.instance.myData.teamName;
             info.position = pieces[i].GetComponent<RectTransform>().anchoredPosition;
 
-            formationArray.formationInfos.Add(info);
+            DBManager.instance.formationDatas.formationInfos.Add(info);
         }
 
         // DB에 저장
-        DBManager.instance.SaveJsonMapCustom(DBManager.instance.mapData, DBManager.instance.myData.teamName);
+        DBManager.instance.SaveJsonFormation(DBManager.instance.formationDatas, DBManager.instance.myData.teamName);
     }
 
     // 커스텀 포메이션 불러오기
