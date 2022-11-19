@@ -4,14 +4,34 @@ using System.Text;
 using System;
 using UnityEngine.Networking;
 using System.Collections;
+using UnityEngine.UI;
 
 public class STTManager : MonoBehaviour
 {
-    string micID;
+	// 싱글톤
+	public static STTManager instance;
+
+	private void Awake()
+	{
+		if (instance == null)
+		{
+			instance = this;
+			DontDestroyOnLoad(gameObject);
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+	}
+
+	string micID;
     AudioClip clip;
     int recordingLength = 10; // 처음 Microphone.Start 로 보낼 고정변수(녹음시간)
     int recordingHZ = 22050;
 	const int blockSize_16bit = 2;
+
+	// 뉴스에 넣을 text들
+	public Text t1, t2;
 
 	// Start is called before the first frame update
 	void Start()
@@ -25,40 +45,46 @@ public class STTManager : MonoBehaviour
         
     }
 
-    public void StartRecording()
+    public void Recording()
     {
-        Debug.Log("녹음 시작");
-        clip = Microphone.Start(micID, false, recordingLength, recordingHZ);
-    }
+		// 녹음 중이라면 녹음 종료
+		if (Microphone.IsRecording(micID))
+		{
+			StopRecording();
+		}
+		else
+        {
+			// 녹음 중이 아니라면 녹음 시작
+			Debug.Log("녹음 시작");
+			clip = Microphone.Start(micID, false, recordingLength, recordingHZ);
+        }
+	}
 
     public void StopRecording()
     {
-        if(Microphone.IsRecording(micID))
+        Microphone.End(micID);
+        Debug.Log("녹음 끝");
+
+        // 실제 녹음 시간에 맞춰서 clip 데이터 재설정
+        AudioClip temp = clip;
+        float realLength = clip.length;
+        float realSamples = clip.samples;
+        float perSec = realSamples / realLength;
+        float[] samples = new float[(int)(perSec * recordingLength)];
+        temp.GetData(samples, 0);
+        clip.SetData(samples, 0);
+
+        if(clip == null)
         {
-            Microphone.End(micID);
-            Debug.Log("녹음 끝");
+            Debug.Log("녹음 안됨");
+            return;
+        }
 
-            // 실제 녹음 시간에 맞춰서 clip 데이터 재설정
-            AudioClip temp = clip;
-            float realLength = clip.length;
-            float realSamples = clip.samples;
-            float perSec = realSamples / realLength;
-            float[] samples = new float[(int)(perSec * recordingLength)];
-            temp.GetData(samples, 0);
-            clip.SetData(samples, 0);
+		// clip을 byteArray로 변환
+		byte[] byteArray = ClipToByteArray(clip);
 
-            if(clip == null)
-            {
-                Debug.Log("녹음 안됨");
-                return;
-            }
-
-			// clip을 byteArray로 변환
-			byte[] byteArray = ClipToByteArray(clip);
-
-			// clip을 stt 서버로 보내기
-			StartCoroutine(ToSever(url, byteArray));
-		}
+		// clip을 stt 서버로 보내기
+		StartCoroutine(ToSever(url, byteArray));
     }
 
     byte[] ClipToByteArray(AudioClip audioClip)
@@ -240,6 +266,16 @@ public class STTManager : MonoBehaviour
 			// json 형태로 받음 {"text":"인식결과"}
 			string message = request.downloadHandler.text;
 			VoiceRecognize voiceRecognize = JsonUtility.FromJson<VoiceRecognize>(message);
+
+			// text 넣어주기
+			if(t1.text == "")
+            {
+				t1.text = voiceRecognize.text;
+            }
+			else if(t2.text == "")
+            {
+				t2.text = voiceRecognize.text;
+			}
 
 			Debug.Log("Voice Server responded: " + voiceRecognize.text);
 			// Voice Server responded: 인식결과
