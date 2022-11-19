@@ -18,8 +18,12 @@ public class YS_NewsText : MonoBehaviour
         text2 = newsText2.GetComponent<Text>();
         img = transform.Find("Image").gameObject.GetComponent<Image>();
 
+        // 기사 내용 설정
         text1.text = STTManager.instance.t1.text;
         text2.text = STTManager.instance.t2.text;
+
+        // 기사 사진 설정
+        img.sprite = YS_Capture.instance.img.sprite;
     }
 
     // Update is called once per frame

@@ -5,6 +5,22 @@ using UnityEngine.UI;
 
 public class YS_Capture : MonoBehaviour
 {
+    // ΩÃ±€≈Ê
+    public static YS_Capture instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     public Camera cam;
     public Image img;
 
