@@ -21,8 +21,6 @@ public class SH_TrainingFSM : MonoBehaviour
     }
     public Time time = Time.EXPLANATION;
 
-
-
     void Start()
     {
         

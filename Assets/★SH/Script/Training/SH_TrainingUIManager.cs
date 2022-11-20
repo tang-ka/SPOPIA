@@ -9,16 +9,23 @@ using UnityEngine.UI;
 
 public class SH_TrainingUIManager : MonoBehaviour
 {
+    public static SH_TrainingUIManager instance;
+    private void Awake()
+    {
+        instance = this;
+    }
+
     public GameObject startUI;
     public GameObject tacticalBoard;
     public GameObject tool;
-    public GameObject playerList;
+    public GameObject userList;
 
     public Button btnTacticalBoard;
     public Button btnTool;
     public Button btnPracticeStart;
     public Button btnCoach;
     public Button btnPlayer;
+    public Button btnStart;
 
     public TMP_Dropdown ddFormation;
 
@@ -49,6 +56,7 @@ public class SH_TrainingUIManager : MonoBehaviour
         btnPracticeStart.onClick.AddListener(OnClickPracticeStart);
         btnCoach.onClick.AddListener(OnClickCoach);
         btnPlayer.onClick.AddListener(OnClickPlayer);
+        btnStart.onClick.AddListener(OnClickStart);
 
         blueParent = tacticalBoard.transform.GetChild(0).Find("BlueTeam").transform;
         redParent = tacticalBoard.transform.GetChild(0).Find("RedTeam").transform;
@@ -107,30 +115,28 @@ public class SH_TrainingUIManager : MonoBehaviour
         OnClickTBOpen();
     }
 
+    bool isCoach;
+
     public void OnClickCoach()
     {
-        // 플레이어에게 코치권한을 부여하고 싶다.
-
-
-        // 훈련을 시작하고 싶다.
-        StartTraining();
+        isCoach = true;
     }
 
     public void OnClickPlayer()
     {
-        // 플레이어에게 플레이어 권한을 부여하고 싶다.
-
-
-        // 훈련을 시작하고 싶다.
-        StartTraining();
+        isCoach = false;
     }
 
-    public void StartTraining()
+    public void OnClickStart()
     {
         startUI.SetActive(false);
         tacticalBoard.SetActive(true);
         tool.SetActive(true);
-        playerList.SetActive(true);
+        userList.SetActive(true);
+
+        PgManager.instance.SettingSpawnOption();
+        PgManager.instance.CreateUser();
+        PgManager.instance.SetAuthority(isCoach);
     }
 
     public void SlideMove(GameObject go, Vector3 onPos, bool isOn)
