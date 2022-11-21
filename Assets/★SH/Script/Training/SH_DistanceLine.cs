@@ -39,4 +39,11 @@ public class SH_DistanceLine : MonoBehaviour
         distance.text = dist.ToString() + "m";
         distance.transform.up = Vector3.up;
     }
+
+    public void DeleteSelf()
+    {
+        first.GetComponent<SH_PieceWindow>().distDeleteList -= DeleteSelf;
+        second.GetComponentInParent<SH_PieceWindow>().distDeleteList -= DeleteSelf;
+        Destroy(gameObject);
+    }
 }

@@ -25,6 +25,7 @@ public class SH_Arrow : MonoBehaviour
 
     void Update()
     {
+        if (start == null) return;
         GetComponent<RectTransform>().anchoredPosition = start.transform.localPosition;
     }
 

@@ -27,5 +27,10 @@ public class SH_CheatKey : MonoBehaviour
             id.text = "a@gmail.com";
             pw.text = "123456";
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            id.text = "b@gmail.com";
+            pw.text = "123456";
+        }
     }
 }

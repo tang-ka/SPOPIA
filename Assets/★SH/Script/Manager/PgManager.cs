@@ -1,4 +1,5 @@
 using Photon.Pun;
+using Photon.Pun.Demo.Cockpit;
 using Photon.Pun.Demo.PunBasics;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,9 +16,14 @@ public class PgManager : MonoBehaviourPunCallbacks
     }
 
     public Vector3 spawnPos;
-
+    [SerializeField]
     List<GameObject> coachList = new List<GameObject>();
+    [SerializeField]
     List<GameObject> playerList = new List<GameObject>();
+
+    public Transform UserListParent;
+    public GameObject coachIconFactory;
+    public GameObject playerIconFactory;
 
     void Start()
     {
@@ -44,6 +50,8 @@ public class PgManager : MonoBehaviourPunCallbacks
     }
 
     GameObject go;
+    GameObject icon;
+
     public void CreateUser()
     {
         // 플레이어를 생성한다.
@@ -57,6 +65,8 @@ public class PgManager : MonoBehaviourPunCallbacks
         // 자식오브젝트에 idx로 접근하여 해당 아바타를 켜준다.
         goBaby.transform.GetChild(DBManager.instance.myData.avatarIdx).gameObject.SetActive(true);
 
+        go.name += PhotonNetwork.CurrentRoom.PlayerCount;
+
         // 네트워크(RPC - 내 아바타가 다른 사람들한테도 보이게끔)
         photonView.RPC(nameof(RpcCreateUser2), RpcTarget.OthersBuffered, go.GetPhotonView().ViewID, DBManager.instance.myData.avatarIdx);
     }
@@ -68,19 +78,105 @@ public class PgManager : MonoBehaviourPunCallbacks
         print(ID + ",  " + idx);
     }
 
-    public void SetAuthority(bool isCoach)
+    public void MyStart()
     {
-        // 플레이어의 authority가 coach면
-        if (isCoach == false)
+        SettingSpawnOption();
+        CreateUser();
+
+        PostUser2Maseter(go.GetPhotonView().ViewID, SH_TrainingUIManager.instance.isCoach);
+
+        //// 플레이어의 authority가 player면
+        //if (isCoach == false)
+        //{
+        //    // 플레이어에게 플레이어 권한을 부여하고 싶다.
+        //    icon = playerIconFactory; 
+        //    playerList.Add(go);
+        //}
+        //else
+        //{
+        //    // 플레이어에게 플레이어 권한을 부여하고 싶다.
+        //    icon = coachIconFactory;
+        //    coachList.Add(go);
+        //}
+
+    }
+
+    void PostUser2Maseter(int viewID, bool isCoach)
+    {
+        photonView.RPC(nameof(RPC_PostUser2Master), RpcTarget.MasterClient, viewID, isCoach);
+    }
+
+    [PunRPC]
+    void RPC_PostUser2Master(int viewID, bool isCoach)
+    {
+        // 1. MasterClient는 본인을 등록하고 싶다.
+        if (photonView.ViewID == viewID)
         {
-            // 플레이어에게 코치권한을 부여하고 싶다.
-            playerList.Add(go);
+            SetAuthority(go, isCoach);
         }
+        // 2. MasterClient가 아니면 해당 ID의 gameObject를 찾아서 등록하고 싶다.
         else
         {
-            // 플레이어에게 플레이어 권한을 부여하고 싶다.
-            coachList.Add(go);
+            print("나 마스터 아니야!!!");
+            SetAuthority(PhotonView.Find(viewID).gameObject, isCoach);
         }
 
+        // 3. 내가 방장이라면(나는 방장이다. 오류 방지)
+        if (photonView.IsMine)
+        {
+            CreateUserIcon();
+            // 4. 등록되어있는 List를 뿌려주고 싶다.
+            // coachList 정보를 뿌려주자.
+            //for (int i = 0; i < coachList.Count; i++)
+            //{
+            //    Instantiate(coachIconFactory, UserListParent);
+            //}
+            //// playerList 정보를 뿌려주자.
+            //for (int i = 0; i < playerList.Count; i++)
+            //{
+            //    Instantiate(playerIconFactory, UserListParent);
+            //}
+        }
+    }
+    void CreateUserIcon()
+    {
+        photonView.RPC(nameof(RPC_CreateUserIcon), RpcTarget.All);
+    }
+    [PunRPC]
+    void RPC_CreateUserIcon()
+    {
+        foreach (Transform tr in UserListParent)
+        {
+            Destroy(tr.gameObject);
+        }
+        for (int i = 0; i < coachList.Count; i++)
+        {
+            Instantiate(coachIconFactory, UserListParent);
+        }
+        // playerList 정보를 뿌려주자.
+        for (int i = 0; i < playerList.Count; i++)
+        {
+            Instantiate(playerIconFactory, UserListParent);
+        }
+        //switch(order)
+        //{
+        //    case 1:
+        //        Instantiate(coachIconFactory, UserListParent);
+        //        break;
+
+        //    case 2:
+        //        Instantiate(playerIconFactory, UserListParent);
+        //        break;
+        //}
+    }
+
+    void SetAuthority(GameObject user, bool isCoach)
+    {
+        // 유저가 일반 플레이어를 선택했다면
+        if (isCoach == false)
+            playerList.Add(user);
+        // 유저가 코치를 선택했다면
+        else
+            coachList.Add(user);
     }
 }

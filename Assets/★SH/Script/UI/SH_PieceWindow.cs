@@ -9,6 +9,7 @@ public class SH_PieceWindow : MonoBehaviour
 {
     public Button btnInputText;
     public Button btnDistance;
+    public Button btnDistDelete;
     public Button btnArrow;
     public Button btnArrowDelete;
 
@@ -28,19 +29,21 @@ public class SH_PieceWindow : MonoBehaviour
 
     int arrowCount = 0;
 
-    // 식당 예약인원 변경 전화하기
     void Start()
     {
-        lineParent = GameObject.Find("GroundBG").transform.Find("Line");
-        arrowParent = GameObject.Find("GroundBG").transform.Find("Arrow");
+        lineParent = GameObject.Find("GroundBG").transform.Find("LineParent");
+        arrowParent = GameObject.Find("GroundBG").transform.Find("ArrowParent");
 
         btnInputText.onClick.AddListener(OnClickBtnInputText);
         btnDistance.onClick.AddListener(OnClickBtnDistance);
+        btnDistDelete.onClick.AddListener(OnClickBtnDistDelete);
         btnArrow.onClick.AddListener(OnClickBtnArrow);
         btnArrowDelete.onClick.AddListener(OnClickBtnArrowDelete);
 
         inputBackNumber.onSubmit.AddListener(OnSubmitInputBackNumber);
         inputName.onSubmit.AddListener(OnSubmitInputName);
+
+        window.SetActive(false);
     }
 
     void Update()
@@ -49,6 +52,12 @@ public class SH_PieceWindow : MonoBehaviour
             btnArrowDelete.gameObject.SetActive(true);
         else
             btnArrowDelete.gameObject.SetActive(false);
+
+        if (distDeleteList == null)
+            btnDistDelete.gameObject.SetActive(false);
+        else
+            btnDistDelete.gameObject.SetActive(true);
+
     }
 
     private void OnClickBtnInputText()
@@ -81,6 +90,10 @@ public class SH_PieceWindow : MonoBehaviour
 
     GameObject first, second;
 
+    [SerializeField]
+    public Action distDeleteList;
+    //List<GameObject> distList = new List<GameObject>();
+
     public void OnClickBtnDistance()
     {
         window.SetActive(false);
@@ -102,9 +115,19 @@ public class SH_PieceWindow : MonoBehaviour
         GameObject line = Instantiate(lineFactory, lineParent);
         line.GetComponent<SH_DistanceLine>().Init(first, second);
 
+        distDeleteList += line.GetComponent<SH_DistanceLine>().DeleteSelf;
+        second.GetComponent<SH_PieceWindow>().distDeleteList += line.GetComponent<SH_DistanceLine>().DeleteSelf;
+
         second = null;
         first = null;
         print("코루틴 끝");
+    }
+
+    public void OnClickBtnDistDelete()
+    {
+        if (distDeleteList == null) return;
+        window.SetActive(false);
+        distDeleteList();
     }
 
     GameObject start;
@@ -126,7 +149,7 @@ public class SH_PieceWindow : MonoBehaviour
     {
         float dist;
         GameObject arrow = Instantiate(arrowFactory, arrowParent);
-        Text distance = arrow.transform.GetChild(0).GetComponent<Text>();
+        Text distance = arrow.transform.Find("txtDistance").GetComponent<Text>();
 
         while (true)
         {
@@ -161,7 +184,7 @@ public class SH_PieceWindow : MonoBehaviour
         }
     }
 
-    private void OnClickBtnArrowDelete()
+    public void OnClickBtnArrowDelete()
     {
         window.SetActive(false);
         arrowCount = 0;

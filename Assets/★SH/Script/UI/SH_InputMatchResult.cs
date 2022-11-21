@@ -36,10 +36,6 @@ public class SH_InputMatchResult : MonoBehaviour
         assistParent = inputAssist.transform.Find("Shower").Find("Viewport").Find("Content");
     }
 
-    void Update()
-    {
-    }
-
     public void OnScoreValueChanged(string inputText)
     {
         if (inputText.Length == 0) return;

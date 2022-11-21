@@ -21,8 +21,9 @@ public class SH_TrainingUIManager : MonoBehaviour
     public GameObject userList;
 
     public Button btnTacticalBoard;
-    public Button btnTool;
     public Button btnPracticeStart;
+    public Button btnTool;
+    public Button btnUserList;
     public Button btnCoach;
     public Button btnPlayer;
     public Button btnStart;
@@ -39,6 +40,7 @@ public class SH_TrainingUIManager : MonoBehaviour
 
     bool isTBOpen = true;
     bool isToolOpen = true;
+    bool isUserListOpen = true;
 
     SH_TrainingFSM trFSM;
 
@@ -53,6 +55,7 @@ public class SH_TrainingUIManager : MonoBehaviour
         ddFormation.onValueChanged.AddListener(onValueChanged);
         btnTacticalBoard.onClick.AddListener(OnClickTBOpen);
         btnTool.onClick.AddListener(OnClickToolOpen);
+        btnUserList.onClick.AddListener(OnClickUserList);
         btnPracticeStart.onClick.AddListener(OnClickPracticeStart);
         btnCoach.onClick.AddListener(OnClickCoach);
         btnPlayer.onClick.AddListener(OnClickPlayer);
@@ -64,14 +67,21 @@ public class SH_TrainingUIManager : MonoBehaviour
         trFSM = GetComponent<SH_TrainingFSM>();
 
         onValueChanged(0);
+
+        startUI.SetActive(true);
+        tacticalBoard.SetActive(false);
+        tool.SetActive(false);
+        userList.SetActive(false);
     }
 
     void Update()
     {
         SlideMove(tacticalBoard, new Vector3(0, -1040, 0), isTBOpen);
         SlideMove(tool, new Vector3(150, 0, 0), isToolOpen);
+        SlideMove(userList, new Vector3(-150, 0, 0), isUserListOpen);
     }
 
+    Formation selected;
     private void onValueChanged(int arg)
     {
         Formation selected = FormDataManager.instance.GetForm(optionList[arg]);
@@ -79,13 +89,18 @@ public class SH_TrainingUIManager : MonoBehaviour
         // 삭제하고
         for (int i = 0; i < blueParent.childCount; i++)
         {
-            Destroy(blueParent.GetChild(i).gameObject);
+            GameObject go = blueParent.GetChild(i).gameObject;
+
+            go.GetComponent<SH_PieceWindow>().OnClickBtnDistDelete();
+            go.GetComponent<SH_PieceWindow>().OnClickBtnArrowDelete();
+            Destroy(go);
         }
 
         // 생성한다.
         for (int i = 0; i < selected.pos.Length; i++)
         {
             GameObject bluePiece = Instantiate(bluefactory, blueParent);
+            bluePiece.name += i;
             bluePiece.transform.localPosition = selected.pos[i];
 
             FormationManager.instance.pieces[i] = bluePiece;
@@ -96,6 +111,7 @@ public class SH_TrainingUIManager : MonoBehaviour
     {
         isTBOpen = !isTBOpen;
         isToolOpen = isTBOpen;
+        isUserListOpen = isTBOpen;
 
         if (isTBOpen)
             trFSM.instance.ChangeTime(SH_TrainingFSM.Time.EXPLANATION);
@@ -106,7 +122,11 @@ public class SH_TrainingUIManager : MonoBehaviour
     public void OnClickToolOpen()
     {
         isToolOpen = !isToolOpen;
-        isTBOpen = isToolOpen;
+    }
+
+    public void OnClickUserList()
+    {
+        isUserListOpen = !isUserListOpen;
     }
 
     public void OnClickPracticeStart()
@@ -115,7 +135,7 @@ public class SH_TrainingUIManager : MonoBehaviour
         OnClickTBOpen();
     }
 
-    bool isCoach;
+    public bool isCoach;
 
     public void OnClickCoach()
     {
@@ -134,9 +154,9 @@ public class SH_TrainingUIManager : MonoBehaviour
         tool.SetActive(true);
         userList.SetActive(true);
 
-        PgManager.instance.SettingSpawnOption();
-        PgManager.instance.CreateUser();
-        PgManager.instance.SetAuthority(isCoach);
+        //PgManager.instance.SettingSpawnOption();
+        //PgManager.instance.CreateUser();
+        PgManager.instance.MyStart();
     }
 
     public void SlideMove(GameObject go, Vector3 onPos, bool isOn)

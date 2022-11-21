@@ -138,7 +138,8 @@ public class SH_MouseControl : MonoBehaviour
                 // ÁÂÅ¬¸¯½Ã
                 if (isClickedM0)
                 {
-                    leftClickPiece = results[0].gameObject;
+                    leftClickPiece = results[0].gameObject.transform.parent.gameObject;
+                    leftClickPiece.transform.SetAsLastSibling();
                 }
 
             }
@@ -181,13 +182,13 @@ public class SH_MouseControl : MonoBehaviour
         if (results.Count > 0)
         {
             targetPosition.x = results[0].screenPosition.x - 960;
-            targetPosition.y = results[0].screenPosition.y - 540;
+            targetPosition.y = results[0].screenPosition.y - 560;
             targetPosition.z = 0;
 
             if (!isClickedM0 && isClickingM0)
             {
                 curPosition = slcPiece.localPosition;
-                curPosition = Vector3.Lerp(curPosition, targetPosition, Time.deltaTime * 60);
+                curPosition = Vector3.Lerp(curPosition, targetPosition, Time.deltaTime * 10000);
                 slcPiece.localPosition = curPosition;
             }
             //else if (!isClickedM0 && !isClickingM0)
