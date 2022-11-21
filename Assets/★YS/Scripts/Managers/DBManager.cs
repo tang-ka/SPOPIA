@@ -78,6 +78,10 @@ public class DBManager : MonoBehaviour
     // FormationData 선언
     public FormationArrayJson formationDatas;
 
+    // ImageDB 관련
+    // Entitytype
+    public string entityType;
+
     // Start is called before the first frame update
     void Start()
     {

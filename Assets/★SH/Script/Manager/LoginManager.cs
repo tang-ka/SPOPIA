@@ -84,6 +84,7 @@ public class LoginManager : MonoBehaviourPunCallbacks
         DBManager.instance.GetLeaderboard(result.PlayFabId);
         DBManager.instance.isLogin = true;
         DBManager.instance.isEnter = false;
+        DBManager.instance.entityType = result.EntityToken.Entity.Type;
 
         // 접속을 하면, userdata를 불러와서 아바타가 있는지 없는지 확인. (없으면 0, 있으면 다른 숫자)
         // 없으면, AvatarScene으로
