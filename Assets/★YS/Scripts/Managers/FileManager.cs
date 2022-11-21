@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 using UnityEditor;
 using System;
 using System.IO;
@@ -52,8 +53,8 @@ public class FileManager : MonoBehaviour
         UploadFile("SavedImage.png");
     }
 
-    public string entityId;// = DBManager.instance.MyPlayFabInfo.PlayFabId; // Id representing the logged in player
-    public string entityType;// = DBManager.instance.entityType; // entityType representing the logged in player
+    public string entityId = DBManager.instance.testDBid4; // Id representing the logged in player
+    public string entityType = DBManager.instance.entityType; // entityType representing the logged in player
     private readonly Dictionary<string, string> _entityFileJson = new Dictionary<string, string>();
     private readonly Dictionary<string, string> _tempUpdates = new Dictionary<string, string>();
     public string ActiveUploadFileName;
@@ -115,8 +116,8 @@ public class FileManager : MonoBehaviour
 
     void OnLogin(PlayFab.ClientModels.LoginResult result)
     {
-        entityId = result.EntityToken.Entity.Id;
-        entityType = result.EntityToken.Entity.Type;
+        //entityId = result.EntityToken.Entity.Id;
+        //entityType = result.EntityToken.Entity.Type;
     }
 
     void LoadAllFiles()
@@ -149,6 +150,17 @@ public class FileManager : MonoBehaviour
             result => { File.WriteAllBytes(Application.streamingAssetsPath + "/SavedImage.png", result); GlobalFileLock -= 1; }, // Finish Each SimpleGetCall
             error => { Debug.Log(error); }
         );
+
+        StartCoroutine(nameof(LoadImage), fileData.DownloadUrl);
+    }
+
+    IEnumerator LoadImage(string url)
+    {
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+
+        yield return request.SendWebRequest();
+
+        rawImg.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
     }
 
     void UploadFile(string fileName)
