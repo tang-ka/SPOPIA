@@ -31,12 +31,12 @@ public class SH_PlayerRot : MonoBehaviourPun
         if (photonView.IsMine)
         {
             camPivot.gameObject.SetActive(true);
+            cam = Camera.main.transform;
         }
 
         //Cursor.lockState = CursorLockMode.Locked;
         //Cursor.visible = false;
 
-        cam = Camera.main.transform;
     }
 
     void Update()

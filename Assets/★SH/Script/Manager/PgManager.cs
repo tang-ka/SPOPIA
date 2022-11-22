@@ -122,22 +122,50 @@ public class PgManager : MonoBehaviourPunCallbacks
         }
 
         // 3. 내가 방장이라면(나는 방장이다. 오류 방지)
-        if (photonView.IsMine)
+        if (PhotonNetwork.IsMasterClient)
         {
-            CreateUserIcon();
-            // 4. 등록되어있는 List를 뿌려주고 싶다.
+            ClearList();
             // coachList 정보를 뿌려주자.
-            //for (int i = 0; i < coachList.Count; i++)
-            //{
-            //    Instantiate(coachIconFactory, UserListParent);
-            //}
-            //// playerList 정보를 뿌려주자.
-            //for (int i = 0; i < playerList.Count; i++)
-            //{
-            //    Instantiate(playerIconFactory, UserListParent);
-            //}
+            for (int i = 0; i < coachList.Count; i++)
+            {
+                UpdateList(coachList[i].GetPhotonView().ViewID, i, true);
+            }
+            // playerList 정보를 뿌려주자.
+            for (int i = 0; i < playerList.Count; i++)
+            {
+                UpdateList(playerList[i].GetPhotonView().ViewID, i, false);
+            }
+            CreateUserIcon();
         }
     }
+
+    void ClearList()
+    {
+        photonView.RPC(nameof(RPC_ClearList), RpcTarget.Others);
+    }
+    void UpdateList(int viewID, int index, bool isCoach)
+    {
+        photonView.RPC(nameof(RPC_UpdateList), RpcTarget.Others, viewID, index, isCoach);
+    }
+    [PunRPC]
+    void RPC_ClearList()
+    {
+        coachList.Clear();
+        playerList.Clear();
+    }
+    [PunRPC]
+    void RPC_UpdateList(int viewID, int index, bool isCoach)
+    {
+        if (isCoach)
+        {
+            coachList.Insert(index, PhotonView.Find(viewID).gameObject);
+        }
+        else
+        {
+            playerList.Insert(index, PhotonView.Find(viewID).gameObject);
+        }
+    }
+
     void CreateUserIcon()
     {
         photonView.RPC(nameof(RPC_CreateUserIcon), RpcTarget.All);
@@ -149,6 +177,7 @@ public class PgManager : MonoBehaviourPunCallbacks
         {
             Destroy(tr.gameObject);
         }
+        // coachList 정보를 뿌려주자.
         for (int i = 0; i < coachList.Count; i++)
         {
             Instantiate(coachIconFactory, UserListParent);
@@ -158,16 +187,6 @@ public class PgManager : MonoBehaviourPunCallbacks
         {
             Instantiate(playerIconFactory, UserListParent);
         }
-        //switch(order)
-        //{
-        //    case 1:
-        //        Instantiate(coachIconFactory, UserListParent);
-        //        break;
-
-        //    case 2:
-        //        Instantiate(playerIconFactory, UserListParent);
-        //        break;
-        //}
     }
 
     void SetAuthority(GameObject user, bool isCoach)
