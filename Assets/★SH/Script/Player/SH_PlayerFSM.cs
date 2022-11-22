@@ -25,7 +25,7 @@ public class SH_PlayerFSM : MonoBehaviourPun
     SH_PlayerRot pr;
     SH_PlayerCrossHair pch;
 
-    void Start()
+    private void Awake()
     {
         pm = GetComponent<SH_PlayerMove>();
         pr = GetComponent<SH_PlayerRot>();

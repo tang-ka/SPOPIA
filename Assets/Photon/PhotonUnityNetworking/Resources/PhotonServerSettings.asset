@@ -48,6 +48,9 @@ MonoBehaviour:
   - RpcCreateUser2
   - RPC_PostUser2Master
   - RPC_CreateUserIcon
+  - RPC_UpdateList
+  - RPC_ClearList
+  - RPC_Init
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

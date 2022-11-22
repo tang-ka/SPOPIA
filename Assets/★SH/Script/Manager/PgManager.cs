@@ -98,7 +98,6 @@ public class PgManager : MonoBehaviourPunCallbacks
         //    icon = coachIconFactory;
         //    coachList.Add(go);
         //}
-
     }
 
     void PostUser2Maseter(int viewID, bool isCoach)
@@ -110,9 +109,13 @@ public class PgManager : MonoBehaviourPunCallbacks
     void RPC_PostUser2Master(int viewID, bool isCoach)
     {
         // 1. MasterClient는 본인을 등록하고 싶다.
-        if (photonView.ViewID == viewID)
+        if (PhotonNetwork.IsMasterClient)
         {
             SetAuthority(go, isCoach);
+            if (isCoach)
+                go.GetComponent<SH_PlayerFSM>().ChangeState(SH_PlayerFSM.State.TEACH);
+            else
+                go.GetComponent<SH_PlayerFSM>().ChangeState(SH_PlayerFSM.State.LEARN);
         }
         // 2. MasterClient가 아니면 해당 ID의 gameObject를 찾아서 등록하고 싶다.
         else
@@ -158,11 +161,15 @@ public class PgManager : MonoBehaviourPunCallbacks
     {
         if (isCoach)
         {
-            coachList.Insert(index, PhotonView.Find(viewID).gameObject);
+            GameObject user = PhotonView.Find(viewID).gameObject;
+            coachList.Insert(index, user);
+            user.GetComponent<SH_PlayerFSM>().ChangeState(SH_PlayerFSM.State.TEACH);
         }
         else
         {
-            playerList.Insert(index, PhotonView.Find(viewID).gameObject);
+            GameObject user = PhotonView.Find(viewID).gameObject;
+            playerList.Insert(index, user);
+            user.GetComponent<SH_PlayerFSM>().ChangeState(SH_PlayerFSM.State.LEARN);
         }
     }
 
@@ -180,12 +187,12 @@ public class PgManager : MonoBehaviourPunCallbacks
         // coachList 정보를 뿌려주자.
         for (int i = 0; i < coachList.Count; i++)
         {
-            Instantiate(coachIconFactory, UserListParent);
+            GameObject icon = Instantiate(coachIconFactory, UserListParent);
         }
         // playerList 정보를 뿌려주자.
         for (int i = 0; i < playerList.Count; i++)
         {
-            Instantiate(playerIconFactory, UserListParent);
+            GameObject icon = Instantiate(playerIconFactory, UserListParent);
         }
     }
 
@@ -193,9 +200,15 @@ public class PgManager : MonoBehaviourPunCallbacks
     {
         // 유저가 일반 플레이어를 선택했다면
         if (isCoach == false)
+        {
             playerList.Add(user);
+            //user.GetComponent<SH_PlayerFSM>().ChangeState(SH_PlayerFSM.State.LEARN);
+        }
         // 유저가 코치를 선택했다면
         else
+        {
             coachList.Add(user);
+            //user.GetComponent<SH_PlayerFSM>().ChangeState(SH_PlayerFSM.State.TEACH);
+        }
     }
 }
