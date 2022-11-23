@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class SH_LeaderBoardManager : MonoBehaviour
+public class SH_LeaderBoardManager : MonoBehaviourPunCallbacks
 {
     enum Category
     {
@@ -38,6 +39,10 @@ public class SH_LeaderBoardManager : MonoBehaviour
     bool on = true;
     int index = 0;
 
+    // 전광판 자동으로 넘어가게끔 (영수)
+    float time;
+    bool isTimed = false;
+
     void Start()
     {
         ChangeCategory(Category.TEAMRANKING);
@@ -63,6 +68,24 @@ public class SH_LeaderBoardManager : MonoBehaviour
             case Category.TOPASSISTS:
                 CategoryTOPASSISTS();
                 break;
+        }
+
+        // 전광판 시간 동기화 (영수)
+        time = (float)PhotonNetwork.Time;
+
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            // 전광판 자동으로 넘어가게끔 (영수)
+            if (time % 5 == 0 && isTimed == false) // 5초마다
+            {
+                ChangeIndex();
+                isTimed = true;
+            }
+
+            if (time % 5 != 0)
+            {
+                isTimed = false;
+            }
         }
     }
 
@@ -167,6 +190,14 @@ public class SH_LeaderBoardManager : MonoBehaviour
         index++;
         index %= 3;
         ChangeCategory((Category)index);
+
+        photonView.RPC(nameof(RpcChangeIndex), RpcTarget.OthersBuffered, index);
+    }
+
+    [PunRPC]
+    void RpcChangeIndex(int _index)
+    {
+        ChangeCategory((Category)_index);
     }
 
     void CalcTeamRank(List<TeamData> teams)
