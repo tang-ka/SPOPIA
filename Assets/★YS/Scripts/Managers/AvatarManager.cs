@@ -11,7 +11,7 @@ using UnityEngine.EventSystems;
 public class AvatarManager : MonoBehaviour
 {
     public InputField nickNameInputField, ageInputField, positionInputField, heightInputField, weightInputField;
-    public int idx;
+    public int idx = -1;
 
     // Start is called before the first frame update
     void Start()

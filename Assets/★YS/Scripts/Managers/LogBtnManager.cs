@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class LogBtnManager : MonoBehaviour
 {
-    public GameObject signupPage, loginPage;
+    public GameObject signupPage, loginPage, reallyPage;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +26,18 @@ public class LogBtnManager : MonoBehaviour
 
     public void CancelClick()
     {
+        reallyPage.SetActive(true);
+    }
+
+    public void ReallyYes()
+    {
+        reallyPage.SetActive(false);
         loginPage.SetActive(true);
         signupPage.SetActive(false);
+    }
+
+    public void ReallyNo()
+    {
+        reallyPage.SetActive(false);
     }
 }
