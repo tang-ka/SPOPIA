@@ -127,4 +127,20 @@ public class SH_PlayerMove : MonoBehaviourPun, IPunObservable
             receiveRot = (Quaternion)stream.ReceiveNext();
         }
     }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if(hit.gameObject.name.Contains("Player"))
+        {
+            print("충돌");
+
+            photonView.RPC(nameof(Collied), RpcTarget.OthersBuffered);
+        }
+    }
+
+    [PunRPC]
+    public void Collied()
+    {
+        print("충돌");
+    }
 }

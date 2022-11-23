@@ -51,6 +51,8 @@ MonoBehaviour:
   - RPC_UpdateList
   - RPC_ClearList
   - RPC_Init
+  - Collied
+  - RpcAddTeam
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
