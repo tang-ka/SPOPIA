@@ -88,7 +88,7 @@ public class ImageStorageManager : MonoBehaviour
         File.WriteAllBytes(Application.streamingAssetsPath + "/SavedImage.png", texture2D.EncodeToPNG());
 
         // 서버에 업로드
-        UploadStorage("SavedImage.png");
+        //UploadStorage("SavedImage.png");
     }
 
     // 파이어베이스 DB에 이미지 업로드
