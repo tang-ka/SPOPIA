@@ -117,7 +117,7 @@ public class SH_PlayerFSM : MonoBehaviourPun
                 break;
 
             case State.TEACH:
-                pr.CusorControll(CursorLockMode.None, true);
+                pr.CusorControll(CursorLockMode.Confined, true);
                 break;
 
             case State.LEARN:

@@ -13,13 +13,17 @@ public class PgManager : MonoBehaviourPunCallbacks
     {
         if (instance == null)
             instance = this;
+
+        // 닉네임 설정 (탕카)
+        PhotonNetwork.NickName = DBManager.instance.myData.nickName;
+        print(PhotonNetwork.NickName);
     }
 
     public Vector3 spawnPos;
     [SerializeField]
-    List<GameObject> coachList = new List<GameObject>();
+    public List<GameObject> coachList = new List<GameObject>();
     [SerializeField]
-    List<GameObject> playerList = new List<GameObject>();
+    public List<GameObject> playerList = new List<GameObject>();
 
     public Transform UserListParent;
     public GameObject coachIconFactory;
@@ -109,7 +113,7 @@ public class PgManager : MonoBehaviourPunCallbacks
     void RPC_PostUser2Master(int viewID, bool isCoach)
     {
         // 1. MasterClient는 본인을 등록하고 싶다.
-        if (PhotonNetwork.IsMasterClient)
+        if (go.GetPhotonView().ViewID == viewID)
         {
             SetAuthority(go, isCoach);
             if (isCoach)
@@ -202,13 +206,11 @@ public class PgManager : MonoBehaviourPunCallbacks
         if (isCoach == false)
         {
             playerList.Add(user);
-            //user.GetComponent<SH_PlayerFSM>().ChangeState(SH_PlayerFSM.State.LEARN);
         }
         // 유저가 코치를 선택했다면
         else
         {
             coachList.Add(user);
-            //user.GetComponent<SH_PlayerFSM>().ChangeState(SH_PlayerFSM.State.TEACH);
         }
     }
 }

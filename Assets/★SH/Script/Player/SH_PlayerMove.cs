@@ -26,6 +26,9 @@ public class SH_PlayerMove : MonoBehaviourPun, IPunObservable
 
     float time = 0;
 
+    public bool isJumping;
+    public bool isGrounded;
+
     // 도착 위치
     Vector3 receivePos;
     // 회전되야 하는 값
@@ -58,18 +61,30 @@ public class SH_PlayerMove : MonoBehaviourPun, IPunObservable
             {
                 yVelocity = 0;
                 jumpCount = 0;
+
+                isJumping = false;
+                isGrounded = true;
             }
 
             if (Input.GetButtonDown("Jump") && jumpCount < maxJumpCount)
             {
                 yVelocity = jumpPower;
                 jumpCount++;
+
+                isJumping = true;
+                isGrounded = false;
             }
 
             SetSpeed();
 
             dir *= speed;
             dir.y = yVelocity;
+
+            anim.SetBool("IsJumping", isJumping);
+            anim.SetBool("IsGrounded", isGrounded);
+            anim.SetBool("IsFalling", dir.y > 1 || dir.y < -1);
+
+            print(dir);
 
             cc.Move(dir * Time.deltaTime);
         }

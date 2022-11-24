@@ -6,8 +6,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class SH_TrainingUIManager : MonoBehaviour
+public class SH_TrainingUIManager : MonoBehaviourPun
 {
     public static SH_TrainingUIManager instance;
     private void Awake()
@@ -35,8 +36,8 @@ public class SH_TrainingUIManager : MonoBehaviour
     public GameObject bluefactory;
     public GameObject redfactory;
 
-    Transform blueParent;
-    Transform redParent;
+    public Transform blueParent;
+    public Transform redParent;
 
     bool isTBOpen = true;
     bool isToolOpen = true;
@@ -52,7 +53,7 @@ public class SH_TrainingUIManager : MonoBehaviour
         optionList = FormDataManager.instance.GetFormNames();
         ddFormation.AddOptions(optionList);
 
-        ddFormation.onValueChanged.AddListener(onValueChanged);
+        ddFormation.onValueChanged.AddListener(OnValueChanged);
         btnTacticalBoard.onClick.AddListener(OnClickTBOpen);
         btnTool.onClick.AddListener(OnClickToolOpen);
         btnUserList.onClick.AddListener(OnClickUserList);
@@ -66,7 +67,7 @@ public class SH_TrainingUIManager : MonoBehaviour
 
         trFSM = GetComponent<SH_TrainingFSM>();
 
-        onValueChanged(0);
+        OnValueChanged(0);
 
         startUI.SetActive(true);
         tacticalBoard.SetActive(false);
@@ -82,7 +83,12 @@ public class SH_TrainingUIManager : MonoBehaviour
     }
 
     Formation selected;
-    private void onValueChanged(int arg)
+    public void OnValueChanged(int arg)
+    {
+        photonView.RPC(nameof(RPC_OnValueChanged), RpcTarget.All, arg);
+    }
+    [PunRPC]
+    public void RPC_OnValueChanged(int arg)
     {
         Formation selected = FormDataManager.instance.GetForm(optionList[arg]);
 
@@ -109,14 +115,19 @@ public class SH_TrainingUIManager : MonoBehaviour
 
     public void OnClickTBOpen()
     {
+        photonView.RPC(nameof(RPC_OnClickTBOpen), RpcTarget.All);
+    }
+    [PunRPC]
+    public void RPC_OnClickTBOpen()
+    {
         isTBOpen = !isTBOpen;
         isToolOpen = isTBOpen;
         isUserListOpen = isTBOpen;
 
         if (isTBOpen)
-            trFSM.instance.ChangeTime(SH_TrainingFSM.Time.EXPLANATION);
+            trFSM.instance.RPC_ChangeTime(SH_TrainingFSM.Time.EXPLANATION);
         else
-            trFSM.instance.ChangeTime(SH_TrainingFSM.Time.PRACTICE);
+            trFSM.instance.RPC_ChangeTime(SH_TrainingFSM.Time.PRACTICE);
     }
 
     public void OnClickToolOpen()

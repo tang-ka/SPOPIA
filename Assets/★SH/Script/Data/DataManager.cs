@@ -9,22 +9,17 @@ using UnityEngine.SocialPlatforms;
 [System.Serializable]
 public class UserData
 {
-    //public int serverID;
     // user info
-    public int avatarIdx;
     public string nickName;
+    public int avatarIdx;
     public int age;
-    //public int playerLevel; // 0: normal, 1: middle, 2: high, 3: university, 4: over
-    public string position;
-    public string teamName;
     public int height;
     public int weight;
-    //string profileImage;
-
-    //int 
-    //int backNumber;
-    //string favoritePlayer;
-    //Avatar
+    public string position;
+    public string teamName;
+    public int backNumber;
+    public string profileImage;
+    public string cardProfile;
 
     // user record
     public int goal;
@@ -32,9 +27,6 @@ public class UserData
     public int matchCount;
     public int goalRank;
     public int assistRank;
-
-    //int SPOPIAscore : 개인 전투력
-    //recent5
 }
 
 [System.Serializable]
@@ -44,9 +36,10 @@ public class TeamData
     public string teamName;
     public int memberNum;
     public List<UserData> users;
-    public string region; // league
-    //public int[] levelerCount = new int[5] { 0, 0, 9, 4, 0 };
     public string formation; // 4-4-2, 4-2-3-1
+    public string teamProfile;
+    public string emblem;
+    public float r, g, b;
 
     // team record
     public int goal;
@@ -57,9 +50,6 @@ public class TeamData
     public int draw;
     public int rank;
     public int points;
-
-    //int SPOPIAscore : 팀 전투력
-    //recent5
 }
 
 [System.Serializable]
@@ -71,6 +61,7 @@ public class LeagueData
 
     public string startDate;
     public string endDate;
+    public string type;
     public bool isfinished;
 
     // Map관련

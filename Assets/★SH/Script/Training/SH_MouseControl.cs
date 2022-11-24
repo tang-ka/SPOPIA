@@ -1,10 +1,11 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SH_MouseControl : MonoBehaviour
+public class SH_MouseControl : MonoBehaviourPun
 {
     public static SH_MouseControl instance;
     private void Awake()
@@ -175,9 +176,13 @@ public class SH_MouseControl : MonoBehaviour
     Vector3 targetPosition = Vector3.zero;
     Vector3 curPosition = Vector3.zero;
 
-    void MovePiece()
+    public void MovePiece()
     {
+        if (SH_TrainingUIManager.instance.isCoach == false) return;
+
         if (slcPiece == null) return;
+
+        string name = slcPiece.name;
 
         if (results.Count > 0)
         {
@@ -190,12 +195,19 @@ public class SH_MouseControl : MonoBehaviour
                 curPosition = slcPiece.localPosition;
                 curPosition = Vector3.Lerp(curPosition, targetPosition, Time.deltaTime * 10000);
                 slcPiece.localPosition = curPosition;
+
+                photonView.RPC(nameof(RPC_MovePiece), RpcTarget.Others, name, targetPosition);
             }
-            //else if (!isClickedM0 && !isClickingM0)
-            //{
-            //    slcPiece = null;
-            //}
         }
+    }
+    [PunRPC]
+    void RPC_MovePiece(string _name, Vector3 _targetPosition)
+    {
+        slcPiece = SH_TrainingUIManager.instance.blueParent.Find(_name);
+
+        curPosition = slcPiece.localPosition;
+        curPosition = Vector3.Lerp(curPosition, _targetPosition, Time.deltaTime * 10000);
+        slcPiece.localPosition = curPosition;
     }
 
     RaycastResult GetReults(int idx)

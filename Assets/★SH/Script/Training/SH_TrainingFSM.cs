@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using Photon.Pun;
 
-public class SH_TrainingFSM : MonoBehaviour
+public class SH_TrainingFSM : MonoBehaviourPun
 {
     public SH_TrainingFSM instance;
     private void Awake()
@@ -60,6 +61,11 @@ public class SH_TrainingFSM : MonoBehaviour
     }
 
     public void ChangeTime(Time t)
+    {
+        photonView.RPC(nameof(RPC_ChangeTime), RpcTarget.All, t);
+    }
+    [PunRPC]
+    public void RPC_ChangeTime(Time t)
     {
         if (time == t)
         {

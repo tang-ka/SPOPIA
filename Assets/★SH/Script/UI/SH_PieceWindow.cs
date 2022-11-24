@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class SH_PieceWindow : MonoBehaviour
+public class SH_PieceWindow : MonoBehaviourPun
 {
     public Button btnInputText;
     public Button btnDistance;
@@ -118,9 +119,26 @@ public class SH_PieceWindow : MonoBehaviour
         distDeleteList += line.GetComponent<SH_DistanceLine>().DeleteSelf;
         second.GetComponent<SH_PieceWindow>().distDeleteList += line.GetComponent<SH_DistanceLine>().DeleteSelf;
 
+        first = null;
+        second = null;
+        print("内风凭 场");
+
+        transform.parent.gameObject.GetPhotonView().RPC(nameof(RPC_SyncDistance), RpcTarget.Others, first.name, second.name);
+    }
+    [PunRPC]
+    public void RPC_SyncDistance(string _firstName, string _secondName)
+    {
+        start = SH_TrainingUIManager.instance.blueParent.Find(_firstName).gameObject;
+        second = SH_TrainingUIManager.instance.blueParent.Find(_secondName).gameObject;
+
+        GameObject line = Instantiate(lineFactory, lineParent);
+        line.GetComponent<SH_DistanceLine>().Init(first, second);
+
+        distDeleteList += line.GetComponent<SH_DistanceLine>().DeleteSelf;
+        second.GetComponent<SH_PieceWindow>().distDeleteList += line.GetComponent<SH_DistanceLine>().DeleteSelf;
+
         second = null;
         first = null;
-        print("内风凭 场");
     }
 
     public void OnClickBtnDistDelete()

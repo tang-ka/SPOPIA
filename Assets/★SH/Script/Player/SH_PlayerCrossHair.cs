@@ -63,7 +63,7 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             GetComponent<CharacterController>().enabled = false;
-            transform.position = new Vector3(40, 2.1f, 350);
+            transform.position = new Vector3(130, 2, 215);
             GetComponent<CharacterController>().enabled = true;
         }
 
