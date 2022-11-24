@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using Firebase;
 using Firebase.Storage;
+using Firebase.Extensions;
 using System;
 using System.IO;
 
@@ -33,16 +34,15 @@ public class ImageStorageManager : MonoBehaviour
     {
         storage = FirebaseStorage.DefaultInstance;
 
-        storage = FirebaseStorage.DefaultInstance;
-        storageRef = storage.GetReferenceFromUrl("");
+        storageRef = storage.GetReferenceFromUrl("gs://spopia-image.appspot.com"); // Storage 경로
 
-        StorageReference image = storageRef.Child(""); //  파일 이름
+        StorageReference image = storageRef.Child("SavedImage.png"); //  파일 이름
 
-        image.GetDownloadUrlAsync().ContinueWith(task =>
+        image.GetDownloadUrlAsync().ContinueWithOnMainThread(task =>
         {
             if(!task.IsFaulted && !task.IsCanceled)
             {
-                StartCoroutine(DownloadStorage(Convert.ToString(task.Result)));
+                StartCoroutine(DownloadStorage(task.Result.ToString()));
             }
         });
     }
@@ -88,15 +88,15 @@ public class ImageStorageManager : MonoBehaviour
         File.WriteAllBytes(Application.streamingAssetsPath + "/SavedImage.png", texture2D.EncodeToPNG());
 
         // 서버에 업로드
-        //UploadStorage("SavedImage.png");
+        UploadStorage("SavedImage.png");
     }
 
     // 파이어베이스 DB에 이미지 업로드
-    public void UploadStorage()
+    public void UploadStorage(string s)
     {
-        storageRef = storage.RootReference.Child(""); // 저장 이름
-        string local = "file://" + Application.streamingAssetsPath + "";
-        storageRef.PutFileAsync(local).ContinueWith(task =>
+        storageRef = storage.RootReference.Child(s); // 저장 이름
+        string localPath = "file://" + Application.streamingAssetsPath + "/" + s;
+        storageRef.PutFileAsync(localPath).ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
@@ -118,7 +118,7 @@ public class ImageStorageManager : MonoBehaviour
         }
         else
         {
-            rawImg.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            loadTest.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
         }
     }
 }
