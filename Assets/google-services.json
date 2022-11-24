@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "242526713113",
+    "project_id": "spopia-image",
+    "storage_bucket": "spopia-image.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242526713113:android:e0d52d8de1abe2f1698188",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.SPOPIA"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242526713113-nkqphojbankq435155onjdr2aamk9m4g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYdTld9v8RnHIscG5cXOU57hSGsPj9PXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242526713113-nkqphojbankq435155onjdr2aamk9m4g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

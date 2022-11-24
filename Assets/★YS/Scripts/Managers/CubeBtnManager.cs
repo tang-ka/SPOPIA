@@ -8,6 +8,8 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
 {
     public GameObject teamInfoPage;
     public InputField inputTeamName, inputFormation;
+    Color c; // 팀 이름 색(알파)
+    public GameObject go; // 팀 이름 오브젝트 동적 할당
 
     // Start is called before the first frame update
     void Start()
@@ -22,12 +24,23 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         {
             BtnClick();
         }
+
+        // 팀 이름 생성될 때, 페이드인 효과
+        if(go != null && go.GetComponent<TextMesh>().color.a < 1)
+        {
+            c.a += 0.00005f;
+            if(c.a > 0.01f)
+            {
+                c.a += 0.005f;
+                go.GetComponent<TextMesh>().color = c;
+            }
+        }
     }
 
     void BtnClick()
     {
         // 상혁 - 씬 전환할때 main카메라 없어서 오류 나는 거때문에 추가
-        if (Camera.current == null) return;
+        //if (Camera.current == null) return;
 
         RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -107,6 +120,9 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
 
     public void AddTeam()
     {
+        // 팀명 생성될 때, 이펙트
+        PhotonNetwork.Instantiate("TeamNameEffect", new Vector3(130, 2.09446955f + 100f, 220), Quaternion.identity);
+
         // 팀정보 세팅
         TeamData teamData = new TeamData();
         teamData.teamName = inputTeamName.text;
@@ -130,7 +146,25 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagues, "LeagueData");
 
         // 경기장에 팀명 띄우기
+        go = Instantiate(Resources.Load<GameObject>("YS/TeamName"), new Vector3(130, 2.09446955f + 100f, 220), Quaternion.identity);
+        go.GetComponent<TextMesh>().text = inputTeamName.text;
+        c = go.GetComponent<TextMesh>().color;
+        c.a = 0;
+        go.GetComponent<TextMesh>().color = c;
 
+        // RPC 보내기
+        photonView.RPC(nameof(RpcAddTeam), RpcTarget.OthersBuffered, inputTeamName.text);
+    }
+
+    [PunRPC]
+    void RpcAddTeam(string _text)
+    {
+        // 경기장에 팀명 띄우기
+        go = Instantiate(Resources.Load<GameObject>("YS/TeamName"), new Vector3(130, 2.09446955f + 100f, 220), Quaternion.identity);
+        go.GetComponent<TextMesh>().text = _text;
+        c = go.GetComponent<TextMesh>().color;
+        c.a = 0;
+        go.GetComponent<TextMesh>().color = c;
     }
 
     public void Cancel()

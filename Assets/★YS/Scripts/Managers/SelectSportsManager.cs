@@ -25,11 +25,6 @@ public class SelectSportsManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             SelectSports();
-
-            if(center.transform.eulerAngles.y >= rot_y  - 0.05f && center.transform.rotation.y <= rot_y + 0.05f)
-            {
-                Turn();
-            }
         }
     }
 
@@ -47,15 +42,15 @@ public class SelectSportsManager : MonoBehaviour
         }
     }
 
-    void Turn()
+    public void RightTurn()
     {
-        rot = Quaternion.Euler(0, center.transform.eulerAngles.y + 120, 0);
-        rot_y = center.transform.eulerAngles.y + 120;
+        rot_y += 120;
+        rot = Quaternion.Euler(0, rot_y, 0);
+    }
 
-        // rot_y는 eulerAngles이라서 360을 넘어가면 빼준다.
-        if(rot_y >= 350)
-        {
-            rot_y -= 360;
-        }
+    public void LeftTurn()
+    {
+        rot_y -= 120;
+        rot = Quaternion.Euler(0, rot_y, 0);
     }
 }
