@@ -54,6 +54,11 @@ MonoBehaviour:
   - Collied
   - RpcAddTeam
   - RpcChangeIndex
+  - RPC_ChangeTime
+  - RPC_MovePiece
+  - RPC_OnClickTBOpen
+  - RPC_OnValueChanged
+  - RPC_SyncDistance
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
