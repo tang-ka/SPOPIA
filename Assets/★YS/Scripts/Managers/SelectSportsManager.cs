@@ -10,6 +10,9 @@ public class SelectSportsManager : MonoBehaviour
     Quaternion rot;
     float rot_y; // eulerAnlges값
 
+    // 확인창
+    //public 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,15 +45,25 @@ public class SelectSportsManager : MonoBehaviour
         }
     }
 
+    /*public void OK()
+    {
+        SceneManager.LoadScene("LeagueChoiceScene");
+    }
+
+    public void Cancel()
+    {
+
+    }*/
+
     public void RightTurn()
     {
-        rot_y += 120;
+        rot_y += 72;
         rot = Quaternion.Euler(0, rot_y, 0);
     }
 
     public void LeftTurn()
     {
-        rot_y -= 120;
+        rot_y -= 72;
         rot = Quaternion.Euler(0, rot_y, 0);
     }
 }
