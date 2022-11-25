@@ -4942,6 +4942,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   preState: 0
+  sendNickName: 
+  sendBackNumber: 0
 --- !u!114 &5659720693578862062
 MonoBehaviour:
   m_ObjectHideFlags: 0

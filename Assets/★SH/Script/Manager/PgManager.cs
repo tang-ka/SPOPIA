@@ -13,10 +13,6 @@ public class PgManager : MonoBehaviourPunCallbacks
     {
         if (instance == null)
             instance = this;
-
-        // 닉네임 설정 (탕카)
-        PhotonNetwork.NickName = DBManager.instance.myData.nickName;
-        print(PhotonNetwork.NickName);
     }
 
     public Vector3 spawnPos;
@@ -87,24 +83,10 @@ public class PgManager : MonoBehaviourPunCallbacks
         SettingSpawnOption();
         CreateUser();
 
-        PostUser2Maseter(go.GetPhotonView().ViewID, SH_TrainingUIManager.instance.isCoach);
-
-        //// 플레이어의 authority가 player면
-        //if (isCoach == false)
-        //{
-        //    // 플레이어에게 플레이어 권한을 부여하고 싶다.
-        //    icon = playerIconFactory; 
-        //    playerList.Add(go);
-        //}
-        //else
-        //{
-        //    // 플레이어에게 플레이어 권한을 부여하고 싶다.
-        //    icon = coachIconFactory;
-        //    coachList.Add(go);
-        //}
+        PostUser2Master(go.GetPhotonView().ViewID, SH_TrainingUIManager.instance.isCoach);
     }
 
-    void PostUser2Maseter(int viewID, bool isCoach)
+    void PostUser2Master(int viewID, bool isCoach)
     {
         photonView.RPC(nameof(RPC_PostUser2Master), RpcTarget.MasterClient, viewID, isCoach);
     }
@@ -142,7 +124,7 @@ public class PgManager : MonoBehaviourPunCallbacks
             {
                 UpdateList(playerList[i].GetPhotonView().ViewID, i, false);
             }
-            CreateUserIcon();
+            CreateUserIcon(viewID);
         }
     }
 
@@ -177,12 +159,12 @@ public class PgManager : MonoBehaviourPunCallbacks
         }
     }
 
-    void CreateUserIcon()
+    void CreateUserIcon(int viewID)
     {
-        photonView.RPC(nameof(RPC_CreateUserIcon), RpcTarget.All);
+        photonView.RPC(nameof(RPC_CreateUserIcon), RpcTarget.All, viewID);
     }
     [PunRPC]
-    void RPC_CreateUserIcon()
+    void RPC_CreateUserIcon(int viewID)
     {
         foreach (Transform tr in UserListParent)
         {
@@ -192,13 +174,23 @@ public class PgManager : MonoBehaviourPunCallbacks
         for (int i = 0; i < coachList.Count; i++)
         {
             GameObject icon = Instantiate(coachIconFactory, UserListParent);
+            int _viewID = coachList[i].GetPhotonView().ViewID;
+            icon.GetComponent<SH_UserIcon>().Init(_viewID);
         }
         // playerList 정보를 뿌려주자.
         for (int i = 0; i < playerList.Count; i++)
         {
             GameObject icon = Instantiate(playerIconFactory, UserListParent);
+            int _viewID = playerList[i].GetPhotonView().ViewID;
+            icon.GetComponent<SH_UserIcon>().Init(_viewID);
         }
     }
+    //[PunRPC]
+    //public void RPC_UserIconInit(int _viewID)
+    //{
+
+    //}
+
 
     void SetAuthority(GameObject user, bool isCoach)
     {

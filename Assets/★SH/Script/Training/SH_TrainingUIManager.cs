@@ -111,6 +111,8 @@ public class SH_TrainingUIManager : MonoBehaviourPun
 
             FormationManager.instance.pieces[i] = bluePiece;
         }
+
+        ddFormation.value = arg;
     }
 
     public void OnClickTBOpen()

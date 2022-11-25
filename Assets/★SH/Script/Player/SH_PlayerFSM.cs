@@ -25,6 +25,9 @@ public class SH_PlayerFSM : MonoBehaviourPun
     SH_PlayerRot pr;
     SH_PlayerCrossHair pch;
 
+    public string sendNickName;
+    public int sendBackNumber;
+
     private void Awake()
     {
         pm = GetComponent<SH_PlayerMove>();
@@ -32,7 +35,14 @@ public class SH_PlayerFSM : MonoBehaviourPun
         pch = GetComponent<SH_PlayerCrossHair>();
 
         pr.CusorControll(CursorLockMode.Locked, false);
+
+        // 닉네임 설정 (탕카)
+        sendNickName = PhotonNetwork.NickName = DBManager.instance.myData.nickName;
+        sendBackNumber = DBManager.instance.myData.backNumber;
+        print(PhotonNetwork.NickName);
     }
+
+
 
     void Update()
     {
