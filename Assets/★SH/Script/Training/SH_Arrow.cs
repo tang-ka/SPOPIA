@@ -18,11 +18,6 @@ public class SH_Arrow : MonoBehaviour
         this.end = end;
     }
 
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         if (start == null) return;

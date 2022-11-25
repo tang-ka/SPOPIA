@@ -59,6 +59,9 @@ MonoBehaviour:
   - RPC_OnClickTBOpen
   - RPC_OnValueChanged
   - RPC_SyncDistance
+  - RPC_DistDelete
+  - RPC_SyncArrow
+  - RPC_ArrowDelete
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

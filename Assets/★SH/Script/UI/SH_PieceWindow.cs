@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
+using UnityEditor.PackageManager;
 
 public class SH_PieceWindow : MonoBehaviourPun
 {
@@ -30,6 +31,9 @@ public class SH_PieceWindow : MonoBehaviourPun
 
     int arrowCount = 0;
 
+    PhotonView parentPhotonView;
+    SH_BlueTeam myParent;
+
     void Start()
     {
         lineParent = GameObject.Find("GroundBG").transform.Find("LineParent");
@@ -45,6 +49,9 @@ public class SH_PieceWindow : MonoBehaviourPun
         inputName.onSubmit.AddListener(OnSubmitInputName);
 
         window.SetActive(false);
+
+        parentPhotonView = transform.parent.gameObject.GetPhotonView();
+        myParent = GetComponentInParent<SH_BlueTeam>();
     }
 
     void Update()
@@ -119,16 +126,16 @@ public class SH_PieceWindow : MonoBehaviourPun
         distDeleteList += line.GetComponent<SH_DistanceLine>().DeleteSelf;
         second.GetComponent<SH_PieceWindow>().distDeleteList += line.GetComponent<SH_DistanceLine>().DeleteSelf;
 
+        parentPhotonView.RPC(nameof(myParent.RPC_SyncDistance), RpcTarget.Others, gameObject.name, first.name, second.name);
+
         first = null;
         second = null;
         print("内风凭 场");
-
-        transform.parent.gameObject.GetPhotonView().RPC(nameof(RPC_SyncDistance), RpcTarget.Others, first.name, second.name);
     }
-    [PunRPC]
-    public void RPC_SyncDistance(string _firstName, string _secondName)
+
+    public void SyncDistance(string _firstName, string _secondName)
     {
-        start = SH_TrainingUIManager.instance.blueParent.Find(_firstName).gameObject;
+        first = SH_TrainingUIManager.instance.blueParent.Find(_firstName).gameObject;
         second = SH_TrainingUIManager.instance.blueParent.Find(_secondName).gameObject;
 
         GameObject line = Instantiate(lineFactory, lineParent);
@@ -146,11 +153,21 @@ public class SH_PieceWindow : MonoBehaviourPun
         if (distDeleteList == null) return;
         window.SetActive(false);
         distDeleteList();
+
+        parentPhotonView.RPC(nameof(myParent.RPC_DistDelete), RpcTarget.Others, gameObject.name);
+    }
+
+    public void DistDelete()
+    {
+        distDeleteList();
     }
 
     GameObject start;
     Vector3 end;
     List<GameObject> arrowList = new List<GameObject>();
+    bool rpcFlag;
+    bool m0Flag = false;
+    bool m1Flag = false;
 
     private void OnClickBtnArrow()
     {
@@ -169,6 +186,8 @@ public class SH_PieceWindow : MonoBehaviourPun
         GameObject arrow = Instantiate(arrowFactory, arrowParent);
         Text distance = arrow.transform.Find("txtDistance").GetComponent<Text>();
 
+        rpcFlag = true;
+
         while (true)
         {
             yield return null;
@@ -181,6 +200,7 @@ public class SH_PieceWindow : MonoBehaviourPun
 
             dist = Vector3.Distance(start.transform.position, end);
             arrow.GetComponent<RectTransform>().sizeDelta = new Vector2(3, dist);
+            float tempDist = dist;
 
             dist = Mathf.Round(dist);
             dist /= 10;
@@ -191,22 +211,93 @@ public class SH_PieceWindow : MonoBehaviourPun
             {
                 arrow.GetComponent<SH_Arrow>().Init(start, end);
                 arrowList.Add(arrow);
+
+                m0Flag = true;
+                m1Flag = false;
+
+                parentPhotonView.RPC(nameof(myParent.RPC_SyncArrow), RpcTarget.Others,
+                    gameObject.name, start.name, end, rpcFlag, tempDist, distance.text, m0Flag, m1Flag);
+
                 break;
             }
             // 快努腐矫 arrow 积己 秒家
             else if (SH_MouseControl.instance.isClickedM1)
             {
                 Destroy(arrow);
+
+                m0Flag = false;
+                m1Flag = true;
+
+                parentPhotonView.RPC(nameof(myParent.RPC_SyncArrow), RpcTarget.Others,
+                    gameObject.name, start.name, end, rpcFlag, tempDist, distance.text, m0Flag, m1Flag);
+
                 break;
+            }
+
+            parentPhotonView.RPC(nameof(myParent.RPC_SyncArrow), RpcTarget.Others,
+                gameObject.name, start.name, end, rpcFlag, tempDist, distance.text, m0Flag, m1Flag);
+
+            rpcFlag = false;
+        }
+
+        m0Flag = false;
+        m1Flag = false;
+        arrow = null;
+        distance = null;
+    }
+
+    GameObject arrow = null;
+    Text distance = null;
+
+    public void SyncArrow(string _startName, Vector3 _end, 
+        bool _rpcFlag, float _dist, string _distance, bool _m0Flag, bool _m1Flag)
+    {
+        if (_rpcFlag)
+        {
+            arrow = Instantiate(arrowFactory, arrowParent);
+            distance = arrow.transform.Find("txtDistance").GetComponent<Text>();
+            start = SH_TrainingUIManager.instance.blueParent.Find(_startName).gameObject;
+        }
+        else
+        {
+            end = _end;
+            arrow.GetComponent<RectTransform>().anchoredPosition = start.transform.localPosition;
+            arrow.transform.up = start.transform.position - end;
+
+            arrow.GetComponent<RectTransform>().sizeDelta = new Vector2(3, _dist);
+
+            distance.text = _distance;
+            distance.transform.up = Vector3.up;
+
+            if (_m0Flag)
+            {
+                arrow.GetComponent<SH_Arrow>().Init(start, end);
+                arrowList.Add(arrow);
+            }
+            // 快努腐矫 arrow 积己 秒家
+            else if (_m1Flag)
+            {
+                Destroy(arrow);
             }
         }
     }
 
     public void OnClickBtnArrowDelete()
     {
+        if (arrowList.Count <= 0) return;
         window.SetActive(false);
         arrowCount = 0;
 
+        for (int i = 0; i < arrowList.Count; i++)
+        {
+            Destroy(arrowList[i].gameObject);
+        }
+
+        parentPhotonView.RPC(nameof(myParent.RPC_ArrowDelete), RpcTarget.Others, gameObject.name);
+    }
+
+    public void ArrowDelete()
+    {
         for (int i = 0; i < arrowList.Count; i++)
         {
             Destroy(arrowList[i].gameObject);
