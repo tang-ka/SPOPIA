@@ -10,6 +10,7 @@ using UnityEngine.SocialPlatforms;
 public class UserData
 {
     // user info
+    public string realName;
     public string nickName;
     public int avatarIdx;
     public int age;
