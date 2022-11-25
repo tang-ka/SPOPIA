@@ -17,7 +17,7 @@ public class LcManager : MonoBehaviourPunCallbacks
     public Button btnCreateLeague;
     public Button btnJoinLeague;
 
-    public GameObject leagueInfoPage;
+    public GameObject leagueInfoPage, leagueListPage;
     public Transform contentTr;
 
     private void Awake()
@@ -185,10 +185,12 @@ public class LcManager : MonoBehaviourPunCallbacks
         if (leagueInfoPage.activeSelf == false)
         {
             leagueInfoPage.SetActive(true);
+            leagueListPage.SetActive(false);
         }
         else
         {
             leagueInfoPage.SetActive(false);
+            leagueListPage.SetActive(true);
         }
     }
 
