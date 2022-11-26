@@ -42,8 +42,6 @@ public class SH_PlayerFSM : MonoBehaviourPun
         print(PhotonNetwork.NickName);
     }
 
-
-
     void Update()
     {
         switch (state)
