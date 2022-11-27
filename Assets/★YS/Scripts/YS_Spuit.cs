@@ -1,11 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class YS_Spuit : MonoBehaviour
 {
     // 스포이트
     public Color spuit;
+    bool b_spuit = false;
+
+    public RawImage rawImg;
+
+    private void Update()
+    {
+        if(b_spuit == true)
+        {
+            StartCoroutine(Spuit());
+
+            // 스포이트로 찍은 색 넣어주기
+            if (Input.GetMouseButtonDown(0))
+            {
+                rawImg.color = spuit;
+
+                b_spuit = false;
+            }
+        }
+    }
+
+    public void SpuitOn()
+    {
+        b_spuit = true;
+    }
 
     IEnumerator Spuit()
     {

@@ -17,11 +17,21 @@ public class LoginManager : MonoBehaviourPunCallbacks
     // 회원가입용(영수)
     public InputField emailSignUp, pwSignUp, nameSignUp, pwAgain;
 
+    LogBtnManager lbManager;
+
     // Start is called before the first frame update
     void Start()
     {
         //inputPW.onValueChanged.AddListener(OnValueChanged); // 영수 : 오류나서 막아놨습니다.
         inputPW.onSubmit.AddListener(OnSubmit);
+
+        // LogBtnManager
+        lbManager = GameObject.Find("ButtonManager").GetComponent<LogBtnManager>();
+    }
+
+    private void Update()
+    {
+        
     }
 
     public void OnValueChanged(string s)
@@ -78,6 +88,12 @@ public class LoginManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void CheckBtn()
+    {
+        var request = new RegisterPlayFabUserRequest { Email = emailSignUp.text };
+        PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegisterFailure);
+    }
+
     void OnLoginSuccess(LoginResult result)
     {
         print("로그인 성공");
@@ -108,9 +124,15 @@ public class LoginManager : MonoBehaviourPunCallbacks
     {
         print("회원가입 성공");
         DBManager.instance.SetStat();
+
+        // 확인창 띄우기
+        lbManager.registerGoodPage.SetActive(true);
     }
 
-    void OnRegisterFailure(PlayFabError error) => print("회원가입 실패");
+    void OnRegisterFailure(PlayFabError error)
+    {
+        print(error);
 
-    
+        //if(error.)
+    }
 }

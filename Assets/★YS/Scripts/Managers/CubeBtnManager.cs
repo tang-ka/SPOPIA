@@ -11,6 +11,9 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
     Color c; // 팀 이름 색(알파)
     public GameObject go; // 팀 이름 오브젝트 동적 할당
 
+    // 참여 완료 팝업
+    public GameObject goodPopUp, goodPopUp2;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,7 +40,7 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         }
     }
 
-    void BtnClick()
+    void BtnClick() // User추가
     {
         // 상혁 - 씬 전환할때 main카메라 없어서 오류 나는 거때문에 추가
         //if (Camera.current == null) return;
@@ -74,6 +77,9 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
 
             else if (hit.transform.gameObject.name == "AddUserButton")
             {
+                // 선수 등록 완료 팝업
+                goodPopUp2.SetActive(true);
+
                 // 리그DB에서 team리스트를 검사한다. (Add될 팀을 찾기 위해)
                 for (int i = 0; i < DBManager.instance.leagueInfo.teams.Count; i++)
                 {
@@ -118,8 +124,22 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         }
     }
 
+    public void GoodPopUp()
+    {
+        goodPopUp.SetActive(true);
+    }
+
+    public void GoodPopUp2()
+    {
+        goodPopUp2.SetActive(false);
+    }
+
     public void AddTeam()
     {
+        // 팝업 꺼주기
+        goodPopUp.SetActive(false);
+        teamInfoPage.SetActive(false);
+
         // 팀명 생성될 때, 이펙트
         PhotonNetwork.Instantiate("TeamNameEffect", new Vector3(130, 2.09446955f + 100f, 220), Quaternion.identity);
 
