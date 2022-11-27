@@ -895,6 +895,7 @@ GameObject:
   - component: {fileID: 6925317423653989461}
   - component: {fileID: 5889148396150011929}
   - component: {fileID: 3407957817755115102}
+  - component: {fileID: 640450084}
   m_Layer: 0
   m_Name: LeaderBoard
   m_TagString: Untagged
@@ -944,6 +945,28 @@ MonoBehaviour:
   userDataList: []
   playerRankList: []
 --- !u!114 &3407957817755115102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2873766025315157722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &640450084
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2205,7 +2228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b4805c347859264faca8e105b949abd, type: 3}
       propertyPath: m_LocalScale.y
-      value: 8
+      value: 8.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b4805c347859264faca8e105b949abd, type: 3}
       propertyPath: m_LocalScale.z
