@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.EventSystems;
 using Firebase;
 using Firebase.Storage;
 using Firebase.Extensions;
@@ -23,28 +24,22 @@ public class ImageStorageManager : MonoBehaviour
 {
     // 파일 브라우저 관련
     string path;
-    public RawImage rawImg, loadTest;
+    public RawImage rawImg;
 
     // firebase 관련
     FirebaseStorage storage;
     StorageReference storageRef;
 
+    // 파일 이름
+    string filename;
+
+    // 무슨 버튼을 눌렀는지
+    string btnName;
+
     // Start is called before the first frame update
     void Start()
     {
-        storage = FirebaseStorage.DefaultInstance;
-
-        storageRef = storage.GetReferenceFromUrl("gs://spopia-image.appspot.com"); // Storage 경로
-
-        StorageReference image = storageRef.Child("SavedImage.png"); //  파일 이름
-
-        image.GetDownloadUrlAsync().ContinueWithOnMainThread(task =>
-        {
-            if(!task.IsFaulted && !task.IsCanceled)
-            {
-                StartCoroutine(DownloadStorage(task.Result.ToString()));
-            }
-        });
+        rawImg = GetComponent<RawImage>();
     }
 
     // Update is called once per frame
@@ -55,6 +50,8 @@ public class ImageStorageManager : MonoBehaviour
 
     public void OpenFileBrowser()
     {
+        btnName = EventSystem.current.currentSelectedGameObject.name;
+
         path = EditorUtility.OpenFilePanel("이미지파일을 선택해주세요.", "", "png, jpg, jpeg");
         UploadImage();
     }
@@ -82,13 +79,20 @@ public class ImageStorageManager : MonoBehaviour
         texture2D.Apply();
 
         // 파일 이름
-        //string filename = "1";
+        if (btnName == "ProfileImageUpload")
+        {
+            filename = "pf_" + DBManager.instance.myData.nickName + ".png";
+        }
+        else if (btnName == "TeamLogoUpload")
+        {
+            filename = "logo_" + DBManager.instance.myData.teamName + ".png";
+        }
 
         // 저장
-        File.WriteAllBytes(Application.streamingAssetsPath + "/SavedImage.png", texture2D.EncodeToPNG());
+        File.WriteAllBytes(Application.streamingAssetsPath + "/" + filename, texture2D.EncodeToPNG());
 
         // 서버에 업로드
-        UploadStorage("SavedImage.png");
+        UploadStorage(filename);
     }
 
     // 파이어베이스 DB에 이미지 업로드
@@ -118,7 +122,24 @@ public class ImageStorageManager : MonoBehaviour
         }
         else
         {
-            loadTest.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            rawImg.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
         }
+    }
+
+    public void DownloadImage()
+    {
+        storage = FirebaseStorage.DefaultInstance;
+
+        storageRef = storage.GetReferenceFromUrl("gs://spopia-image.appspot.com"); // Storage 경로
+
+        StorageReference image = storageRef.Child(filename); //  파일 이름
+
+        image.GetDownloadUrlAsync().ContinueWithOnMainThread(task =>
+        {
+            if (!task.IsFaulted && !task.IsCanceled)
+            {
+                StartCoroutine(DownloadStorage(task.Result.ToString()));
+            }
+        });
     }
 }
