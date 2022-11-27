@@ -39,6 +39,8 @@ public class ImageStorageManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        storage = FirebaseStorage.DefaultInstance;
+
         rawImg = GetComponent<RawImage>();
     }
 
@@ -128,8 +130,6 @@ public class ImageStorageManager : MonoBehaviour
 
     public void DownloadImage()
     {
-        storage = FirebaseStorage.DefaultInstance;
-
         storageRef = storage.GetReferenceFromUrl("gs://spopia-image.appspot.com"); // Storage 경로
 
         StorageReference image = storageRef.Child(filename); //  파일 이름

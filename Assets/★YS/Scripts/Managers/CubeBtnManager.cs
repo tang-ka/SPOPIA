@@ -6,13 +6,16 @@ using Photon.Pun;
 
 public class CubeBtnManager : MonoBehaviourPunCallbacks
 {
-    public GameObject teamInfoPage;
+    public GameObject teamInfoPage, teamPage, userPage;
     public InputField inputTeamName, inputFormation;
     Color c; // 팀 이름 색(알파)
     public GameObject go; // 팀 이름 오브젝트 동적 할당
 
     // 참여 완료 팝업
     public GameObject goodPopUp, goodPopUp2;
+
+    // 유저 카드 관련
+    public int i = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +40,13 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
                 c.a += 0.005f;
                 go.GetComponent<TextMesh>().color = c;
             }
+        }
+
+        // 팀 생성 되었으면, 페이지 바꿔주기 (유저생성 있는 페이지로)
+        if(go != null)
+        {
+            teamPage.SetActive(false);
+            userPage.SetActive(true);
         }
     }
 
@@ -140,8 +150,11 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         goodPopUp.SetActive(false);
         teamInfoPage.SetActive(false);
 
+        // 위치
+        Vector3 loc = transform.parent.transform.parent.transform.position;
+
         // 팀명 생성될 때, 이펙트
-        PhotonNetwork.Instantiate("TeamNameEffect", new Vector3(130, 2.09446955f + 100f, 220), Quaternion.identity);
+        PhotonNetwork.Instantiate("TeamNameEffect", new Vector3(loc.x, loc.y + 100f, loc.z), Quaternion.identity);
 
         // 팀정보 세팅
         TeamData teamData = new TeamData();
@@ -166,21 +179,21 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagues, "LeagueData");
 
         // 경기장에 팀명 띄우기
-        go = Instantiate(Resources.Load<GameObject>("YS/TeamName"), new Vector3(130, 2.09446955f + 100f, 220), Quaternion.identity);
+        go = Instantiate(Resources.Load<GameObject>("YS/TeamName"), new Vector3(loc.x, loc.y + 100f, loc.z), Quaternion.identity);
         go.GetComponent<TextMesh>().text = inputTeamName.text;
         c = go.GetComponent<TextMesh>().color;
         c.a = 0;
         go.GetComponent<TextMesh>().color = c;
 
         // RPC 보내기
-        photonView.RPC(nameof(RpcAddTeam), RpcTarget.OthersBuffered, inputTeamName.text);
+        photonView.RPC(nameof(RpcAddTeam), RpcTarget.OthersBuffered, inputTeamName.text, loc);
     }
 
     [PunRPC]
-    void RpcAddTeam(string _text)
+    void RpcAddTeam(string _text, Vector3 _loc)
     {
         // 경기장에 팀명 띄우기
-        go = Instantiate(Resources.Load<GameObject>("YS/TeamName"), new Vector3(130, 2.09446955f + 100f, 220), Quaternion.identity);
+        go = Instantiate(Resources.Load<GameObject>("YS/TeamName"), new Vector3(_loc.x, _loc.y + 100f, _loc.z), Quaternion.identity);
         go.GetComponent<TextMesh>().text = _text;
         c = go.GetComponent<TextMesh>().color;
         c.a = 0;
@@ -190,5 +203,10 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
     public void Cancel()
     {
         teamInfoPage.SetActive(false);
+    }
+
+    public void CreateUserCards()
+    {
+        
     }
 }

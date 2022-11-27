@@ -19,6 +19,9 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
     LogBtnManager lbManager;
 
+    // 체크표시
+    public GameObject checkImg, checkImg2, checkNOImg2;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +34,16 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        
+        if(pwSignUp.text == pwAgain.text && pwAgain.text != "")
+        {
+            checkNOImg2.SetActive(false);
+            checkImg2.SetActive(true);
+        }
+        else if(pwSignUp.text != pwAgain.text && pwAgain.text != "")
+        {
+            checkImg2.SetActive(false);
+            checkNOImg2.SetActive(true);
+        }
     }
 
     public void OnValueChanged(string s)
@@ -90,8 +102,10 @@ public class LoginManager : MonoBehaviourPunCallbacks
 
     public void CheckBtn()
     {
-        var request = new RegisterPlayFabUserRequest { Email = emailSignUp.text };
-        PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegisterFailure);
+        /*var request = new RegisterPlayFabUserRequest { Email = emailSignUp.text };
+        PlayFabClientAPI.RegisterPlayFabUser(request, OnRegisterSuccess, OnRegisterFailure);*/
+
+        checkImg.SetActive(true);
     }
 
     void OnLoginSuccess(LoginResult result)
