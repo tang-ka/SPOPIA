@@ -6,6 +6,7 @@ using Photon.Pun;
 using JetBrains.Annotations;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
 {
@@ -91,26 +92,21 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
             {
                 if (Input.GetMouseButtonDown(0))
                 {
-                    string curRoom = PhotonNetwork.CurrentRoom.Name;
-                    string nextRoom = "PlayGround"; // DBManager.instance.myData.teamName;
-                    string preLobby = "1"; //PhotonNetwork.CurrentLobby.Name;
-                    LaManager.instance.EnterPlaygroundScene(curRoom, nextRoom, preLobby);
-                    //Canvas c = hit.transform.parent.transform.Find("Canvas").GetComponent<Canvas>();
-                    //m_gr = m_canvas.GetComponent<GraphicRaycaster>();
-                    //UIRay(c, ray.origin);
-
-                    //ShiftPosition();
-                    //EnterPlaygroundScene();
+                    if (SceneManager.GetActiveScene().name == "LeagueAreaScene")
+                    {
+                        string curRoom = PhotonNetwork.CurrentRoom.Name;
+                        string nextRoom = "PlayGround"; // DBManager.instance.myData.teamName;
+                        string preLobby = "1"; //PhotonNetwork.CurrentLobby.Name;
+                        LaManager.instance.EnterPlaygroundScene(curRoom, nextRoom, preLobby);
+                    }
+                    else if (SceneManager.GetActiveScene().name == "PlayGroundScene")
+                    {
+                        string curRoom = PhotonNetwork.CurrentRoom.Name;
+                        string nextRoom = DBManager.instance.leagueInfo.leagueName;
+                        PgManager.instance.EnterScene(curRoom, nextRoom);
+                    }
                 }
             }
-            //else if (hit.transform.gameObject.name == "MovePracticeCube")
-            //{
-            //    if (Input.GetMouseButtonDown(0))
-            //    {
-            //        //ShiftPosition();
-            //        EnterPlaygroundScene();
-            //    }
-            //}
             else
             {
                 if (sphere == null) return;

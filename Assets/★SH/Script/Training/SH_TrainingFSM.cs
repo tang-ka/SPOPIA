@@ -12,7 +12,14 @@ public class SH_TrainingFSM : MonoBehaviourPun
     {
         if (instance == null)
             instance = this;
+
+
     }
+
+    [SerializeField]
+    List<GameObject> coaches = new List<GameObject>();
+    [SerializeField]
+    List<GameObject> players = new List<GameObject>();
 
     public enum Time
     {
@@ -24,7 +31,8 @@ public class SH_TrainingFSM : MonoBehaviourPun
 
     void Start()
     {
-        
+        coaches = PgManager.instance.coachList;
+        players = PgManager.instance.playerList;
     }
 
     void Update()
@@ -80,9 +88,29 @@ public class SH_TrainingFSM : MonoBehaviourPun
         switch (time)
         {
             case Time.EXPLANATION:
+                for (int i = 0; i < coaches.Count; i++)
+                {
+                    SH_PlayerFSM fsm = coaches[i].GetComponent<SH_PlayerFSM>();
+                    fsm.ChangeState(SH_PlayerFSM.State.TEACH);
+                }
+                for (int i = 0; i < players.Count; i++)
+                {
+                    SH_PlayerFSM fsm = players[i].GetComponent<SH_PlayerFSM>();
+                    fsm.ChangeState(SH_PlayerFSM.State.LEARN);
+                }
                 break;
 
             case Time.PRACTICE:
+                for (int i = 0; i < coaches.Count; i++)
+                {
+                    SH_PlayerFSM fsm = coaches[i].GetComponent<SH_PlayerFSM>();
+                    fsm.ChangeState(SH_PlayerFSM.State.NORMAL);
+                }
+                for (int i = 0; i < players.Count; i++)
+                {
+                    SH_PlayerFSM fsm = players[i].GetComponent<SH_PlayerFSM>();
+                    fsm.ChangeState(SH_PlayerFSM.State.NORMAL);
+                }
                 break;
 
             case Time.FEEDBACK:

@@ -84,7 +84,7 @@ public class SH_PlayerMove : MonoBehaviourPun, IPunObservable
             anim.SetBool("IsGrounded", isGrounded);
             anim.SetBool("IsFalling", dir.y > 1 || dir.y < -1);
 
-            print(dir);
+            //print(dir);
 
             cc.Move(dir * Time.deltaTime);
         }

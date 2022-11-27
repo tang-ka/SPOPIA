@@ -112,8 +112,10 @@ public class LaManager : MonoBehaviourPunCallbacks
     public override void OnJoinedLobby()
     {
         base.OnJoinedLobby();
-        CreatePlayground();
         print("온쪼인드로비");
+        print(SceneManager.GetActiveScene().name + "온조인드로비");
+        //CreatePlayground();
+        JoinPlayground();
     }
 
     public void CreatePlayground()
@@ -135,7 +137,10 @@ public class LaManager : MonoBehaviourPunCallbacks
         //leagueOption.CustomRoomPropertiesForLobby = new string[] { "teamNum" };
 
         // 해당 옵션의 방에 참가하거나 방을 생성하고 싶다.
-        PhotonNetwork.JoinOrCreateRoom(nextRoomName, leagueOption, TypedLobby.Default);
+        //PhotonNetwork.JoinOrCreateRoom(nextRoomName, leagueOption, TypedLobby.Default);
+        PhotonNetwork.CreateRoom(nextRoomName, leagueOption, TypedLobby.Default);
+        
+        print("시발 리그월드");
     }
 
     // 방 생성 완료
@@ -161,7 +166,15 @@ public class LaManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
+        print(SceneManager.GetActiveScene().name + "온조인드룸");
+
+        //if (SceneManager.GetActiveScene().name == "LeagueAreaScene")
+        //    SceneManager.LoadScene("PlayGroundScene");
+        //else if (SceneManager.GetActiveScene().name == "PlayGroundScene")
+        //    SceneManager.LoadScene("LeagueAreaScene");
+
         SceneManager.LoadScene("PlayGroundScene");
+
         print("훈련장 진입에 성공했습니다.");
     }
 
@@ -170,6 +183,7 @@ public class LaManager : MonoBehaviourPunCallbacks
     {
         base.OnJoinRoomFailed(returnCode, message);
         print("훈련장 진입 실패" + returnCode + ", " + message);
+        CreatePlayground();
     }
     #endregion
 
