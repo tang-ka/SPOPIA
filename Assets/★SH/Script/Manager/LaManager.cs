@@ -44,7 +44,7 @@ public class LaManager : MonoBehaviourPunCallbacks
     }
 
     public void CreateUser()
-    {
+    {   
         // 플레이어를 생성한다.
         //PhotonNetwork.Instantiate("Player", spawnPos, Quaternion.identity);
 
@@ -57,7 +57,7 @@ public class LaManager : MonoBehaviourPunCallbacks
         goBaby.transform.GetChild(DBManager.instance.myData.avatarIdx).gameObject.SetActive(true);
 
         // 네트워크(RPC - 내 아바타가 다른 사람들한테도 보이게끔)
-        photonView.RPC(nameof(RpcCreateUser), RpcTarget.All, go.GetPhotonView().ViewID, DBManager.instance.myData.avatarIdx);
+        photonView.RPC(nameof(RpcCreateUser), RpcTarget.OthersBuffered, go.GetPhotonView().ViewID, DBManager.instance.myData.avatarIdx);
         //photonView.RPC(nameof(RPC_Print), RpcTarget.OthersBuffered);
     }
 
@@ -179,7 +179,8 @@ public class LaManager : MonoBehaviourPunCallbacks
         //else if (SceneManager.GetActiveScene().name == "PlayGroundScene")
         //    SceneManager.LoadScene("LeagueAreaScene");
 
-        SceneManager.LoadScene("PlayGroundScene");
+        //SceneManager.LoadScene("PlayGroundScene");
+        PhotonNetwork.LoadLevel("PlayGroundScene");
 
         print("훈련장 진입에 성공했습니다.");
     }

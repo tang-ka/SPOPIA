@@ -306,7 +306,8 @@ public class PgManager : MonoBehaviourPunCallbacks
         //else if (SceneManager.GetActiveScene().name == "PlayGroundScene")
         //    SceneManager.LoadScene("LeagueAreaScene");
 
-        SceneManager.LoadScene("LeagueAreaScene");
+        //SceneManager.LoadScene("LeagueAreaScene");
+        PhotonNetwork.LoadLevel("LeagueAreaScene");
 
         print("리그 월드로 돌아왔습니다22.");
     }

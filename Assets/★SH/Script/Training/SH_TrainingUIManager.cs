@@ -28,6 +28,8 @@ public class SH_TrainingUIManager : MonoBehaviourPun
     public Button btnCoach;
     public Button btnPlayer;
     public Button btnStart;
+    public Button btnEdit;
+    public Button btnReset;
 
     public TMP_Dropdown ddFormation;
 
@@ -61,6 +63,7 @@ public class SH_TrainingUIManager : MonoBehaviourPun
         btnCoach.onClick.AddListener(OnClickCoach);
         btnPlayer.onClick.AddListener(OnClickPlayer);
         btnStart.onClick.AddListener(OnClickStart);
+        btnReset.onClick.AddListener(OnClickReset);
 
         blueParent = tacticalBoard.transform.GetChild(0).Find("BlueTeam").transform;
         redParent = tacticalBoard.transform.GetChild(0).Find("RedTeam").transform;
@@ -80,6 +83,11 @@ public class SH_TrainingUIManager : MonoBehaviourPun
         SlideMove(tacticalBoard, new Vector3(0, -1040, 0), isTBOpen);
         SlideMove(tool, new Vector3(150, 0, 0), isToolOpen);
         SlideMove(userList, new Vector3(-150, 0, 0), isUserListOpen);
+
+        if (ddFormation.value == 4)
+            btnEdit.gameObject.SetActive(true);
+        else
+            btnEdit.gameObject.SetActive(false);
     }
 
     Formation selected;
@@ -90,6 +98,12 @@ public class SH_TrainingUIManager : MonoBehaviourPun
     [PunRPC]
     public void RPC_OnValueChanged(int arg)
     {
+        if (arg == 4)
+        {
+            FormationManager.instance.LoadFormation();
+            return;
+        }
+
         Formation selected = FormDataManager.instance.GetForm(optionList[arg]);
 
         // 삭제하고
@@ -111,7 +125,6 @@ public class SH_TrainingUIManager : MonoBehaviourPun
 
             FormationManager.instance.pieces[i] = bluePiece;
         }
-
         ddFormation.value = arg;
     }
 
@@ -194,5 +207,10 @@ public class SH_TrainingUIManager : MonoBehaviourPun
         }
 
         go.GetComponent<RectTransform>().anchoredPosition = myPos;
+    }
+
+    public void OnClickReset()
+    {
+        OnValueChanged(ddFormation.value);
     }
 }

@@ -187,7 +187,7 @@ public class SH_MouseControl : MonoBehaviourPun
         if (results.Count > 0)
         {
             targetPosition.x = results[0].screenPosition.x - 960;
-            targetPosition.y = results[0].screenPosition.y - 560;
+            targetPosition.y = results[0].screenPosition.y - 537;
             targetPosition.z = 0;
 
             if (!isClickedM0 && isClickingM0)

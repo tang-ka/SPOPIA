@@ -77,6 +77,7 @@ public class FormationManager : MonoBehaviour
 
             LoadPiece(info, i);
         }
+
     }
 
     public void LoadPiece(FormationJsonInfo info, int idx)

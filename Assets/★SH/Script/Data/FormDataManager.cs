@@ -26,6 +26,7 @@ public class FormDataManager : MonoBehaviour
     Formation formation1 = new Formation();
     Formation formation2 = new Formation();
     Formation formation3 = new Formation();
+    Formation customForm = new Formation();
 
     private void Awake()
     {
@@ -93,10 +94,28 @@ public class FormDataManager : MonoBehaviour
         formation3.pos[10] = new Vector3(-200, -75, 0);
         #endregion
 
+        customForm.pos[0] = new Vector3(495, 0, 0);
+        customForm.pos[1] = new Vector3(330, 150, 0);
+        customForm.pos[2] = new Vector3(330, 0, 0);
+        customForm.pos[3] = new Vector3(330, -150, 0);
+        customForm.pos[4] = new Vector3(75, 260, 0);
+        customForm.pos[5] = new Vector3(10, 75, 0);
+        customForm.pos[6] = new Vector3(160, 0, 0);
+        customForm.pos[7] = new Vector3(10, -75, 0);
+        customForm.pos[8] = new Vector3(75, -260, 0);
+        customForm.pos[9] = new Vector3(-200, 75, 0);
+        customForm.pos[10] = new Vector3(-200, -75, 0);
+
         formDic.Add("4-3-3", formation0);
         formDic.Add("4-4-2", formation1);
         formDic.Add("4-2-3-1", formation2);
         formDic.Add("3-5-2", formation3);
+        formDic.Add("Custom", customForm);
+    }
+
+    public void SetCustomFormation()
+    {
+
     }
 
     public List<string> GetFormNames()
