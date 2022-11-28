@@ -8,17 +8,12 @@ public class SH_MessageTrigger : MonoBehaviour
     public GameObject triggerPlayer;
     public GameObject sooJungChe;
 
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
         if (triggerPlayer == null) return;
 
-        triggerPlayer.GetComponent<SH_PlayerCrossHair>().dataInputCenterMsg.SetActive(sooJungChe.activeSelf);
+        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,6 +24,7 @@ public class SH_MessageTrigger : MonoBehaviour
             {
                 triggerPlayer = other.gameObject;
                 sooJungChe.SetActive(true);
+                triggerPlayer.GetComponent<SH_PlayerCrossHair>().dataInputCenterMsg.SetActive(sooJungChe.activeSelf);
             }
         }
     }
@@ -38,6 +34,7 @@ public class SH_MessageTrigger : MonoBehaviour
         if (other.gameObject == triggerPlayer)
         {
             sooJungChe.SetActive(false);
+            triggerPlayer.GetComponent<SH_PlayerCrossHair>().dataInputCenterMsg.SetActive(sooJungChe.activeSelf);
         }
     }
 }

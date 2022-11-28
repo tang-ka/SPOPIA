@@ -94,6 +94,7 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
                 if (Input.GetMouseButtonDown(0))
                 {
                     dataInputTable.SetActive(true);
+                    dataInputCenterMsg.SetActive(false);
                     fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
                 }
             }
