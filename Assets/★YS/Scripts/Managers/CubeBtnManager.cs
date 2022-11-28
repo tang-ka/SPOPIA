@@ -280,7 +280,7 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
     }
 
     // 파이어베이스 DB에서 이미지 다운로드
-    public void DownloadLogoImage()
+    /*public void DownloadLogoImage()
     {
         filename = "logo_" + myTeam.teamName + ".png";
 
@@ -295,9 +295,23 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
                 StartCoroutine(DownloadStorage(task.Result.ToString()));
             }
         });
+    }*/
+    public void DownloadLogoImage()
+    {
+        filename = "logo_" + myTeam.teamName + ".png";
+
+        byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + filename);
+
+        if(byteTexture.Length > 0)
+        {
+            Texture2D t = new Texture2D(0, 0);
+            t.LoadImage(byteTexture);
+
+            rawImg.texture = t;
+        }
     }
 
-    IEnumerator DownloadStorage(string url)
+    /*IEnumerator DownloadStorage(string url)
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
 
@@ -313,5 +327,5 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
 
             b_download = true;
         }
-    }
+    }*/
 }
