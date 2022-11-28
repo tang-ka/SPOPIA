@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+using Firebase;
+using Firebase.Storage;
+using Firebase.Extensions;
 using Photon.Pun;
 
 public class CubeBtnManager : MonoBehaviourPunCallbacks
@@ -15,12 +19,25 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
     public GameObject goodPopUp, goodPopUp2;
 
     // 유저 카드 관련
-    public int i = 0;
+    TeamData myTeam;
+
+    // 팀 로고
+    public RawImage rawImg;
+
+    // firebase 관련
+    FirebaseStorage storage;
+    StorageReference storageRef;
+    bool b_download = false;
+
+    // 파일 이름
+    string filename;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        storage = FirebaseStorage.DefaultInstance;
+
+        StartCoroutine(CreateUserCards());
     }
 
     // Update is called once per frame
@@ -185,6 +202,14 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         c.a = 0;
         go.GetComponent<TextMesh>().color = c;
 
+        go.transform.Find("Canvas").transform.Find("TeamLogo").gameObject.GetComponent<RawImage>();
+
+        if (!go.transform.Find("Canvas").transform.Find("TeamLogo").gameObject.GetComponent<RawImage>().texture)
+        {
+            DownloadLogoImage();
+        }
+        go.transform.Find("Canvas").transform.Find("TeamLogo").gameObject.GetComponent<RawImage>().texture = rawImg.texture;
+
         // RPC 보내기
         photonView.RPC(nameof(RpcAddTeam), RpcTarget.OthersBuffered, inputTeamName.text, loc);
     }
@@ -205,8 +230,88 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         teamInfoPage.SetActive(false);
     }
 
-    public void CreateUserCards()
+    IEnumerator CreateUserCards()
     {
-        
+        for (int i = 0; DBManager.instance.leagueInfo.teams.Count > i; i++)
+        {
+            if (go.GetComponent<TextMesh>().text == DBManager.instance.leagueInfo.teams[i].teamName)
+            {
+                myTeam = DBManager.instance.leagueInfo.teams[i];
+
+                break;
+            }
+        }
+
+        for(int i = 0; myTeam.users.Count > i; i++)
+        {
+            // 개인 프로필 생성
+            GameObject userCard;
+            userCard = (GameObject)Resources.Load("YS/UserCard");
+
+            // 위치
+            Vector3 loc = transform.parent.transform.parent.transform.position;
+
+            // 카드 정보 설정
+            if (!userCard.transform.Find("Canvas").transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture)
+            {
+                DownloadLogoImage();
+            }
+
+            yield return new WaitUntil(() => b_download == true);
+            b_download = false;
+
+            userCard.transform.Find("Canvas").transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture = rawImg.texture;
+            userCard.transform.Find("Canvas").transform.Find("BackNumber").gameObject.GetComponent<Text>().text = myTeam.users[i].backNumber.ToString();
+            userCard.transform.Find("Canvas").transform.Find("Position").gameObject.GetComponent<Text>().text = myTeam.users[i].position;
+            userCard.transform.Find("Canvas").transform.Find("NickName").gameObject.GetComponent<Text>().text = myTeam.users[i].nickName;
+            userCard.transform.Find("Canvas").transform.Find("Name").gameObject.GetComponent<Text>().text = myTeam.users[i].realName;
+            userCard.transform.Find("Canvas").transform.Find("Height").gameObject.GetComponent<Text>().text = myTeam.users[i].height.ToString() + "cm";
+            userCard.transform.Find("Canvas").transform.Find("Weight").gameObject.GetComponent<Text>().text = myTeam.users[i].weight.ToString() + "kg";
+
+            if(i < 9)
+            {
+                Instantiate(userCard, new Vector3(loc.x + 43 - (i * 10), loc.y + 5, loc.z + 40), Quaternion.Euler(0, 90, 0));
+            }
+            else
+            {
+                Instantiate(userCard, new Vector3(loc.x + 38 - ((i - 9) * 10), loc.y + 10, loc.z + 45), Quaternion.Euler(0, 90, 0));
+            }
+        }
+    }
+
+    // 파이어베이스 DB에서 이미지 다운로드
+    public void DownloadLogoImage()
+    {
+        filename = "logo_" + myTeam.teamName + ".png";
+
+        storageRef = storage.GetReferenceFromUrl("gs://spopia-image.appspot.com"); // Storage 경로
+
+        StorageReference image = storageRef.Child(filename); //  파일 이름
+
+        image.GetDownloadUrlAsync().ContinueWithOnMainThread(task =>
+        {
+            if (!task.IsFaulted && !task.IsCanceled)
+            {
+                StartCoroutine(DownloadStorage(task.Result.ToString()));
+            }
+        });
+    }
+
+    IEnumerator DownloadStorage(string url)
+    {
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+
+        yield return request.SendWebRequest();
+
+        if (request.isNetworkError || request.isHttpError)
+        {
+            Debug.Log(request.error);
+        }
+        else
+        {
+            rawImg.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+
+            b_download = true;
+        }
     }
 }

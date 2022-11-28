@@ -2,16 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+using Firebase;
+using Firebase.Storage;
+using Firebase.Extensions;
 
 public class YS_TeamCard : MonoBehaviour
 {
     TeamData myTeam;
     public CubeBtnManager cubeManager;
 
+    // 팀 로고
+    public RawImage rawImg;
+
+    // firebase 관련
+    FirebaseStorage storage;
+    StorageReference storageRef;
+
+    // 파일 이름
+    string filename;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        storage = FirebaseStorage.DefaultInstance;
     }
 
     // Update is called once per frame
@@ -43,6 +57,11 @@ public class YS_TeamCard : MonoBehaviour
     {
         GameObject canvas = transform.Find("Canvas").gameObject;
 
+        if(!canvas.transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture)
+        {
+            DownloadImage();
+        }
+        canvas.transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture = rawImg.texture;
         canvas.transform.Find("TeamName").gameObject.GetComponent<Text>().text = myTeam.teamName;
         canvas.transform.Find("Win").gameObject.GetComponent<Text>().text = myTeam.win + "승";
         canvas.transform.Find("Draw").gameObject.GetComponent<Text>().text = myTeam.draw + "무";
@@ -64,5 +83,39 @@ public class YS_TeamCard : MonoBehaviour
             s = "0";
         }
         canvas.transform.Find("Goal-Loss").gameObject.GetComponent<Text>().text = s;
+    }
+
+    // 파이어베이스 DB에서 이미지 다운로드
+    public void DownloadImage()
+    {
+        filename = "logo_" + myTeam.teamName + ".png";
+
+        storageRef = storage.GetReferenceFromUrl("gs://spopia-image.appspot.com"); // Storage 경로
+
+        StorageReference image = storageRef.Child(filename); //  파일 이름
+
+        image.GetDownloadUrlAsync().ContinueWithOnMainThread(task =>
+        {
+            if (!task.IsFaulted && !task.IsCanceled)
+            {
+                StartCoroutine(DownloadStorage(task.Result.ToString()));
+            }
+        });
+    }
+
+    IEnumerator DownloadStorage(string url)
+    {
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+
+        yield return request.SendWebRequest();
+
+        if (request.isNetworkError || request.isHttpError)
+        {
+            Debug.Log(request.error);
+        }
+        else
+        {
+            rawImg.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+        }
     }
 }
