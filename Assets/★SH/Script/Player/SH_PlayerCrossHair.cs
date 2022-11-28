@@ -34,8 +34,9 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
         {
             screenViewCanvas.SetActive(true);
             dataInputTable = GameObject.Find("InputMatchData");
-            nickName.text = PhotonNetwork.NickName;
         }
+
+        nickName.text = photonView.Owner.NickName;
 
         //screenViewCanvas.SetActive(true);
         if (dataInputTable != null)

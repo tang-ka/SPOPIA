@@ -54,6 +54,7 @@ public class SH_PlayerMove : MonoBehaviourPun, IPunObservable
 
             anim.SetBool("Walk", dir.magnitude > 0.1f);
             anim.SetBool("Idle", dir.magnitude < 0.1f);
+            
 
             yVelocity += gravity * Time.deltaTime;
 
@@ -82,9 +83,11 @@ public class SH_PlayerMove : MonoBehaviourPun, IPunObservable
 
             anim.SetBool("IsJumping", isJumping);
             anim.SetBool("IsGrounded", isGrounded);
-            anim.SetBool("IsFalling", dir.y > 1 || dir.y < -1);
+            anim.SetBool("IsFalling", dir.y < -1);
+            anim.SetFloat("Speed", v * speed);
+            anim.SetFloat("dir", h * speed);
 
-            //print(dir);
+            print(dir);
 
             cc.Move(dir * Time.deltaTime);
         }
@@ -123,7 +126,7 @@ public class SH_PlayerMove : MonoBehaviourPun, IPunObservable
             time = 0;
         }
 
-        anim.SetFloat("Speed", speed);
+        //anim.SetFloat("Speed", speed);
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

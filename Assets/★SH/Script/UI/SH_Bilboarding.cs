@@ -14,6 +14,6 @@ public class SH_Bilboarding : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if ()
+        transform.forward = Camera.main.transform.forward;
     }
 }
