@@ -43,6 +43,12 @@ public class SH_LeaderBoardManager : MonoBehaviourPunCallbacks
     float time;
     bool isTimed = false;
 
+    // 팀 로고
+    public RawImage rawImg;
+
+    // 파일 이름
+    string filename;
+
     void Start()
     {
         ChangeCategory(Category.TEAMRANKING);
@@ -258,7 +264,8 @@ public class SH_LeaderBoardManager : MonoBehaviourPunCallbacks
 
             Transform canvas = bar.transform.Find("Canvas");
             canvas.Find("Rank").GetComponent<Text>().text = teams[i].rank.ToString();
-            //canvas.Find("Emblem").GetComponent<Text>().text = teams[i].rank.ToString();
+            DownloadLogoImage(teams[i].teamName);
+            canvas.Find("Emblem").GetComponent<RawImage>().texture = rawImg.texture;
             canvas.Find("ClubName").GetComponent<Text>().text = teams[i].teamName;
             canvas.Find("Played").GetComponent<Text>().text = teams[i].matchCount.ToString();
             canvas.Find("Won").GetComponent<Text>().text = teams[i].win.ToString();
@@ -310,7 +317,8 @@ public class SH_LeaderBoardManager : MonoBehaviourPunCallbacks
                     Transform canvas = bar.transform.Find("Canvas");
 
                     canvas.Find("Rank").GetComponent<Text>().text = users[i].goalRank.ToString();
-                    //canvas.Find("Emblem").GetComponent<Text>().text = users[i].rank.ToString();
+                    DownloadLogoImage(users[i].teamName);
+                    canvas.Find("Emblem").GetComponent<RawImage>().texture = rawImg.texture;
                     nickNameText = canvas.Find("PlayerName").GetComponent<Text>();
                     nickNameText.text = users[i].nickName;
                     canvas.Find("First").GetComponent<Text>().text = users[i].goal.ToString();
@@ -329,7 +337,8 @@ public class SH_LeaderBoardManager : MonoBehaviourPunCallbacks
                     Transform canvas = bar.transform.Find("Canvas");
 
                     canvas.Find("Rank").GetComponent<Text>().text = users[i].goalRank.ToString();
-                    //canvas.Find("Emblem").GetComponent<Text>().text = users[i].rank.ToString();
+                    DownloadLogoImage(users[i].teamName);
+                    canvas.Find("Emblem").GetComponent<RawImage>().texture = rawImg.texture;
                     nickNameText = canvas.Find("PlayerName").GetComponent<Text>();
                     nickNameText.text = users[i].nickName;
                     canvas.Find("First").GetComponent<Text>().text = users[i].assist.ToString();
@@ -355,5 +364,20 @@ public class SH_LeaderBoardManager : MonoBehaviourPunCallbacks
 
         else if (len >= third && len < fourth)
             inputText.fontSize = 250 - (sizeStep * 2);
+    }
+
+    public void DownloadLogoImage(string teamName)
+    {
+        filename = "logo_" + teamName + ".png";
+
+        byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + "/" + filename);
+
+        if (byteTexture.Length > 0)
+        {
+            Texture2D t = new Texture2D(0, 0);
+            t.LoadImage(byteTexture);
+
+            rawImg.texture = t;
+        }
     }
 }

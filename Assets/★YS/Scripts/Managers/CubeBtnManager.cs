@@ -10,7 +10,7 @@ using Photon.Pun;
 
 public class CubeBtnManager : MonoBehaviourPunCallbacks
 {
-    public GameObject teamInfoPage, teamPage, userPage;
+    public GameObject teamInfoPage, teamPage, userPage, userInfoPage;
     public InputField inputTeamName, inputFormation;
     Color c; // 팀 이름 색(알파)
     public GameObject go; // 팀 이름 오브젝트 동적 할당
@@ -32,12 +32,17 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
     // 파일 이름
     string filename;
 
+    // 유저 카드 번호
+    int num;
+
     // Start is called before the first frame update
     void Start()
     {
         storage = FirebaseStorage.DefaultInstance;
 
-        StartCoroutine(CreateUserCards());
+        // 처음에 유저들 생성
+        //StartCoroutine(CreateUserCards());
+        CreateUserCards();
     }
 
     // Update is called once per frame
@@ -104,7 +109,10 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
 
             else if (hit.transform.gameObject.name == "AddUserButton")
             {
-                // 선수 등록 완료 팝업
+                // 선수 등록 팝업
+                userInfoPage.SetActive(true);
+
+                /*// 선수 등록 완료 팝업
                 goodPopUp2.SetActive(true);
 
                 // 리그DB에서 team리스트를 검사한다. (Add될 팀을 찾기 위해)
@@ -113,8 +121,11 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
                     TeamData info = DBManager.instance.leagueInfo.teams[i];
 
                     // User가 Add될 팀이라면?
-                    if(info.teamName == inputTeamName.text)
+                    if(info.teamName == go.GetComponent<TextMesh>().text)
                     {
+                        // 내 데이터에 teamName을 추가한다.
+                        DBManager.instance.myData.teamName = go.GetComponent<TextMesh>().text;
+
                         // 해당 팀의 user리스트에 user를 추가한다.
                         info.users.Add(DBManager.instance.myData);
 
@@ -133,14 +144,24 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
                         DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagues, "LeagueData");
 
                         // 개인 프로필 생성
-                        PhotonNetwork.Instantiate("PlayerProfile", new Vector3(85, 8, 384.404388f), Quaternion.Euler(0, 90, 0));
+                        // 위치
+                        Vector3 loc = transform.parent.transform.parent.transform.position;
+                      
+                        if (num < 9)
+                        {
+                            PhotonNetwork.Instantiate("PlayerProfile", new Vector3(loc.x + 43 - (num * 10), loc.y + 5, loc.z + 40), Quaternion.Euler(0, 90, 0));
+                        }
+                        else
+                        {
+                            PhotonNetwork.Instantiate("PlayerProfile", new Vector3(loc.x + 38 - ((num - 9) * 10), loc.y + 10, loc.z + 45), Quaternion.Euler(0, 90, 0));
+                        }
 
                         print("개인 프로필 생성!");
 
                         // 찾는 것을 종료한다.
                         break;
                     }
-                }
+                }*/
             }
 
             /*else if(hit.transform.gameObject.name == "testCube")
@@ -214,6 +235,60 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         photonView.RPC(nameof(RpcAddTeam), RpcTarget.OthersBuffered, inputTeamName.text, loc);
     }
 
+    void AddUser()
+    {
+        // 선수 등록 완료 팝업
+        goodPopUp2.SetActive(true);
+
+        // 리그DB에서 team리스트를 검사한다. (Add될 팀을 찾기 위해)
+        for (int i = 0; i < DBManager.instance.leagueInfo.teams.Count; i++)
+        {
+            TeamData info = DBManager.instance.leagueInfo.teams[i];
+
+            // User가 Add될 팀이라면?
+            if (info.teamName == go.GetComponent<TextMesh>().text)
+            {
+                // 내 데이터에 teamName을 추가한다.
+                DBManager.instance.myData.teamName = go.GetComponent<TextMesh>().text;
+
+                // 해당 팀의 user리스트에 user를 추가한다.
+                info.users.Add(DBManager.instance.myData);
+
+                // 리그 DB 업데이트
+                for (int j = 0; j < DBManager.instance.leagues.leagueDatas.Count; j++)
+                {
+                    if (DBManager.instance.leagues.leagueDatas[j].leagueName == DBManager.instance.leagueInfo.leagueName)
+                    {
+                        DBManager.instance.leagues.leagueDatas[j] = DBManager.instance.leagueInfo;
+
+                        break;
+                    }
+                }
+
+                // DB에 수정사항 요청
+                DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagues, "LeagueData");
+
+                // 개인 프로필 생성
+                // 위치
+                Vector3 loc = transform.parent.transform.parent.transform.position;
+
+                if (num < 9)
+                {
+                    PhotonNetwork.Instantiate("PlayerProfile", new Vector3(loc.x + 43 - (num * 10), loc.y + 5, loc.z + 40), Quaternion.Euler(0, 90, 0));
+                }
+                else
+                {
+                    PhotonNetwork.Instantiate("PlayerProfile", new Vector3(loc.x + 38 - ((num - 9) * 10), loc.y + 10, loc.z + 45), Quaternion.Euler(0, 90, 0));
+                }
+
+                print("개인 프로필 생성!");
+
+                // 찾는 것을 종료한다.
+                break;
+            }
+        }
+    }
+
     [PunRPC]
     void RpcAddTeam(string _text, Vector3 _loc)
     {
@@ -230,7 +305,53 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         teamInfoPage.SetActive(false);
     }
 
-    IEnumerator CreateUserCards()
+    void CreateUserCards()
+    {
+        for (int i = 0; DBManager.instance.leagueInfo.teams.Count > i; i++)
+        {
+            if (go.GetComponent<TextMesh>().text == DBManager.instance.leagueInfo.teams[i].teamName)
+            {
+                myTeam = DBManager.instance.leagueInfo.teams[i];
+
+                break;
+            }
+        }
+
+        for (num = 0; myTeam.users.Count > num; num++)
+        {
+            // 개인 프로필 생성
+            GameObject userCard;
+            userCard = (GameObject)Resources.Load("YS/UserCard");
+
+            // 위치
+            Vector3 loc = transform.parent.transform.parent.transform.position;
+
+            // 카드 정보 설정
+            if (!userCard.transform.Find("Canvas").transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture)
+            {
+                DownloadLogoImage();
+            }
+
+            userCard.transform.Find("Canvas").transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture = rawImg.texture;
+            userCard.transform.Find("Canvas").transform.Find("BackNumber").gameObject.GetComponent<Text>().text = myTeam.users[num].backNumber.ToString();
+            userCard.transform.Find("Canvas").transform.Find("Position").gameObject.GetComponent<Text>().text = myTeam.users[num].position;
+            userCard.transform.Find("Canvas").transform.Find("NickName").gameObject.GetComponent<Text>().text = myTeam.users[num].nickName;
+            userCard.transform.Find("Canvas").transform.Find("Name").gameObject.GetComponent<Text>().text = myTeam.users[num].realName;
+            userCard.transform.Find("Canvas").transform.Find("Height").gameObject.GetComponent<Text>().text = myTeam.users[num].height.ToString() + "cm";
+            userCard.transform.Find("Canvas").transform.Find("Weight").gameObject.GetComponent<Text>().text = myTeam.users[num].weight.ToString() + "kg";
+
+            if (num < 9)
+            {
+                Instantiate(userCard, new Vector3(loc.x + 43 - (num * 10), loc.y + 5, loc.z + 40), Quaternion.Euler(0, 90, 0));
+            }
+            else
+            {
+                Instantiate(userCard, new Vector3(loc.x + 38 - ((num - 9) * 10), loc.y + 10, loc.z + 45), Quaternion.Euler(0, 90, 0));
+            }
+        }
+    }
+
+    /*IEnumerator CreateUserCards()
     {
         for (int i = 0; DBManager.instance.leagueInfo.teams.Count > i; i++)
         {
@@ -277,7 +398,7 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
                 Instantiate(userCard, new Vector3(loc.x + 38 - ((i - 9) * 10), loc.y + 10, loc.z + 45), Quaternion.Euler(0, 90, 0));
             }
         }
-    }
+    }*/
 
     // 파이어베이스 DB에서 이미지 다운로드
     /*public void DownloadLogoImage()
@@ -300,7 +421,7 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
     {
         filename = "logo_" + myTeam.teamName + ".png";
 
-        byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + filename);
+        byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + "/" + filename);
 
         if(byteTexture.Length > 0)
         {

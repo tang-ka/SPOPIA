@@ -85,8 +85,23 @@ public class YS_TeamCard : MonoBehaviour
         canvas.transform.Find("Goal-Loss").gameObject.GetComponent<Text>().text = s;
     }
 
-    // 파이어베이스 DB에서 이미지 다운로드
     public void DownloadImage()
+    {
+        filename = "logo_" + myTeam.teamName + ".png";
+
+        byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + "/" + filename);
+
+        if (byteTexture.Length > 0)
+        {
+            Texture2D t = new Texture2D(0, 0);
+            t.LoadImage(byteTexture);
+
+            rawImg.texture = t;
+        }
+    }
+
+    // 파이어베이스 DB에서 이미지 다운로드
+    /*public void DownloadImage()
     {
         filename = "logo_" + myTeam.teamName + ".png";
 
@@ -117,5 +132,5 @@ public class YS_TeamCard : MonoBehaviour
         {
             rawImg.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
         }
-    }
+    }*/
 }
