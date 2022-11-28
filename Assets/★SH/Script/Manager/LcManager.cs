@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Photon.Pun;
 using ExitGames.Client.Photon;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class LcManager : MonoBehaviourPunCallbacks
 {
@@ -20,6 +21,9 @@ public class LcManager : MonoBehaviourPunCallbacks
     public GameObject leagueInfoPage, leagueListPage;
     public Transform contentTr;
 
+    public Dropdown ddWorldType;
+    public List<string> worldTypes = new List<string>();
+
     private void Awake()
     {
         // 리그DB에서 리그들 불러오기
@@ -28,7 +32,20 @@ public class LcManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        ddWorldType.ClearOptions();
+
+        worldTypes.Add("기타");
+        worldTypes.Add("학생");
+        worldTypes.Add("대학생");
+        worldTypes.Add("직장인");
+        worldTypes.Add("일반");
+        ddWorldType.AddOptions(worldTypes);
+
+        ddWorldType.onValueChanged.AddListener(OnValueChanged);
+
         StartCoroutine(StartLeagueList());
+
+        OnValueChanged(0);
     }
 
     IEnumerator StartLeagueList()
@@ -50,6 +67,29 @@ public class LcManager : MonoBehaviourPunCallbacks
         {
             inputLeagueName.text = "SPOPIA TEST";
             inputTeamNum.text = "4";
+        }
+    }
+
+    // 상혁 - 월드 유형 선택 0: 기타, 1: 학생, 2: 대학생, 3: 직장인, 4: 일반
+    public void OnValueChanged(int arg)
+    {
+        switch (arg)
+        {
+            case 0:
+                print("기타");
+                break;
+            case 1:
+                print("학생");
+                break;
+            case 2:
+                print("대학생");
+                break;
+            case 3:
+                print("직장인");
+                break;
+            case 4:
+                print("일반");
+                break;
         }
     }
 
