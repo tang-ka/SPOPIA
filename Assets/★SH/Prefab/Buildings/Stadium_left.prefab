@@ -5196,6 +5196,7 @@ MonoBehaviour:
   userInfoPage: {fileID: 2629299139465882029}
   inputTeamName: {fileID: 5456828079199740787}
   inputFormation: {fileID: 8479131324108525230}
+  inputBackNum: {fileID: 1043917916835651847}
   go: {fileID: 0}
   goodPopUp: {fileID: 1073739753730323546}
   goodPopUp2: {fileID: 836339713877228785}
@@ -5509,7 +5510,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uD300 \uD504\uB85C\uD544\n\uC774\uBBF8\uC9C0"
+  m_Text: "\uC804\uC2E0 \uD504\uB85C\uD544\n\uC774\uBBF8\uC9C0"
 --- !u!1 &1617331302894220782
 GameObject:
   m_ObjectHideFlags: 0
@@ -6449,7 +6450,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2185741937882102092}
         m_TargetAssemblyTypeName: CubeBtnManager, Assembly-CSharp
-        m_MethodName: GoodPopUp
+        m_MethodName: AddUser
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8363,7 +8364,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4172766315998930995
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11449,7 +11450,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uCC38\uAC00"
+  m_Text: "\uB4F1\uB85D"
 --- !u!1 &3314517167649873668
 GameObject:
   m_ObjectHideFlags: 0
@@ -19734,7 +19735,7 @@ GameObject:
   - component: {fileID: 6923836822570596464}
   - component: {fileID: 5017115296505654527}
   m_Layer: 5
-  m_Name: TeamLogoUpload
+  m_Name: BodyProfileUpload
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19757,7 +19758,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 34.82349, y: -39.29413}
+  m_AnchoredPosition: {x: 52, y: -84}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &772198061017562850
@@ -27516,10 +27517,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7207103392857786973}
   - component: {fileID: 5974130715865774487}
-  - component: {fileID: 1916803759761568817}
   - component: {fileID: 3873343228607895371}
+  - component: {fileID: 2969705693183868275}
   m_Layer: 5
-  m_Name: LogoImage
+  m_Name: BodyImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27544,8 +27545,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -88.9, y: -34.5}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 0, y: 6}
+  m_SizeDelta: {x: 100, y: 179.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5974130715865774487
 CanvasRenderer:
@@ -27555,7 +27556,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8443723659216708733}
   m_CullTransparentMesh: 1
---- !u!114 &1916803759761568817
+--- !u!114 &3873343228607895371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8443723659216708733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e9a5f23c21173941be10f483e8a01fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rawImg: {fileID: 0}
+--- !u!114 &2969705693183868275
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -27582,19 +27596,6 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!114 &3873343228607895371
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8443723659216708733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e9a5f23c21173941be10f483e8a01fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rawImg: {fileID: 0}
 --- !u!1 &8485856550866135023
 GameObject:
   m_ObjectHideFlags: 0
@@ -29685,7 +29686,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2185741937882102092}
         m_TargetAssemblyTypeName: CubeBtnManager, Assembly-CSharp
-        m_MethodName: Cancel
+        m_MethodName: Cancel2
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

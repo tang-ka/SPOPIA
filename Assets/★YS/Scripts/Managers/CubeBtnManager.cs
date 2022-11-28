@@ -11,7 +11,7 @@ using Photon.Pun;
 public class CubeBtnManager : MonoBehaviourPunCallbacks
 {
     public GameObject teamInfoPage, teamPage, userPage, userInfoPage;
-    public InputField inputTeamName, inputFormation;
+    public InputField inputTeamName, inputFormation, inputBackNum;
     Color c; // 팀 이름 색(알파)
     public GameObject go; // 팀 이름 오브젝트 동적 할당
 
@@ -34,6 +34,9 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
 
     // 유저 카드 번호
     int num;
+
+    // 플레이어
+    public GameObject triggerPlayer;
 
     // Start is called before the first frame update
     void Start()
@@ -235,9 +238,10 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         photonView.RPC(nameof(RpcAddTeam), RpcTarget.OthersBuffered, inputTeamName.text, loc);
     }
 
-    void AddUser()
+    public void AddUser()
     {
         // 선수 등록 완료 팝업
+        userInfoPage.SetActive(false);
         goodPopUp2.SetActive(true);
 
         // 리그DB에서 team리스트를 검사한다. (Add될 팀을 찾기 위해)
@@ -248,8 +252,9 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
             // User가 Add될 팀이라면?
             if (info.teamName == go.GetComponent<TextMesh>().text)
             {
-                // 내 데이터에 teamName을 추가한다.
+                // 내 데이터에 teamName, backnumber를 추가한다.
                 DBManager.instance.myData.teamName = go.GetComponent<TextMesh>().text;
+                DBManager.instance.myData.backNumber = int.Parse(inputBackNum.text);
 
                 // 해당 팀의 user리스트에 user를 추가한다.
                 info.users.Add(DBManager.instance.myData);
@@ -303,6 +308,10 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
     public void Cancel()
     {
         teamInfoPage.SetActive(false);
+    }
+    public void Cancel2()
+    {
+        userInfoPage.SetActive(false);
     }
 
     void CreateUserCards()

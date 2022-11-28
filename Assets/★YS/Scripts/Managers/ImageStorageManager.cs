@@ -89,16 +89,20 @@ public class ImageStorageManager : MonoBehaviour
         {
             filename = "logo_" + DBManager.instance.myData.teamName + ".png";
         }
+        else if (btnName == "BodyProfileUpload")
+        {
+            filename = "body_" + DBManager.instance.myData.nickName + ".png";
+        }
 
         // 저장
         File.WriteAllBytes(Application.streamingAssetsPath + "/" + filename, texture2D.EncodeToPNG());
 
         // 서버에 업로드
-        UploadStorage(filename);
+        //UploadStorage(filename);
     }
 
     // 파이어베이스 DB에 이미지 업로드
-    public void UploadStorage(string s)
+    /*public void UploadStorage(string s)
     {
         storageRef = storage.RootReference.Child(s); // 저장 이름
         string localPath = "file://" + Application.streamingAssetsPath + "/" + s;
@@ -109,10 +113,10 @@ public class ImageStorageManager : MonoBehaviour
                 print("파이어베이스 저장 잘됐다 욘석아~!");
             }
         });
-    }
+    }*/
 
     // 파이어베이스 DB에서 이미지 다운로드
-    IEnumerator DownloadStorage(string url)
+    /*IEnumerator DownloadStorage(string url)
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
         
@@ -141,5 +145,18 @@ public class ImageStorageManager : MonoBehaviour
                 StartCoroutine(DownloadStorage(task.Result.ToString()));
             }
         });
+    }*/
+
+    public void DownloadImage()
+    {
+        byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + "/" + filename);
+
+        if (byteTexture.Length > 0)
+        {
+            Texture2D t = new Texture2D(0, 0);
+            t.LoadImage(byteTexture);
+
+            rawImg.texture = t;
+        }
     }
 }
