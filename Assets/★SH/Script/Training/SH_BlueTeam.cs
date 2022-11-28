@@ -15,7 +15,16 @@ public class SH_BlueTeam : MonoBehaviourPun
 
     void Update()
     {
-        
+
+    }
+
+    [PunRPC]
+    public void RPC_SyncText(string _pieceName, string _s, bool isBackNum)
+    {
+        if (isBackNum)
+            transform.Find(_pieceName).GetComponent<SH_PieceWindow>().SyncBackNumber(_s);
+        else
+            transform.Find(_pieceName).GetComponent<SH_PieceWindow>().SyncName(_s);
     }
 
     [PunRPC]

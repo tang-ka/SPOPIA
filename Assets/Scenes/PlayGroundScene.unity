@@ -3619,6 +3619,8 @@ MonoBehaviour:
   UserListParent: {fileID: 575424488}
   coachIconFactory: {fileID: 6986398072303782044, guid: 618feba6c90085d4283560380da5a11e, type: 3}
   playerIconFactory: {fileID: 3633704224435109716, guid: 3179ca95625a48842a92459693b2ece8, type: 3}
+  preRoomName: 
+  nextRoomName: 
 --- !u!4 &873562338
 Transform:
   m_ObjectHideFlags: 0
@@ -4482,6 +4484,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   instance: {fileID: 0}
+  coaches: []
+  players: []
   time: 0
 --- !u!114 &1098982396
 MonoBehaviour:

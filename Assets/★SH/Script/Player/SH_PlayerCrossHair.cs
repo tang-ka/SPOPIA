@@ -16,6 +16,11 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
 
     public GameObject screenViewCanvas;
 
+    public GameObject guideMessage;
+    public GameObject dataInputCenterMsg;
+
+    public Text nickName;
+
     SH_PlayerFSM fsm;
 
     Canvas m_canvas;
@@ -29,6 +34,7 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
         {
             screenViewCanvas.SetActive(true);
             dataInputTable = GameObject.Find("InputMatchData");
+            nickName.text = PhotonNetwork.NickName;
         }
 
         //screenViewCanvas.SetActive(true);
@@ -48,15 +54,18 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
     {
         if (photonView.IsMine == false) return;
         // 마우스 탈출 (영수)
-        if (Input.GetKeyDown(KeyCode.C))
+        if (guideMessage.activeSelf)
         {
-            if (fsm.state == SH_PlayerFSM.State.NORMAL)
+            if (Input.GetKeyDown(KeyCode.C))
             {
-                fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
-            }
-            else
-            {
-                fsm.ChangeState(SH_PlayerFSM.State.NORMAL);
+                if (fsm.state == SH_PlayerFSM.State.NORMAL)
+                {
+                    fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
+                }
+                else
+                {
+                    fsm.ChangeState(SH_PlayerFSM.State.NORMAL);
+                }
             }
         }
 
@@ -90,7 +99,7 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
             }
             else if (hit.transform.gameObject.name == "EnterBG")
             {
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(1))
                 {
                     if (SceneManager.GetActiveScene().name == "LeagueAreaScene")
                     {

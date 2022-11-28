@@ -30,7 +30,7 @@ public class PgManager : MonoBehaviourPunCallbacks
     void Start()
     {
         // 게임씬에서 다음씬으로 넘어갈때 동기화해주기 ( 게임씬 등에서 한번 )
-        PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.AutomaticallySyncScene = false;
         // OnPhotonSerializeView 호출 빈도
         PhotonNetwork.SerializationRate = 60;
         // RPC 호출 빈도
@@ -224,7 +224,7 @@ public class PgManager : MonoBehaviourPunCallbacks
     {
         base.OnLeftRoom();
 
-        PhotonNetwork.ConnectUsingSettings();
+        //PhotonNetwork.ConnectUsingSettings();
 
         Debug.Log("온레프트룸22");
     }
@@ -272,7 +272,7 @@ public class PgManager : MonoBehaviourPunCallbacks
         // 해당 옵션의 방에 참가하거나 방을 생성하고 싶다.
         //PhotonNetwork.JoinOrCreateRoom(nextRoomName, leagueOption, TypedLobby.Default);
         PhotonNetwork.CreateRoom(nextRoomName, leagueOption, TypedLobby.Default);
-        print("병신 운동장");
+        print("훈련장 거");
     }
 
     // 방 생성 완료

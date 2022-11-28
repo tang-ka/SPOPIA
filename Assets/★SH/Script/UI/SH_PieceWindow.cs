@@ -46,7 +46,9 @@ public class SH_PieceWindow : MonoBehaviourPun
         btnArrowDelete.onClick.AddListener(OnClickBtnArrowDelete);
 
         inputBackNumber.onSubmit.AddListener(OnSubmitInputBackNumber);
+        inputBackNumber.onValueChanged.AddListener(OnValueChangedBackNumber);
         inputName.onSubmit.AddListener(OnSubmitInputName);
+        inputName.onValueChanged.AddListener(OnValueChangedInputName);
 
         window.SetActive(false);
 
@@ -65,11 +67,13 @@ public class SH_PieceWindow : MonoBehaviourPun
             btnDistDelete.gameObject.SetActive(false);
         else
             btnDistDelete.gameObject.SetActive(true);
-
     }
 
     private void OnClickBtnInputText()
     {
+        backNumber.text = "";
+        playerName.text = "";
+
         inputBackNumber.gameObject.SetActive(true);
         inputName.gameObject.SetActive(true);
         window.SetActive(false);
@@ -85,6 +89,12 @@ public class SH_PieceWindow : MonoBehaviourPun
         inputName.ActivateInputField();
     }
 
+    void OnValueChangedBackNumber(string s)
+    {
+        print("변경변경변경변경");
+        parentPhotonView.RPC(nameof(myParent.RPC_SyncText), RpcTarget.Others, gameObject.name, s, true);
+    }
+
     private void OnSubmitInputName(string s)
     {
         playerName.text = s;
@@ -94,6 +104,22 @@ public class SH_PieceWindow : MonoBehaviourPun
 
         backNumber.gameObject.SetActive(true);
         playerName.gameObject.SetActive(true);
+    }
+
+    void OnValueChangedInputName(string s)
+    {
+        parentPhotonView.RPC(nameof(myParent.RPC_SyncText), RpcTarget.Others, gameObject.name, s, false);
+    }
+
+    public void SyncBackNumber(string _s)
+    {
+        backNumber.gameObject.SetActive(true);
+        backNumber.text = _s;
+    }
+    public void SyncName(string _s)
+    {
+        playerName.gameObject.SetActive(true);
+        playerName.text = _s;
     }
 
     GameObject first, second;

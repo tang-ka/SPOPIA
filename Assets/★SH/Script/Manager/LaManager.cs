@@ -24,7 +24,7 @@ public class LaManager : MonoBehaviourPunCallbacks
     void Start()
     {
         // 게임씬에서 다음씬으로 넘어갈때 동기화해주기 ( 게임씬 등에서 한번 )
-        PhotonNetwork.AutomaticallySyncScene = true;
+        PhotonNetwork.AutomaticallySyncScene = false;
         // OnPhotonSerializeView 호출 빈도
         PhotonNetwork.SerializationRate = 60;
         // RPC 호출 빈도
@@ -45,7 +45,6 @@ public class LaManager : MonoBehaviourPunCallbacks
 
     public void CreateUser()
     {
-
         // 플레이어를 생성한다.
         //PhotonNetwork.Instantiate("Player", spawnPos, Quaternion.identity);
 
@@ -58,13 +57,20 @@ public class LaManager : MonoBehaviourPunCallbacks
         goBaby.transform.GetChild(DBManager.instance.myData.avatarIdx).gameObject.SetActive(true);
 
         // 네트워크(RPC - 내 아바타가 다른 사람들한테도 보이게끔)
-        photonView.RPC("RpcCreateUser", RpcTarget.OthersBuffered, go.GetPhotonView().ViewID, DBManager.instance.myData.avatarIdx);
+        photonView.RPC(nameof(RpcCreateUser), RpcTarget.All, go.GetPhotonView().ViewID, DBManager.instance.myData.avatarIdx);
+        //photonView.RPC(nameof(RPC_Print), RpcTarget.OthersBuffered);
     }
 
     [PunRPC]
     void RpcCreateUser(int ID, int idx)
     {
         PhotonView.Find(ID).transform.Find("Body").transform.Find("Character").transform.Find("Geometry").transform.GetChild(idx).gameObject.SetActive(true);
+    }
+
+    [PunRPC]
+    void RPC_Print()
+    {
+        print("개시발");
     }
 
     #region Change scene from LeagueArea to Playground
@@ -91,7 +97,7 @@ public class LaManager : MonoBehaviourPunCallbacks
     {
         base.OnLeftRoom();
 
-        PhotonNetwork.ConnectUsingSettings();
+        //PhotonNetwork.ConnectUsingSettings();
 
         Debug.Log("온레프트룸");
     }
@@ -140,7 +146,7 @@ public class LaManager : MonoBehaviourPunCallbacks
         //PhotonNetwork.JoinOrCreateRoom(nextRoomName, leagueOption, TypedLobby.Default);
         PhotonNetwork.CreateRoom(nextRoomName, leagueOption, TypedLobby.Default);
         
-        print("시발 리그월드");
+        print("리그월드 거");
     }
 
     // 방 생성 완료
