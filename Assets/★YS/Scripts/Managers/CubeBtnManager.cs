@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+using Firebase;
+using Firebase.Storage;
+using Firebase.Extensions;
 using Photon.Pun;
 
 public class CubeBtnManager : MonoBehaviourPunCallbacks
 {
-    public GameObject teamInfoPage;
+    public GameObject teamInfoPage, teamPage, userPage;
     public InputField inputTeamName, inputFormation;
     Color c; // 팀 이름 색(알파)
     public GameObject go; // 팀 이름 오브젝트 동적 할당
@@ -14,10 +18,26 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
     // 참여 완료 팝업
     public GameObject goodPopUp, goodPopUp2;
 
+    // 유저 카드 관련
+    TeamData myTeam;
+
+    // 팀 로고
+    public RawImage rawImg;
+
+    // firebase 관련
+    FirebaseStorage storage;
+    StorageReference storageRef;
+    bool b_download = false;
+
+    // 파일 이름
+    string filename;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        storage = FirebaseStorage.DefaultInstance;
+
+        StartCoroutine(CreateUserCards());
     }
 
     // Update is called once per frame
@@ -37,6 +57,13 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
                 c.a += 0.005f;
                 go.GetComponent<TextMesh>().color = c;
             }
+        }
+
+        // 팀 생성 되었으면, 페이지 바꿔주기 (유저생성 있는 페이지로)
+        if(go != null)
+        {
+            teamPage.SetActive(false);
+            userPage.SetActive(true);
         }
     }
 
@@ -140,8 +167,11 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         goodPopUp.SetActive(false);
         teamInfoPage.SetActive(false);
 
+        // 위치
+        Vector3 loc = transform.parent.transform.parent.transform.position;
+
         // 팀명 생성될 때, 이펙트
-        PhotonNetwork.Instantiate("TeamNameEffect", new Vector3(130, 2.09446955f + 100f, 220), Quaternion.identity);
+        PhotonNetwork.Instantiate("TeamNameEffect", new Vector3(loc.x, loc.y + 100f, loc.z), Quaternion.identity);
 
         // 팀정보 세팅
         TeamData teamData = new TeamData();
@@ -166,21 +196,29 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagues, "LeagueData");
 
         // 경기장에 팀명 띄우기
-        go = Instantiate(Resources.Load<GameObject>("YS/TeamName"), new Vector3(130, 2.09446955f + 100f, 220), Quaternion.identity);
+        go = Instantiate(Resources.Load<GameObject>("YS/TeamName"), new Vector3(loc.x, loc.y + 100f, loc.z), Quaternion.identity);
         go.GetComponent<TextMesh>().text = inputTeamName.text;
         c = go.GetComponent<TextMesh>().color;
         c.a = 0;
         go.GetComponent<TextMesh>().color = c;
 
+        go.transform.Find("Canvas").transform.Find("TeamLogo").gameObject.GetComponent<RawImage>();
+
+        if (!go.transform.Find("Canvas").transform.Find("TeamLogo").gameObject.GetComponent<RawImage>().texture)
+        {
+            DownloadLogoImage();
+        }
+        go.transform.Find("Canvas").transform.Find("TeamLogo").gameObject.GetComponent<RawImage>().texture = rawImg.texture;
+
         // RPC 보내기
-        photonView.RPC(nameof(RpcAddTeam), RpcTarget.OthersBuffered, inputTeamName.text);
+        photonView.RPC(nameof(RpcAddTeam), RpcTarget.OthersBuffered, inputTeamName.text, loc);
     }
 
     [PunRPC]
-    void RpcAddTeam(string _text)
+    void RpcAddTeam(string _text, Vector3 _loc)
     {
         // 경기장에 팀명 띄우기
-        go = Instantiate(Resources.Load<GameObject>("YS/TeamName"), new Vector3(130, 2.09446955f + 100f, 220), Quaternion.identity);
+        go = Instantiate(Resources.Load<GameObject>("YS/TeamName"), new Vector3(_loc.x, _loc.y + 100f, _loc.z), Quaternion.identity);
         go.GetComponent<TextMesh>().text = _text;
         c = go.GetComponent<TextMesh>().color;
         c.a = 0;
@@ -190,5 +228,90 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
     public void Cancel()
     {
         teamInfoPage.SetActive(false);
+    }
+
+    IEnumerator CreateUserCards()
+    {
+        for (int i = 0; DBManager.instance.leagueInfo.teams.Count > i; i++)
+        {
+            if (go.GetComponent<TextMesh>().text == DBManager.instance.leagueInfo.teams[i].teamName)
+            {
+                myTeam = DBManager.instance.leagueInfo.teams[i];
+
+                break;
+            }
+        }
+
+        for(int i = 0; myTeam.users.Count > i; i++)
+        {
+            // 개인 프로필 생성
+            GameObject userCard;
+            userCard = (GameObject)Resources.Load("YS/UserCard");
+
+            // 위치
+            Vector3 loc = transform.parent.transform.parent.transform.position;
+
+            // 카드 정보 설정
+            if (!userCard.transform.Find("Canvas").transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture)
+            {
+                DownloadLogoImage();
+            }
+
+            yield return new WaitUntil(() => b_download == true);
+            b_download = false;
+
+            userCard.transform.Find("Canvas").transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture = rawImg.texture;
+            userCard.transform.Find("Canvas").transform.Find("BackNumber").gameObject.GetComponent<Text>().text = myTeam.users[i].backNumber.ToString();
+            userCard.transform.Find("Canvas").transform.Find("Position").gameObject.GetComponent<Text>().text = myTeam.users[i].position;
+            userCard.transform.Find("Canvas").transform.Find("NickName").gameObject.GetComponent<Text>().text = myTeam.users[i].nickName;
+            userCard.transform.Find("Canvas").transform.Find("Name").gameObject.GetComponent<Text>().text = myTeam.users[i].realName;
+            userCard.transform.Find("Canvas").transform.Find("Height").gameObject.GetComponent<Text>().text = myTeam.users[i].height.ToString() + "cm";
+            userCard.transform.Find("Canvas").transform.Find("Weight").gameObject.GetComponent<Text>().text = myTeam.users[i].weight.ToString() + "kg";
+
+            if(i < 9)
+            {
+                Instantiate(userCard, new Vector3(loc.x + 43 - (i * 10), loc.y + 5, loc.z + 40), Quaternion.Euler(0, 90, 0));
+            }
+            else
+            {
+                Instantiate(userCard, new Vector3(loc.x + 38 - ((i - 9) * 10), loc.y + 10, loc.z + 45), Quaternion.Euler(0, 90, 0));
+            }
+        }
+    }
+
+    // 파이어베이스 DB에서 이미지 다운로드
+    public void DownloadLogoImage()
+    {
+        filename = "logo_" + myTeam.teamName + ".png";
+
+        storageRef = storage.GetReferenceFromUrl("gs://spopia-image.appspot.com"); // Storage 경로
+
+        StorageReference image = storageRef.Child(filename); //  파일 이름
+
+        image.GetDownloadUrlAsync().ContinueWithOnMainThread(task =>
+        {
+            if (!task.IsFaulted && !task.IsCanceled)
+            {
+                StartCoroutine(DownloadStorage(task.Result.ToString()));
+            }
+        });
+    }
+
+    IEnumerator DownloadStorage(string url)
+    {
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+
+        yield return request.SendWebRequest();
+
+        if (request.isNetworkError || request.isHttpError)
+        {
+            Debug.Log(request.error);
+        }
+        else
+        {
+            rawImg.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+
+            b_download = true;
+        }
     }
 }
