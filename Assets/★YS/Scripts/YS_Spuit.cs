@@ -13,6 +13,8 @@ public class YS_Spuit : MonoBehaviour
 
     public GameObject stadium;
 
+    public List<GameObject> customs = new List<GameObject>();
+
     private void Update()
     {
         if(b_spuit == true)
@@ -27,7 +29,11 @@ public class YS_Spuit : MonoBehaviour
                 b_spuit = false;
 
                 // 머테리얼 바꿔주기 (custom color)
-                stadium.transform.Find("Custom").transform.Find("Wall_outside").transform.Find("Wall_outside").GetComponent<MeshRenderer>().material.color = rawImg.color;
+                for(int i = 0; i < customs.Count; i++)
+                {
+                    customs[i].GetComponent<MeshRenderer>().material.color = rawImg.color;
+                }
+                //stadium.transform.Find("Custom").transform.Find("Wall_outside").transform.Find("Wall_outside").GetComponent<MeshRenderer>().material.color = rawImg.color;
             }
         }
     }
