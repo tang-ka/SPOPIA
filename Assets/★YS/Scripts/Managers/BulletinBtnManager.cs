@@ -11,6 +11,8 @@ public class BulletinBtnManager : MonoBehaviour
     public Image micImg;
     public Text q1, q2, q3;
 
+    public GameObject news;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +25,11 @@ public class BulletinBtnManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Click();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Quote))
+        {
+            news.SetActive(true);
         }
     }
 
@@ -39,6 +46,11 @@ public class BulletinBtnManager : MonoBehaviour
         // 뉴스 생성
         GameObject news = Instantiate(article);
         news.transform.SetParent(contentTr, false);
+    }
+
+    public void CancelBtn()
+    {
+        newsCanvas.SetActive(false);
     }
 
     public void Cancel()

@@ -122,7 +122,7 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
                     }
                 }
             }
-            else if(hit.transform.gameObject.name == "AddTeam")
+            else if(hit.transform.gameObject.name == "CubeButton")
             {
                 if (Input.GetMouseButtonDown(0))
                 {

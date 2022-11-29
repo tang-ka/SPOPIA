@@ -25353,7 +25353,7 @@ GameObject:
   - component: {fileID: 7873231083378182842}
   - component: {fileID: 4944251035065184108}
   m_Layer: 5
-  m_Name: ProfileImageUpload
+  m_Name: SpuitImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

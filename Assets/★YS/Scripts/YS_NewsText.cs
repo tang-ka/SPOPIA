@@ -9,6 +9,8 @@ public class YS_NewsText : MonoBehaviour
     public Text text1, text2;
     public Image img;
 
+    public GameObject btnCancel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,5 +32,13 @@ public class YS_NewsText : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void BtnCancel()
+    {
+        if(gameObject.activeSelf == true)
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

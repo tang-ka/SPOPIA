@@ -20,7 +20,7 @@ public class YS_News : MonoBehaviour
 
         // 뉴스내용 생성 위치 설정
         rect = newsContent.GetComponent<RectTransform>();
-        myloc = GetComponent<RectTransform>().anchoredPosition.y;
+        myloc = 0;
     }
 
     // Update is called once per frame
