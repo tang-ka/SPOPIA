@@ -35,9 +35,6 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
     // 유저 카드 번호
     int num;
 
-    // 플레이어
-    public GameObject triggerPlayer;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -336,12 +333,14 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
             Vector3 loc = transform.parent.transform.parent.transform.position;
 
             // 카드 정보 설정
-            if (!userCard.transform.Find("Canvas").transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture)
-            {
-                DownloadLogoImage();
-            }
-
+            // 이미지 세팅
+            DownloadLogoImage();
             userCard.transform.Find("Canvas").transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture = rawImg.texture;
+
+            // 이미지 세팅
+            DownloadBodyImage();
+
+            userCard.transform.Find("Canvas").transform.Find("Profile").transform.Find("ProfileImage").gameObject.GetComponent<RawImage>().texture = rawImg.texture;
             userCard.transform.Find("Canvas").transform.Find("BackNumber").gameObject.GetComponent<Text>().text = myTeam.users[num].backNumber.ToString();
             userCard.transform.Find("Canvas").transform.Find("Position").gameObject.GetComponent<Text>().text = myTeam.users[num].position;
             userCard.transform.Find("Canvas").transform.Find("NickName").gameObject.GetComponent<Text>().text = myTeam.users[num].nickName;
@@ -433,6 +432,21 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + "/" + filename);
 
         if(byteTexture.Length > 0)
+        {
+            Texture2D t = new Texture2D(0, 0);
+            t.LoadImage(byteTexture);
+
+            rawImg.texture = t;
+        }
+    }
+
+    public void DownloadBodyImage()
+    {
+        filename = "body_" + DBManager.instance.myData.nickName + ".png";
+
+        byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + "/" + filename);
+
+        if (byteTexture.Length > 0)
         {
             Texture2D t = new Texture2D(0, 0);
             t.LoadImage(byteTexture);

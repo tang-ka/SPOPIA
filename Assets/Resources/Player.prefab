@@ -306,7 +306,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC2E0\uC0C1\uD601"
+  m_Text: "\uC11C\uC601\uC218"
 --- !u!1 &323635767529473514
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,7 +373,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 96ad980a0a780104c8aa3cc675e933fb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6891bd93839a6ef4db582d3e0485265e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -462,7 +462,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 14
+  m_Text: 0
 --- !u!1 &508795958374237706
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,7 +622,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 18
+  m_Text: 0
 --- !u!1 &767772688945066533
 GameObject:
   m_ObjectHideFlags: 0
@@ -779,7 +779,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 56
+  m_Text: 0
 --- !u!1 &1252242536191030488
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +859,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 35
+  m_Text: 0
 --- !u!1 &1403376065759320338
 GameObject:
   m_ObjectHideFlags: 0
@@ -1217,7 +1217,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Tangka
+  m_Text: "\uC11C\uC601\uC218\uC9F1"
 --- !u!1 &2630138612918873584
 GameObject:
   m_ObjectHideFlags: 0
@@ -2131,9 +2131,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'CM
-
-'
+  m_Text: RCB
 --- !u!1 &3808630819579398986
 GameObject:
   m_ObjectHideFlags: 0
@@ -2213,7 +2211,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1
+  m_Text: 0
 --- !u!1 &3936244170269057826
 GameObject:
   m_ObjectHideFlags: 0
@@ -2293,7 +2291,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 4
+  m_Text: 0
 --- !u!1 &4147709666695304983
 GameObject:
   m_ObjectHideFlags: 0
@@ -2373,7 +2371,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 10
+  m_Text: 81
 --- !u!1 &4312465609930610162
 GameObject:
   m_ObjectHideFlags: 0
@@ -2533,7 +2531,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 5
+  m_Text: 0
 --- !u!1 &4963588262763025472
 GameObject:
   m_ObjectHideFlags: 0
@@ -2706,7 +2704,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: +21
+  m_Text: 0
 --- !u!1 &5412088971400873669
 GameObject:
   m_ObjectHideFlags: 0
@@ -2866,7 +2864,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 12
+  m_Text: 0
 --- !u!1 &5658321004367054123
 GameObject:
   m_ObjectHideFlags: 0
@@ -3093,7 +3091,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f704e78971111e44eac546573843fe45, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5c7f8a9ca5294054b87f6c2411bf1da7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4040,7 +4038,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 20
+  m_Text: 0
 --- !u!1 &7218538560020565935
 GameObject:
   m_ObjectHideFlags: 0
@@ -4120,7 +4118,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 80kg
+  m_Text: 64kg
 --- !u!1 &7336086157170354508
 GameObject:
   m_ObjectHideFlags: 0
@@ -4200,7 +4198,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 180cm
+  m_Text: 174cm
 --- !u!1 &7572333167005088321
 GameObject:
   m_ObjectHideFlags: 0
@@ -5112,7 +5110,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2
+  m_Text: 0
 --- !u!1 &9083367403200029098
 GameObject:
   m_ObjectHideFlags: 0
@@ -5562,7 +5560,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 20
+  m_Text: 0
 --- !u!1001 &2158210810908315882
 PrefabInstance:
   m_ObjectHideFlags: 0
