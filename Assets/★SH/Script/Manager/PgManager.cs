@@ -181,9 +181,13 @@ public class PgManager : MonoBehaviourPunCallbacks
         // coachList 정보를 뿌려주자.
         for (int i = 0; i < coachList.Count; i++)
         {
+            DownloadProfileImage();
+
             GameObject icon = Instantiate(coachIconFactory, UserListParent);
             int _viewID = coachList[i].GetPhotonView().ViewID;
             icon.GetComponent<SH_UserIcon>().Init(_viewID);
+
+            icon.transform.Find("UserIcon").GetComponent<RawImage>().texture = rawImg.texture;
         }
         // playerList 정보를 뿌려주자.
         for (int i = 0; i < playerList.Count; i++)

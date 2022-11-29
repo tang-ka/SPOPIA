@@ -151,7 +151,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   newsContent: {fileID: 0}
   rect: {fileID: 0}
-  tumbnail: {fileID: 0}
 --- !u!1 &4290196923990298661
 GameObject:
   m_ObjectHideFlags: 0

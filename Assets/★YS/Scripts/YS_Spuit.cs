@@ -11,6 +11,8 @@ public class YS_Spuit : MonoBehaviour
 
     public RawImage rawImg;
 
+    public GameObject stadium;
+
     private void Update()
     {
         if(b_spuit == true)
@@ -23,6 +25,9 @@ public class YS_Spuit : MonoBehaviour
                 rawImg.color = spuit;
 
                 b_spuit = false;
+
+                // 머테리얼 바꿔주기 (custom color)
+                stadium.transform.Find("Custom").transform.Find("Wall_outside").transform.Find("Wall_outside").GetComponent<MeshRenderer>().material.color = rawImg.color;
             }
         }
     }
