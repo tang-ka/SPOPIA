@@ -5,7 +5,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-using UnityEditor.PackageManager;
 
 public class SH_PieceWindow : MonoBehaviourPun
 {
