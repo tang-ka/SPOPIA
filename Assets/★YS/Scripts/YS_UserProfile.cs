@@ -28,7 +28,9 @@ public class YS_UserProfile : MonoBehaviour
         // 카드 정보 설정
         if (!canvas.transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture)
         {
+            // 이미지 세팅
             DownloadLogoImage();
+            DownloadBodyImage();
         }
 
         //canvas.transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture = rawImg.texture;
@@ -52,6 +54,21 @@ public class YS_UserProfile : MonoBehaviour
             t.LoadImage(byteTexture);
 
             transform.Find("Canvas").transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture = t;
+        }
+    }
+
+    public void DownloadBodyImage()
+    {
+        filename = "body_" + DBManager.instance.myData.nickName + ".png";
+
+        byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + "/" + filename);
+
+        if (byteTexture.Length > 0)
+        {
+            Texture2D t = new Texture2D(0, 0);
+            t.LoadImage(byteTexture);
+
+            transform.Find("Canvas").transform.Find("Profile").transform.Find("ProfileImage").gameObject.GetComponent<RawImage>().texture = t;
         }
     }
 }

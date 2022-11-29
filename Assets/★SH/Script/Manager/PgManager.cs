@@ -5,6 +5,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using static UnityEngine.Timeline.AnimationPlayableAsset;
 
@@ -26,6 +27,11 @@ public class PgManager : MonoBehaviourPunCallbacks
     public Transform UserListParent;
     public GameObject coachIconFactory;
     public GameObject playerIconFactory;
+
+    // 파일 이름
+    string filename;
+    public RawImage rawImg;
+
 
     void Start()
     {
@@ -182,9 +188,13 @@ public class PgManager : MonoBehaviourPunCallbacks
         // playerList 정보를 뿌려주자.
         for (int i = 0; i < playerList.Count; i++)
         {
+            DownloadProfileImage();
+
             GameObject icon = Instantiate(playerIconFactory, UserListParent);
             int _viewID = playerList[i].GetPhotonView().ViewID;
             icon.GetComponent<SH_UserIcon>().Init(_viewID);
+
+            icon.transform.Find("UserIcon").GetComponent<RawImage>().texture = rawImg.texture;
         }
     }
 
@@ -199,6 +209,21 @@ public class PgManager : MonoBehaviourPunCallbacks
         else
         {
             coachList.Add(user);
+        }
+    }
+
+    public void DownloadProfileImage()
+    {
+        filename = "pf_" + DBManager.instance.myData.nickName + ".png";
+
+        byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + "/" + filename);
+
+        if (byteTexture.Length > 0)
+        {
+            Texture2D t = new Texture2D(0, 0);
+            t.LoadImage(byteTexture);
+
+            rawImg.texture = t;
         }
     }
 

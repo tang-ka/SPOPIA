@@ -71,11 +71,15 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
         }
 
         // ġƮŰ
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.Colon))
         {
             GetComponent<CharacterController>().enabled = false;
-            transform.position = new Vector3(130, 2, 215);
+            transform.position = new Vector3(0, 0, 0);
             GetComponent<CharacterController>().enabled = true;
+        }
+        if(Input.GetKeyDown(KeyCode.Slash))
+        {
+            fsm.ChangeState(SH_PlayerFSM.State.NORMAL);
         }
 
         int layerMask = (-1) - (1 << LayerMask.NameToLayer("IgnoreRay"));
@@ -116,6 +120,20 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
                         string nextRoom = DBManager.instance.leagueInfo.leagueName;
                         PgManager.instance.EnterScene(curRoom, nextRoom);
                     }
+                }
+            }
+            else if(hit.transform.gameObject.name == "AddTeam")
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
+                }
+            }
+            else if(hit.transform.gameObject.name == "AddUserButton")
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
                 }
             }
             else
