@@ -338,7 +338,7 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
             userCard.transform.Find("Canvas").transform.Find("TeamLogo").transform.Find("Logo").gameObject.GetComponent<RawImage>().texture = rawImg.texture;
 
             // 이미지 세팅
-            DownloadBodyImage();
+            DownloadBodyImage(myTeam.users[num].nickName);
 
             userCard.transform.Find("Canvas").transform.Find("Profile").transform.Find("ProfileImage").gameObject.GetComponent<RawImage>().texture = rawImg.texture;
             userCard.transform.Find("Canvas").transform.Find("BackNumber").gameObject.GetComponent<Text>().text = myTeam.users[num].backNumber.ToString();
@@ -440,9 +440,9 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void DownloadBodyImage()
+    public void DownloadBodyImage(string s)
     {
-        filename = "body_" + DBManager.instance.myData.nickName + ".png";
+        filename = "body_" + s + ".png";
 
         byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + "/" + filename);
 
