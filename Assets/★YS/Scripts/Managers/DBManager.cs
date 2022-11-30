@@ -215,7 +215,9 @@ public class DBManager : MonoBehaviour
 
     public void UpdateUserData(UserData userData, string key) // 유저 데이터 수정
     {
-
+        // 서버용
+        var request = new PlayFab.AdminModels.UpdateUserDataRequest() { PlayFabId = MyPlayFabInfo.PlayFabId, Data = new Dictionary<string, string>() { { key, JsonUtility.ToJson(userData) } }, Permission = PlayFab.AdminModels.UserDataPermission.Public };
+        PlayFabAdminAPI.UpdateUserData(request, (result) => print("올 데이터 저장 성공했는데?"), (error) => print("데이터 저장 실패했다ㅋㅋㅋ"));
     }
 
     public void SetUserData(Dictionary<string, string> userData)

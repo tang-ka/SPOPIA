@@ -253,6 +253,9 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
                 DBManager.instance.myData.teamName = go.GetComponent<TextMesh>().text;
                 DBManager.instance.myData.backNumber = int.Parse(inputBackNum.text);
 
+                // myData 수정
+                DBManager.instance.UpdateUserData(DBManager.instance.myData, "MyData");
+
                 // 해당 팀의 user리스트에 user를 추가한다.
                 info.users.Add(DBManager.instance.myData);
 
