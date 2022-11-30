@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
 using ExitGames.Client.Photon;
 using UnityEngine.EventSystems;
@@ -18,11 +19,14 @@ public class LcManager : MonoBehaviourPunCallbacks
     public Button btnCreateLeague;
     public Button btnJoinLeague;
 
-    public GameObject leagueInfoPage, leagueListPage;
+    public GameObject leagueInfoPage, leagueListPage, goodPage;
     public Transform contentTr;
 
     public Dropdown ddWorldType;
     public List<string> worldTypes = new List<string>();
+
+    // leagueItem에 보낼 worldtype 변수
+    public int typeIdx;
 
     private void Awake()
     {
@@ -76,18 +80,23 @@ public class LcManager : MonoBehaviourPunCallbacks
         switch (arg)
         {
             case 0:
+                typeIdx = arg;
                 print("기타");
                 break;
             case 1:
+                typeIdx = arg;
                 print("학생");
                 break;
             case 2:
+                typeIdx = arg;
                 print("대학생");
                 break;
             case 3:
+                typeIdx = arg;
                 print("직장인");
                 break;
             case 4:
+                typeIdx = arg;
                 print("일반");
                 break;
         }
@@ -120,11 +129,15 @@ public class LcManager : MonoBehaviourPunCallbacks
         leagueData.teamNum = int.Parse(inputTeamNum.text);
         leagueData.startDate = inputStartDate.text;
         leagueData.endDate = inputEndDate.text;
+        leagueData.type = typeIdx;
         leagueData.mapType = btnMapType;
 
         // DB에 리그데이터 저장
         DBManager.instance.leagues.leagueDatas.Add(leagueData);
         DBManager.instance.SaveJsonLeagueData(DBManager.instance.leagues, "LeagueData");
+
+        // 완료 페이지 뜨게
+        goodPage.SetActive(true);
     }
 
     public void CreateLeague()
@@ -258,7 +271,14 @@ public class LcManager : MonoBehaviourPunCallbacks
 
         Text t = leagueItem.GetComponentInChildren<Text>();
         t.text = DBManager.instance.leagues.leagueDatas[idx].leagueName;
+        // 월드 타입 넣어주기
+        leagueItem.transform.Find("Level").transform.GetChild(DBManager.instance.leagues.leagueDatas[idx].type).gameObject.SetActive(true);
 
         yield return null;
+    }
+
+    public void Good()
+    {
+        SceneManager.LoadScene("LeagueChoiceScene");
     }
 }

@@ -169,10 +169,10 @@ public class PgManager : MonoBehaviourPunCallbacks
 
     void CreateUserIcon(int viewID)
     {
-        photonView.RPC(nameof(RPC_CreateUserIcon), RpcTarget.All, viewID);
+        photonView.RPC(nameof(RPC_CreateUserIcon), RpcTarget.All, viewID, DBManager.instance.myData.nickName);
     }
     [PunRPC]
-    void RPC_CreateUserIcon(int viewID)
+    void RPC_CreateUserIcon(int viewID, string nickName)
     {
         foreach (Transform tr in UserListParent)
         {
@@ -181,23 +181,23 @@ public class PgManager : MonoBehaviourPunCallbacks
         // coachList 정보를 뿌려주자.
         for (int i = 0; i < coachList.Count; i++)
         {
-            DownloadProfileImage();
-
             GameObject icon = Instantiate(coachIconFactory, UserListParent);
             int _viewID = coachList[i].GetPhotonView().ViewID;
             icon.GetComponent<SH_UserIcon>().Init(_viewID);
 
+            string n = coachList[i].GetPhotonView().Owner.NickName;
+            DownloadProfileImage(n);
             icon.transform.Find("UserIcon").GetComponent<RawImage>().texture = rawImg.texture;
         }
         // playerList 정보를 뿌려주자.
         for (int i = 0; i < playerList.Count; i++)
         {
-            DownloadProfileImage();
-
             GameObject icon = Instantiate(playerIconFactory, UserListParent);
             int _viewID = playerList[i].GetPhotonView().ViewID;
             icon.GetComponent<SH_UserIcon>().Init(_viewID);
 
+            string n = playerList[i].GetPhotonView().Owner.NickName;
+            DownloadProfileImage(n);
             icon.transform.Find("UserIcon").GetComponent<RawImage>().texture = rawImg.texture;
         }
     }
@@ -216,9 +216,9 @@ public class PgManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public void DownloadProfileImage()
+    public void DownloadProfileImage(string s)
     {
-        filename = "pf_" + DBManager.instance.myData.nickName + ".png";
+        filename = "pf_" + s + ".png";
 
         byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + "/" + filename);
 

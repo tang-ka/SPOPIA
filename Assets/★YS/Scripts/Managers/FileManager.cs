@@ -18,7 +18,7 @@ public class FileManager : MonoBehaviour
 
     public void OpenFileBrowser()
     {
-        path = EditorUtility.OpenFilePanel("이미지파일을 선택해주세요.", "", "png, jpg, jpeg");
+        //path = EditorUtility.OpenFilePanel("이미지파일을 선택해주세요.", "", "png, jpg, jpeg");
         UploadImage();
     }
 

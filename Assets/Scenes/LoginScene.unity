@@ -1229,7 +1229,7 @@ MonoBehaviour:
     teams: []
     startDate: 
     endDate: 
-    type: 
+    type: 0
     isfinished: 0
     mapType: 
   isParsed: 0
