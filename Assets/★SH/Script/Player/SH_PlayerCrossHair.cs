@@ -136,6 +136,13 @@ public class SH_PlayerCrossHair : MonoBehaviourPunCallbacks
                     fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
                 }
             }
+            else if (hit.transform.gameObject.name == "News")
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    fsm.ChangeState(SH_PlayerFSM.State.UIPLAYING);
+                }
+            }
             else
             {
                 if (sphere == null) return;

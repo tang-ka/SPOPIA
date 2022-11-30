@@ -10,6 +10,7 @@ using Firebase.Storage;
 using Firebase.Extensions;
 using System;
 using System.IO;
+using SimpleFileBrowser;
 
 // 파이어베이스 이미지(파일)DB 구조
 // 업로드
@@ -54,8 +55,8 @@ public class ImageStorageManager : MonoBehaviour
     {
         btnName = EventSystem.current.currentSelectedGameObject.name;
 
-        path = EditorUtility.OpenFilePanel("이미지파일을 선택해주세요.", "", "png, jpg, jpeg");
-        UploadImage();
+        //path = EditorUtility.OpenFilePanel("이미지파일을 선택해주세요.", "", "png, jpg, jpeg");
+        ShowFileBrowser();
     }
 
     void UploadImage()
@@ -158,5 +159,40 @@ public class ImageStorageManager : MonoBehaviour
 
             rawImg.texture = t;
         }
+    }
+
+    public void ShowFileBrowser()
+    {
+        FileBrowser.SetFilters(true, new FileBrowser.Filter("Images", ".jpg", ".png"), new FileBrowser.Filter("Text Files", ".txt", ".pdf"));
+
+        FileBrowser.SetDefaultFilter(".jpg");
+
+        FileBrowser.SetExcludedExtensions(".lnk", ".tmp", ".zip", ".rar", ".exe");
+
+        FileBrowser.AddQuickLink("Users", "C:\\Users", null);
+
+        StartCoroutine(ShowLoadDialogCoroutine());
+    }
+
+    IEnumerator ShowLoadDialogCoroutine()
+    {
+        yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.FilesAndFolders, true, null, null, "Load Files and Folders", "Load");
+
+        Debug.Log(FileBrowser.Success);
+
+        if (FileBrowser.Success)
+        {
+            for (int i = 0; i < FileBrowser.Result.Length; i++)
+                Debug.Log(FileBrowser.Result[i]);
+
+            byte[] bytes = FileBrowserHelpers.ReadBytesFromFile(FileBrowser.Result[0]);
+
+            string destinationPath = Path.Combine(Application.persistentDataPath, FileBrowserHelpers.GetFilename(FileBrowser.Result[0]));
+            FileBrowserHelpers.CopyFile(FileBrowser.Result[0], destinationPath);
+        }
+
+        path = FileBrowser.Result[0];
+
+        UploadImage();
     }
 }

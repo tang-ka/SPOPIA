@@ -223,11 +223,9 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         c.a = 0;
         go.GetComponent<TextMesh>().color = c;
 
-        go.transform.Find("Canvas").transform.Find("TeamLogo").gameObject.GetComponent<RawImage>();
-
         if (!go.transform.Find("Canvas").transform.Find("TeamLogo").gameObject.GetComponent<RawImage>().texture)
         {
-            DownloadLogoImage();
+            DownloadLogoImage2(inputTeamName.text);
         }
         go.transform.Find("Canvas").transform.Find("TeamLogo").gameObject.GetComponent<RawImage>().texture = rawImg.texture;
 
@@ -435,6 +433,21 @@ public class CubeBtnManager : MonoBehaviourPunCallbacks
         byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + "/" + filename);
 
         if(byteTexture.Length > 0)
+        {
+            Texture2D t = new Texture2D(0, 0);
+            t.LoadImage(byteTexture);
+
+            rawImg.texture = t;
+        }
+    }
+
+    public void DownloadLogoImage2(string s) // 팀 생성할 때, 로고 만들어주기
+    {
+        filename = "logo_" + s + ".png";
+
+        byte[] byteTexture = System.IO.File.ReadAllBytes(Application.streamingAssetsPath + "/" + filename);
+
+        if (byteTexture.Length > 0)
         {
             Texture2D t = new Texture2D(0, 0);
             t.LoadImage(byteTexture);

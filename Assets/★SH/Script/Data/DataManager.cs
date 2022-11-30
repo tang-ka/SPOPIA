@@ -62,7 +62,7 @@ public class LeagueData
 
     public string startDate;
     public string endDate;
-    public string type;
+    public int type;
     public bool isfinished;
 
     // Map°ü·Ã

@@ -87,7 +87,7 @@ public class SH_PlayerMove : MonoBehaviourPun, IPunObservable
             anim.SetFloat("Speed", v * speed);
             anim.SetFloat("dir", h * speed);
 
-            print(dir);
+            //print(dir);
 
             cc.Move(dir * Time.deltaTime);
         }
